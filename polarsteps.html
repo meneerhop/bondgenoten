@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Polarsteps — Dieuw in Thailand</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="eyebrow">Backpack trip met Dagmar</div>
+      <h1>DIEUW IN THAILAND</h1>
+    </header>
+
+    <main>
+      <a class="ps-hero" href="https://www.polarsteps.com/Dieuwertjearlar2/27239050-bets-en-tien-gaan-thailand-zien?s=1e4e61f5-4558-4f07-826c-f4076d9503cf" target="_blank" rel="noopener">
+        <div class="ps-hero-inner">
+          <div class="ps-hero-icon">🗺</div>
+          <div>
+            <div class="ps-hero-titel">Volg de reis live op Polarsteps</div>
+            <div class="ps-hero-sub">Stappen, foto's en route van Dieuw & Dagmar</div>
+          </div>
+          <div class="ps-hero-pijl">↗</div>
+        </div>
+      </a>
+
+      <div class="ps-stats">
+        <div class="ps-stat">
+          <div class="ps-stat-waarde" id="ps-dagen">27</div>
+          <div class="ps-stat-label">dagen</div>
+        </div>
+        <div class="ps-stat">
+          <div class="ps-stat-waarde">🇹🇭</div>
+          <div class="ps-stat-label">Thailand</div>
+        </div>
+        <div class="ps-stat">
+          <div class="ps-stat-waarde" id="ps-km">~5.000</div>
+          <div class="ps-stat-label">km gevlogen</div>
+        </div>
+      </div>
+
+      <h2 class="sectie-titel" style="margin-top:24px;">Route op de kaart</h2>
+      <div id="kaart" class="ps-kaart"></div>
+
+      <h2 class="sectie-titel" style="margin-top:24px;">Bestemmingen</h2>
+      <div class="ps-steden">
+        <div class="ps-stad" data-lat="13.7563" data-lng="100.5018">
+          <div class="ps-stad-naam">Bangkok</div>
+          <div class="ps-stad-sub">Aankomst & vertrek</div>
+        </div>
+        <div class="ps-stad" data-lat="18.7883" data-lng="98.9853">
+          <div class="ps-stad-naam">Chiang Mai</div>
+          <div class="ps-stad-sub">Noord-Thailand</div>
+        </div>
+        <div class="ps-stad" data-lat="19.3588" data-lng="98.4404">
+          <div class="ps-stad-naam">Pai</div>
+          <div class="ps-stad-sub">Bergen & natuur</div>
+        </div>
+        <div class="ps-stad" data-lat="7.8804" data-lng="98.3923">
+          <div class="ps-stad-naam">Phuket</div>
+          <div class="ps-stad-sub">Strand & eilanden</div>
+        </div>
+        <div class="ps-stad" data-lat="9.5120" data-lng="100.0136">
+          <div class="ps-stad-naam">Koh Samui</div>
+          <div class="ps-stad-sub">Eilandparadijs</div>
+        </div>
+        <div class="ps-stad" data-lat="10.0956" data-lng="99.8398">
+          <div class="ps-stad-naam">Koh Tao</div>
+          <div class="ps-stad-sub">Duiken & snorkelen</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px; text-align:center;">
+        <a class="knop knop--groen" href="https://www.polarsteps.com/Dieuwertjearlar2/27239050-bets-en-tien-gaan-thailand-zien?s=1e4e61f5-4558-4f07-826c-f4076d9503cf" target="_blank" rel="noopener">
+          Open volledige Polarsteps reis ↗
+        </a>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    const steden = [
+      { naam: "Bangkok",    lat: 13.7563, lng: 100.5018, sub: "Aankomst & vertrek" },
+      { naam: "Chiang Mai", lat: 18.7883, lng: 98.9853,  sub: "Noord-Thailand" },
+      { naam: "Pai",        lat: 19.3588, lng: 98.4404,  sub: "Bergen & natuur" },
+      { naam: "Phuket",     lat: 7.8804,  lng: 98.3923,  sub: "Strand & eilanden" },
+      { naam: "Koh Samui",  lat: 9.5120,  lng: 100.0136, sub: "Eilandparadijs" },
+      { naam: "Koh Tao",    lat: 10.0956, lng: 99.8398,  sub: "Duiken & snorkelen" },
+    ];
+
+    const kaart = L.map("kaart", { zoomControl: true, scrollWheelZoom: false })
+      .setView([13.5, 101.0], 5);
+
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/">CARTO</a>',
+      maxZoom: 19,
+    }).addTo(kaart);
+
+    const markerStijl = L.divIcon({
+      className: "",
+      html: `<div class="kaart-marker"></div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7],
+    });
+
+    const coords = steden.map(s => [s.lat, s.lng]);
+    L.polyline(coords, { color: "#6f7b6b", weight: 2, dashArray: "6 5", opacity: 0.7 }).addTo(kaart);
+
+    steden.forEach(s => {
+      L.marker([s.lat, s.lng], { icon: markerStijl })
+        .addTo(kaart)
+        .bindPopup(`<strong>${s.naam}</strong><br><span style="font-size:12px;color:#6f7b6b">${s.sub}</span>`);
+    });
+
+    const nu = new Date();
+    const start = new Date(TRIP.vertrek + "T00:00:00");
+    const eind  = new Date(TRIP.thuiskomst + "T00:00:00");
+    const totaal = Math.round((eind - start) / (24*3600*1000));
+    document.getElementById("ps-dagen").textContent = totaal;
+  </script>
+</body>
+</html>

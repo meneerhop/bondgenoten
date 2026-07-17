@@ -31,29 +31,59 @@
         <span id="aftel"></span>
       </div>
       <div class="voortgang"><i id="voortgang" style="width:0%"></i></div>
-
-      <div class="kijkbalk">
-        <a class="knop knop--groen" id="kijklink" href="#" target="_blank" rel="noopener">Kijk de aflevering op KIJK</a>
-      </div>
-      <p class="vpn-tip">Tip: zet je VPN op een Nederlandse server, anders doet KIJK moeilijk. 🌏</p>
     </header>
 
-    <nav class="tabs">
-      <a href="index.html" aria-current="page">Tijdlijn</a>
-      <a href="bondgenoten.html">de Bondgenoten</a>
-      <a href="vluchten.html">Vluchten</a>
-    </nav>
-
     <main>
-      <div id="tijdlijn" class="tijdlijn">
-        <p class="leeg">Laden…</p>
+      <div class="dashboard">
+
+        <a href="polarsteps.html" class="dash-kaart dash-kaart--accent">
+          <div class="dash-kaart-icon">🗺</div>
+          <div class="dash-kaart-body">
+            <div class="dash-kaart-titel">Volg de reis live</div>
+            <div class="dash-kaart-sub">Polarsteps · stappen & kaart</div>
+          </div>
+          <div class="dash-kaart-pijl">›</div>
+        </a>
+
+        <a href="tijdlijn.html" class="dash-kaart">
+          <div class="dash-kaart-icon">📅</div>
+          <div class="dash-kaart-body">
+            <div class="dash-kaart-titel">Tijdlijn</div>
+            <div class="dash-kaart-sub">Updates & afleveringen</div>
+          </div>
+          <div class="dash-kaart-pijl">›</div>
+        </a>
+
+        <a href="bondgenoten.html" class="dash-kaart">
+          <div class="dash-kaart-icon">👥</div>
+          <div class="dash-kaart-body">
+            <div class="dash-kaart-titel">de Bondgenoten</div>
+            <div class="dash-kaart-sub">Kandidaten per groep</div>
+          </div>
+          <div class="dash-kaart-pijl">›</div>
+        </a>
+
+        <a href="vluchten.html" class="dash-kaart">
+          <div class="dash-kaart-icon">✈</div>
+          <div class="dash-kaart-body">
+            <div class="dash-kaart-titel">Vluchten</div>
+            <div class="dash-kaart-sub">Heen- en terugreis</div>
+          </div>
+          <div class="dash-kaart-pijl">›</div>
+        </a>
+
+        <div class="kijkbalk" style="margin-top:8px;">
+          <a class="knop knop--groen" id="kijklink" href="#" target="_blank" rel="noopener">▶ Kijk de aflevering op KIJK</a>
+        </div>
+        <p class="vpn-tip">Tip: zet je VPN op een Nederlandse server, anders doet KIJK moeilijk. 🌏</p>
+
       </div>
     </main>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/klokken.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/nav.js"></script>
 </body>
 </html>
