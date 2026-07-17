@@ -34,6 +34,13 @@
     </header>
 
     <main>
+      <div class="dash-rij">
+        <div class="dash-kaart dash-kaart--compact" id="weer-widget">
+          <div class="weer-sub">Weer laden…</div>
+        </div>
+        <div class="dash-kaart dash-kaart--compact" id="afl-countdown"></div>
+      </div>
+
       <div class="dashboard">
 
         <a href="polarsteps.html" class="dash-kaart dash-kaart--accent">
@@ -41,6 +48,15 @@
           <div class="dash-kaart-body">
             <div class="dash-kaart-titel">Volg de reis live</div>
             <div class="dash-kaart-sub">Polarsteps · stappen & kaart</div>
+          </div>
+          <div class="dash-kaart-pijl">›</div>
+        </a>
+
+        <a href="fotos.html" class="dash-kaart">
+          <div class="dash-kaart-icon">📷</div>
+          <div class="dash-kaart-body">
+            <div class="dash-kaart-titel">Foto's</div>
+            <div class="dash-kaart-sub">Reisfoto's van Dieuw & Dagmar</div>
           </div>
           <div class="dash-kaart-pijl">›</div>
         </a>
@@ -81,9 +97,13 @@
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/kandidaten.js"></script>
   <script src="js/klokken.js"></script>
   <script src="js/dashboard.js"></script>
+  <script src="js/weer.js"></script>
+  <script src="js/afl.js"></script>
   <script src="js/nav.js"></script>
 </body>
 </html>

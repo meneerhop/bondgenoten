@@ -5,6 +5,7 @@
   const PAGINAS = [
     { label: "Home",           href: "index.html",        icon: "⌂" },
     { label: "de Bondgenoten", href: "bondgenoten.html",  icon: "📺", match: bondgenotenPaginas },
+    { label: "Foto's",         href: "fotos.html",        icon: "📷" },
     { label: "Voorspelling",   href: "voorspelling.html", icon: "🏆" },
     { label: "Vluchten",       href: "vluchten.html",     icon: "✈" },
     { label: "Polarsteps",     href: "polarsteps.html",   icon: "🗺" },

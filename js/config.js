@@ -11,8 +11,14 @@ const TRIP = {
   thuiskomst: "2026-08-18",  // landing terug in Brussel
 };
 
+// Supabase project URL (zonder /rest/v1/ — voor storage & auth)
+const SUPABASE_PROJECT_URL = "https://hprhawqzksknaaaxnzqx.supabase.co";
+
 // Link naar de show op KIJK (werkt in Thailand alleen met NL-VPN)
 const KIJK_URL = "https://kijk.nl/programmas/de-bondgenoten";
+
+// Uitzendschema De Bondgenoten (dag 0=zo t/m 6=za, tijd in NL zomertijd)
+const UITZENDING = { dag: 4, uur: 20, minuut: 30 }; // vrijdag 20:30
 
 // Vluchtgegevens — tijden zijn lokale tijd op het vliegveld zelf.
 // De ISO-timestamps (met tijdzone) worden gebruikt voor de aftelklok.
