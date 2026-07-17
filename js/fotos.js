@@ -6,6 +6,12 @@ function getNaam() {
   return (localStorage.getItem("fotos-naam") || "").trim();
 }
 
+function naamInBestand(bestandsnaam) {
+  // formaat: {timestamp}_{naam}_{origineel}
+  const delen = bestandsnaam.split("_");
+  return delen.length >= 2 ? delen[1] : "";
+}
+
 function renderUploadBalk() {
   const balk = document.getElementById("fotos-login-balk");
   const naam = getNaam();
@@ -20,6 +26,7 @@ function renderUploadBalk() {
     document.getElementById("fotos-wissel-naam").addEventListener("click", () => {
       localStorage.removeItem("fotos-naam");
       renderUploadBalk();
+      laadFotos();
     });
     document.getElementById("fotos-input").addEventListener("change", uploadFotos);
   } else {
@@ -34,6 +41,7 @@ function renderUploadBalk() {
       if (!waarde) return;
       localStorage.setItem("fotos-naam", waarde);
       renderUploadBalk();
+      laadFotos();
     });
   }
 }
@@ -61,6 +69,13 @@ async function uploadFotos(e) {
   laadFotos();
 }
 
+async function verwijderFoto(pad, el) {
+  if (!confirm("Deze foto verwijderen?")) return;
+  const { error } = await sb.storage.from(BUCKET).remove([pad]);
+  if (error) { alert("Verwijderen mislukt: " + error.message); return; }
+  el.remove();
+}
+
 async function laadFotos() {
   const grid = document.getElementById("fotos-grid");
   grid.innerHTML = `<p class="leeg">Laden…</p>`;
@@ -74,12 +89,30 @@ async function laadFotos() {
     return;
   }
 
+  const naam = getNaam();
+  const veiligNaam = naam ? naam.replace(/[^a-z0-9]/gi, "_") : null;
+
   grid.innerHTML = data.map(f => {
     const url = `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${BUCKET}/${FOLDER}/${f.name}`;
-    return `<a class="fotos-item" href="${url}" target="_blank" rel="noopener">
-      <img src="${url}" alt="${f.name}" loading="lazy" />
-    </a>`;
+    const pad  = `${FOLDER}/${f.name}`;
+    const eigenFoto = veiligNaam && naamInBestand(f.name) === veiligNaam;
+    const verwijderKnop = eigenFoto
+      ? `<button class="fotos-verwijder" data-pad="${pad}" aria-label="Verwijder foto">✕</button>`
+      : "";
+    return `<div class="fotos-item-wrap">
+      <a class="fotos-item" href="${url}" target="_blank" rel="noopener">
+        <img src="${url}" alt="${f.name}" loading="lazy" />
+      </a>
+      ${verwijderKnop}
+    </div>`;
   }).join("");
+
+  grid.querySelectorAll(".fotos-verwijder").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      verwijderFoto(btn.dataset.pad, btn.closest(".fotos-item-wrap"));
+    });
+  });
 }
 
 renderUploadBalk();
