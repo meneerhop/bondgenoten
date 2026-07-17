@@ -330,34 +330,84 @@ nav.tabs a[aria-current="page"] {
   padding: 14px 16px;
 }
 
+/* ---------- Bondgenoten filter ---------- */
+.filter-balk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 4px;
+}
+
+.filter-knop {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.04em;
+  border: 1.5px solid var(--lijn);
+  border-radius: 99px;
+  padding: 5px 13px;
+  background: var(--kaart);
+  color: var(--inkt-zacht);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.filter-knop--actief,
+.filter-knop:hover {
+  background: var(--blackhills);
+  color: #f2f3ee;
+  border-color: var(--blackhills);
+}
+
 /* ---------- Bondgenoten tegels ---------- */
+.sectie-titel {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+  margin: 24px 0 0;
+}
+
+.sectie-titel--kandidaten { margin-top: 20px; }
+
 .kandidaten-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .kandidaat-tegel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+}
+
+.kandidaat-foto-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 3px solid var(--lijn);
+  box-shadow: var(--schaduw);
+  background: var(--accent-zacht);
 }
 
 .kandidaat-foto {
   width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius);
+  height: 100%;
   object-fit: cover;
   display: block;
 }
 
 .kandidaat-initialen {
-  background: var(--blackhills);
-  color: #f2f3ee;
+  width: 100%;
+  height: 100%;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -365,13 +415,23 @@ nav.tabs a[aria-current="page"] {
 }
 
 .kandidaat-naam {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 12.5px;
+  font-weight: 700;
   text-align: center;
   color: var(--inkt);
+  line-height: 1.2;
 }
 
-.kandidaten-grid--uit .kandidaat-foto {
+.kandidaat-groep {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 99px;
+  padding: 2px 9px;
+}
+
+.kandidaten-grid--uit .kandidaat-foto-wrap {
   filter: grayscale(100%);
   opacity: 0.5;
 }
@@ -381,16 +441,7 @@ nav.tabs a[aria-current="page"] {
   text-decoration: line-through;
 }
 
-.kandidaat-tegel--uit { opacity: 0.65; }
-
-.sectie-titel {
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--moonstone);
-  margin: 28px 0 0;
-}
+.kandidaat-tegel--uit .kandidaat-groep { opacity: 0.45; }
 
 /* ---------- Admin ---------- */
 form.paneel {
