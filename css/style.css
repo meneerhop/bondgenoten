@@ -34,6 +34,7 @@ body {
   font-family: "Inter", system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.55;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, .dagteller strong, .klok time {
@@ -781,8 +782,8 @@ nav.tabs a[aria-current="page"] {
 
 .kandidaten-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
   margin-top: 14px;
 }
 
