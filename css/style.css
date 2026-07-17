@@ -1227,19 +1227,23 @@ form.paneel textarea:focus {
   position: absolute;
   top: 14px;
   right: 16px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(120,120,120,0.75);
   border: none;
   color: #fff;
   font-size: 20px;
-  width: 36px;
-  height: 36px;
+  font-weight: 700;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
+
+.lb-sluit:hover { background: rgba(160,160,160,0.9); }
 
 .lb-pijl {
   position: absolute;
