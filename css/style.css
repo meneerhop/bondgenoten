@@ -330,6 +330,68 @@ nav.tabs a[aria-current="page"] {
   padding: 14px 16px;
 }
 
+/* ---------- Bondgenoten tegels ---------- */
+.kandidaten-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.kandidaat-tegel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.kandidaat-foto {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  object-fit: cover;
+  display: block;
+}
+
+.kandidaat-initialen {
+  background: var(--blackhills);
+  color: #f2f3ee;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kandidaat-naam {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--inkt);
+}
+
+.kandidaten-grid--uit .kandidaat-foto {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.kandidaten-grid--uit .kandidaat-naam {
+  color: var(--inkt-zacht);
+  text-decoration: line-through;
+}
+
+.kandidaat-tegel--uit { opacity: 0.65; }
+
+.sectie-titel {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+  margin: 28px 0 0;
+}
+
 /* ---------- Admin ---------- */
 form.paneel {
   background: var(--kaart);
