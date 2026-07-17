@@ -11,7 +11,9 @@ function kandidaatHTML(k) {
       <div class="kandidaat-foto-wrap">
         ${k.foto
           ? `<img src="${k.foto}" alt="${k.naam}" class="kandidaat-foto" />`
-          : `<div class="kandidaat-foto kandidaat-initialen" style="background:${kleur.bg};color:${kleur.tekst}">${initialen(k.naam)}</div>`
+          : kleur.logo
+            ? `<img src="${kleur.logo}" alt="${k.groep}" class="kandidaat-foto" />`
+            : `<div class="kandidaat-foto kandidaat-initialen" style="background:${kleur.bg};color:${kleur.tekst}">${initialen(k.naam)}</div>`
         }
       </div>
       <div class="kandidaat-naam">${k.naam}</div>
