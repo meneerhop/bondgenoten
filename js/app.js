@@ -27,16 +27,16 @@ function initHeader() {
   const balk = document.getElementById("voortgang");
 
   if (nu < start) {
-    teller.textContent = `Nog ${Math.ceil((start - nu) / DAG_MS)} nachtjes slapen`;
-    aftel.textContent = `vertrek ${fmtDag.format(start)}`;
+    if (teller) teller.textContent = `Nog ${Math.ceil((start - nu) / DAG_MS)} nachtjes slapen`;
+    if (aftel) aftel.textContent = `vertrek ${fmtDag.format(start)}`;
   } else if (dag > totaal) {
-    teller.textContent = "Welkom thuis! 🎉";
-    aftel.textContent = "";
-    balk.style.width = "100%";
+    if (teller) teller.textContent = "Welkom thuis! 🎉";
+    if (aftel) aftel.textContent = "";
+    if (balk) balk.style.width = "100%";
   } else {
-    teller.textContent = `Dag ${dag} van ${totaal}`;
-    aftel.textContent = rest === 1 ? "morgen weer thuis!" : `nog ${rest} dagen`;
-    balk.style.width = `${Math.min(100, Math.round((dag / totaal) * 100))}%`;
+    if (teller) teller.textContent = `Dag ${dag} van ${totaal}`;
+    if (aftel) aftel.textContent = rest === 1 ? "morgen weer thuis!" : `nog ${rest} dagen`;
+    if (balk) balk.style.width = `${Math.min(100, Math.round((dag / totaal) * 100))}%`;
   }
 }
 
