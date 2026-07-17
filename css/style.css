@@ -1620,7 +1620,7 @@ body.lb-actief { overflow: hidden; }
 
 /* ---------- Hereniging afteltimer ---------- */
 .dash-kaart--hereniging {
-  background: linear-gradient(135deg, #b07a7a 0%, #8f5a5a 100%);
+  background: linear-gradient(135deg, #c45555 0%, #a03030 100%);
   color: #fff;
   text-align: center;
   padding: 20px 16px 16px;
