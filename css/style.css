@@ -1196,6 +1196,14 @@ form.paneel textarea:focus {
 .status--ok { color: var(--moonstone); }
 .status--fout { color: #a4432f; }
 
+.nav-easter-egg {
+  margin: auto 0 18px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--landscape);
+  opacity: 0.5;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .voortgang i { transition: none; }
 }

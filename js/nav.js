@@ -3,7 +3,7 @@
   const bondgenotenPaginas = ["bondgenoten.html", "tijdlijn.html"];
 
   const PAGINAS = [
-    { label: "Home",           href: "index.html",        icon: "⌂" },
+    { label: "Dashboard",       href: "index.html",        icon: "🏠" },
     { label: "de Bondgenoten", href: "bondgenoten.html",  icon: "📺", match: bondgenotenPaginas },
     { label: "Foto's",         href: "fotos.html",        icon: "📷" },
     { label: "Voorspelling",   href: "voorspelling.html", icon: "🏆" },
@@ -29,6 +29,7 @@
           </a>`;
         }).join("")}
       </nav>
+      <p class="nav-easter-egg"><em>je bent een prinsesje</em></p>
     </div>`;
 
   function open() {
