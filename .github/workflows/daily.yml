@@ -1,0 +1,35 @@
+name: Dagelijkse recap-update
+
+on:
+  schedule:
+    # 19:30 UTC = 21:30 NL-zomertijd, ma t/m za (zondag geen aflevering)
+    - cron: "30 19 * * 1-6"
+  workflow_dispatch: {} # handmatig starten via de Actions-tab (handig om te testen)
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Recaps ophalen
+        run: node scripts/fetch-recaps.js
+
+      - name: Wijzigingen committen
+        run: |
+          git config user.name "bondgenoten-bot"
+          git config user.email "actions@github.com"
+          git add data/episodes.json
+          if git diff --cached --quiet; then
+            echo "Geen wijzigingen."
+          else
+            git commit -m "Recaps van $(date +'%d-%m-%Y')"
+            git push
+          fi

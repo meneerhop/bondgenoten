@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Vluchten — Bondgenoten onderweg</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="eyebrow">Thuisfront &rarr; Thailand</div>
+      <h1>Vluchten</h1>
+
+      <div class="klokken">
+        <div class="klok">
+          <div class="zone">Nederland</div>
+          <time id="klokNL">--:--:--</time>
+          <div class="datum" id="datumNL"></div>
+        </div>
+        <div class="klok klok--thai">
+          <div class="zone">Thailand</div>
+          <time id="klokTH">--:--:--</time>
+          <div class="datum" id="datumTH"></div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <a href="index.html">Tijdlijn</a>
+      <a href="vluchten.html" aria-current="page">Vluchten</a>
+    </nav>
+
+    <main>
+      <div class="aftelkaart" id="aftelkaart" hidden>
+        <div class="zone" id="aftelLabel"></div>
+        <strong id="aftelTijd"></strong>
+      </div>
+      <div id="vluchten"></div>
+      <p class="vpn-tip" style="margin-top:16px;">
+        Alle tijden zijn lokale tijd op het vliegveld zelf. Beide reizen gaan via Beijing —
+        check voor vertrek even de actuele Chinese transitregels.
+      </p>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/klokken.js"></script>
+  <script src="js/vluchten.js"></script>
+</body>
+</html>

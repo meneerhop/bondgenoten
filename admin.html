@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Admin — Bondgenoten onderweg</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="eyebrow">Achterkant</div>
+      <h1>Bericht van thuis</h1>
+    </header>
+
+    <!-- Inloggen -->
+    <form class="paneel" id="loginPaneel">
+      <label>E-mail
+        <input type="email" id="email" autocomplete="username" required />
+      </label>
+      <label>Wachtwoord
+        <input type="password" id="wachtwoord" autocomplete="current-password" required />
+      </label>
+      <button class="knop" type="submit">Inloggen</button>
+      <div class="status" id="loginStatus"></div>
+    </form>
+
+    <!-- Posten -->
+    <form class="paneel" id="postPaneel" hidden>
+      <label>Jouw noot bij vandaag (mag leeg)
+        <textarea id="noot" placeholder="Anouk en Diederik weer bezig 🙄 …"></textarea>
+      </label>
+      <label>Foto (mag leeg)
+        <input type="file" id="foto" accept="image/*" />
+      </label>
+      <label>Onderschrift bij de foto
+        <input type="text" id="onderschrift" placeholder="Moffel mist je ook" />
+      </label>
+      <button class="knop knop--goud" type="submit" id="verstuur">Plaatsen</button>
+      <div class="status" id="postStatus"></div>
+      <button class="knop knop--stil" type="button" id="uitloggen">Uitloggen</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

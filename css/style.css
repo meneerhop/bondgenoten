@@ -1,0 +1,380 @@
+/* ---------------------------------------------------------
+   Bondgenoten onderweg — mobile-first stylesheet
+   Palet: Pure & Original — Landscape / Moonstone / Black Hills
+   Stijl: modern en strak, leesbaar in fel (Thais) zonlicht.
+--------------------------------------------------------- */
+
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  /* Pure & Original-palet */
+  --landscape: #a4a88d;    /* licht saliegroen */
+  --moonstone: #6f7b6b;    /* midden grijsgroen */
+  --blackhills: #49534e;   /* diep grijsgroen */
+
+  --papier: #f7f7f3;       /* warm gebroken wit met groene zweem */
+  --inkt: #2c332f;         /* bijna-zwart groen (donkerder dan Black Hills) */
+  --inkt-zacht: #6f7b6b;
+  --lijn: #dfe1d8;
+  --kaart: #ffffff;
+  --accent-zacht: #eef0e8; /* Landscape sterk verdund, voor chips */
+
+  --radius: 12px;
+  --schaduw: 0 1px 2px rgba(44, 51, 47, 0.05), 0 6px 18px rgba(44, 51, 47, 0.05);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--papier);
+  color: var(--inkt);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+h1, h2, h3, .dagteller strong, .klok time {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 18px 90px;
+}
+
+/* ---------- Koptekst ---------- */
+header.site { padding: 24px 0 0; }
+
+header.site .eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+}
+
+header.site h1 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 4px 0 14px;
+}
+
+/* ---------- Twee klokken ---------- */
+.klokken {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.klok {
+  background: var(--blackhills);
+  color: #f2f3ee;
+  border-radius: var(--radius);
+  padding: 12px 14px;
+}
+
+.klok--thai { background: var(--moonstone); }
+
+.klok .zone {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.klok time {
+  display: block;
+  font-size: 27px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+
+.klok .datum {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* ---------- Dagteller ---------- */
+.dagteller {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.dagteller strong { font-size: 19px; font-weight: 700; color: var(--blackhills); }
+.dagteller span { color: var(--inkt-zacht); font-size: 14px; }
+
+.voortgang {
+  height: 5px;
+  background: var(--lijn);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.voortgang i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--moonstone), var(--landscape));
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+/* ---------- Navigatie (tabs) ---------- */
+nav.tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 2px solid var(--inkt);
+  margin-bottom: 6px;
+}
+
+nav.tabs a {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+  text-decoration: none;
+  padding: 9px 14px 8px;
+  border-radius: 10px 10px 0 0;
+}
+
+nav.tabs a[aria-current="page"] {
+  background: var(--inkt);
+  color: #f2f3ee;
+}
+
+/* ---------- Tijdlijn ---------- */
+.tijdlijn { position: relative; padding-left: 20px; margin-top: 18px; }
+
+.tijdlijn::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 0;
+  border-left: 2px dashed var(--landscape);
+}
+
+.dag { position: relative; margin: 26px 0; }
+
+.dag::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--papier);
+  border: 3px solid var(--moonstone);
+}
+
+.dag > h2 { font-size: 18px; font-weight: 700; margin: 0 0 10px; }
+
+.dag > h2 small {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+  margin-left: 8px;
+}
+
+/* ---------- Kaarten ---------- */
+.kaart {
+  background: var(--kaart);
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.kaart .label {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  padding: 3px 9px;
+  margin-bottom: 8px;
+}
+
+.label--loods { background: var(--accent-zacht); color: var(--blackhills); }
+.label--thuis { background: var(--blackhills); color: #f2f3ee; }
+
+.kaart h3 { font-size: 16px; margin: 0 0 4px; line-height: 1.35; }
+.kaart h3 a { color: var(--inkt); text-decoration: none; }
+.kaart h3 a:active, .kaart h3 a:hover { color: var(--moonstone); }
+
+.kaart p { margin: 4px 0 6px; color: var(--inkt-zacht); font-size: 14.5px; }
+
+.kaart .bron { font-size: 12.5px; color: var(--inkt-zacht); }
+.kaart .bron a { color: var(--moonstone); font-weight: 700; text-decoration: none; }
+
+.kaart img.foto { width: 100%; border-radius: 8px; margin: 6px 0 4px; display: block; }
+
+.kaart .noot { color: var(--inkt); font-size: 15.5px; white-space: pre-wrap; }
+
+/* ---------- Vluchten ---------- */
+.vlucht-blok { margin-top: 20px; }
+
+.vlucht-blok > h2 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+  margin: 0 0 10px;
+}
+
+.aftelkaart {
+  background: var(--blackhills);
+  color: #f2f3ee;
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-top: 18px;
+}
+
+.aftelkaart .zone { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75; }
+.aftelkaart strong { font-family: "Space Grotesk", sans-serif; font-size: 24px; font-weight: 600; display: block; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+.segment {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+}
+
+.segment .code {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--blackhills);
+}
+
+.segment .duur {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+  align-self: center;
+}
+
+.segment .route { grid-column: 1 / -1; }
+
+.route .stap {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 10px;
+  font-size: 14.5px;
+  padding: 3px 0;
+}
+
+.route .stap b {
+  font-variant-numeric: tabular-nums;
+  color: var(--inkt);
+}
+
+.route .stap span { color: var(--inkt-zacht); }
+
+.overstap {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--moonstone);
+  border-left: 3px solid var(--landscape);
+  padding: 4px 0 4px 12px;
+  margin: 6px 0 6px 6px;
+}
+
+/* ---------- Knoppen ---------- */
+.knop {
+  display: inline-block;
+  background: var(--inkt);
+  color: #f2f3ee;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 18px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.knop--groen { background: var(--moonstone); color: #f2f3ee; }
+.knop--stil { background: transparent; color: var(--blackhills); border: 2px solid var(--landscape); }
+.knop:disabled { opacity: 0.5; cursor: wait; }
+
+.kijkbalk { display: flex; gap: 10px; margin: 4px 0 10px; flex-wrap: wrap; }
+
+.vpn-tip { font-size: 12.5px; color: var(--inkt-zacht); margin: 0 0 4px; }
+
+/* ---------- Leeg / status ---------- */
+.leeg {
+  color: var(--inkt-zacht);
+  font-size: 14.5px;
+  background: var(--kaart);
+  border: 1px dashed var(--lijn);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+
+/* ---------- Admin ---------- */
+form.paneel {
+  background: var(--kaart);
+  border: 1px solid var(--lijn);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+  padding: 18px;
+  margin: 18px 0;
+  display: grid;
+  gap: 12px;
+}
+
+form.paneel label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--inkt-zacht);
+  display: grid;
+  gap: 6px;
+}
+
+form.paneel input,
+form.paneel textarea {
+  font: inherit;
+  border: 1.5px solid var(--lijn);
+  border-radius: 10px;
+  padding: 10px 12px;
+  width: 100%;
+  background: var(--papier);
+}
+
+form.paneel textarea { min-height: 110px; resize: vertical; }
+
+form.paneel input:focus,
+form.paneel textarea:focus {
+  outline: 2px solid var(--moonstone);
+  outline-offset: 1px;
+  border-color: var(--moonstone);
+}
+
+.status { font-size: 14px; font-weight: 600; }
+.status--ok { color: var(--moonstone); }
+.status--fout { color: #a4432f; }
+
+@media (prefers-reduced-motion: reduce) {
+  .voortgang i { transition: none; }
+}
