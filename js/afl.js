@@ -55,7 +55,7 @@ function tickAfl() {
   const ms = doel - new Date();
   const tijdStr = `${doel.getHours()}:${String(doel.getMinutes()).padStart(2,"0")}`;
   el.innerHTML = `
-    <span class="afl-label">📺 Bondgenoten</span>
+    <span class="afl-label">📺 De Bondgenoten</span>
     <span class="afl-tijd">${formatCountdown(ms)}</span>
     <span class="afl-sub">${DAGNAMEN[doel.getDay()]} ${doel.getDate()}/${doel.getMonth()+1} · ${tijdStr}</span>`;
 }
