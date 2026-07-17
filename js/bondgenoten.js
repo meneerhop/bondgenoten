@@ -19,22 +19,31 @@ function kandidaatHTML(k) {
     </div>`;
 }
 
+function filterKnopHTML(g) {
+  const actief = actieveFilter === g;
+  if (g === "alle") {
+    return `<button class="filter-knop${actief ? " filter-knop--actief" : ""}" data-groep="alle">Alle</button>`;
+  }
+  const k = GROEP_KLEUR[g];
+  return `
+    <button class="filter-knop filter-knop--logo${actief ? " filter-knop--actief" : ""}" data-groep="${g}" style="${actief ? `background:${k.bg};color:${k.tekst};border-color:${k.bg}` : ""}">
+      <img src="${k.logo}" alt="${g}" class="filter-logo" />
+      <span>${g}</span>
+    </button>`;
+}
+
 function renderKandidaten() {
   const el = document.getElementById("bondgenoten-lijst");
   const gefilterd = actieveFilter === "alle"
     ? KANDIDATEN
     : KANDIDATEN.filter(k => k.groep === actieveFilter);
 
-  const actief       = gefilterd.filter(k => k.actief);
+  const actief        = gefilterd.filter(k => k.actief);
   const uitgeschakeld = gefilterd.filter(k => !k.actief);
 
   const groepen = ["alle", ...Object.keys(GROEP_KLEUR)];
-  let html = `<div class="filter-balk">
-    ${groepen.map(g => `
-      <button class="filter-knop${actieveFilter === g ? " filter-knop--actief" : ""}" data-groep="${g}">
-        ${g === "alle" ? "Alle" : g}
-      </button>`).join("")}
-  </div>`;
+
+  let html = `<div class="filter-balk">${groepen.map(filterKnopHTML).join("")}</div>`;
 
   html += '<h2 class="sectie-titel sectie-titel--kandidaten">Kandidaten</h2>';
   html += '<div class="kandidaten-grid">'

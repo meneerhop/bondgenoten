@@ -5,11 +5,12 @@
     if (typeof KANDIDATEN === "undefined" || typeof GROEP_KLEUR === "undefined") return "";
     return Object.keys(GROEP_KLEUR).map(groep => {
       const k = GROEP_KLEUR[groep];
-      const leden = KANDIDATEN.filter(k => k.groep === groep);
+      const leden = KANDIDATEN.filter(l => l.groep === groep);
       return `
         <div class="nav-bondje">
-          <div class="nav-bondje-naam" style="background:${k.bg};color:${k.tekst}">
-            ${groep}
+          <div class="nav-bondje-header" style="background:${k.bg};color:${k.tekst}">
+            ${k.logo ? `<img src="${k.logo}" alt="${groep}" class="nav-bondje-logo" />` : ""}
+            <span class="nav-bondje-naam">${groep}</span>
           </div>
           <div class="nav-bondje-leden">
             ${leden.map(l => `<span class="nav-bondje-lid${l.actief ? "" : " nav-bondje-lid--uit"}">${l.naam}</span>`).join("")}
