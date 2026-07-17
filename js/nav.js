@@ -9,6 +9,7 @@
     { label: "Voorspelling",   href: "voorspelling.html", icon: "🏆" },
     { label: "Vluchten",       href: "vluchten.html",     icon: "✈" },
     { label: "Polarsteps",     href: "polarsteps.html",   icon: "🗺" },
+    { label: "Rotterdam",      href: "rotterdam.html",    icon: "🌉" },
   ];
 
   const btn = document.createElement("button");

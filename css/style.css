@@ -1499,3 +1499,191 @@ body.lb-actief { overflow: hidden; }
 @media (min-width: 400px) {
   .fotos-dag-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ---------- Rotterdam pagina ---------- */
+.rtd-hero {
+  background: linear-gradient(135deg, var(--blackhills) 0%, var(--moonstone) 100%);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 28px 20px 22px;
+  text-align: center;
+  margin-bottom: 16px;
+  box-shadow: var(--schaduw);
+}
+
+.rtd-naam {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.rtd-sub {
+  font-size: 13px;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+.rtd-lijst {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.rtd-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--kaart);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  box-shadow: var(--schaduw);
+  font-size: 15px;
+}
+
+.rtd-item-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.rtd-kaart {
+  background: var(--accent-zacht);
+  border-left: 3px solid var(--moonstone);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+
+.rtd-kaart-tekst {
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--inkt);
+  margin-bottom: 8px;
+}
+
+.rtd-kaart-naam {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+}
+
+.rtd-rotterdam {
+  background: var(--kaart);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--schaduw);
+  margin-bottom: 8px;
+}
+
+.rtd-rotterdam-titel {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--inkt);
+}
+
+.rtd-feit {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--lijn);
+  color: var(--inkt);
+}
+
+.rtd-feit:last-child { border-bottom: none; }
+
+.rtd-feit span:last-child {
+  color: var(--inkt-zacht);
+  font-weight: 500;
+}
+
+.rtd-feit--highlight {
+  font-weight: 700;
+}
+
+.rtd-feit--highlight span:last-child {
+  color: var(--moonstone);
+  font-weight: 700;
+}
+
+/* ---------- Hereniging afteltimer ---------- */
+.dash-kaart--hereniging {
+  background: linear-gradient(135deg, #b07a7a 0%, #8f5a5a 100%);
+  color: #fff;
+  text-align: center;
+  padding: 20px 16px 16px;
+  margin-bottom: 10px;
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+}
+
+.hereniging-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 14px;
+}
+
+.hereniging-aftel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.hereniging-blok {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+}
+
+.hereniging-blok span {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.hereniging-blok small {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.hereniging-sep {
+  font-size: 26px;
+  font-weight: 700;
+  opacity: 0.5;
+  padding: 0 1px;
+  line-height: 1.15;
+}
+
+.hereniging-sub {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.hereniging-thuis {
+  font-size: 38px;
+  margin: 4px 0 8px;
+}
+
+.hereniging-thuis-tekst {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}

@@ -42,6 +42,40 @@ function dagKey(d) {
   }
 })();
 
+// Hereniging afteltimer — landing Brussel di 18 aug 06:50 CEST
+const HERENIGING = new Date("2026-08-18T06:50:00+02:00");
+
+function updateHereniging() {
+  const kaart = document.getElementById("hereniging-kaart");
+  if (!kaart) return;
+
+  const diff = HERENIGING - new Date();
+
+  if (diff <= 0) {
+    kaart.innerHTML = `
+      <div class="hereniging-label">Dieuw is thuis!</div>
+      <div class="hereniging-thuis">❤️</div>
+      <div class="hereniging-thuis-tekst">Welkom thuis, Dieuw!</div>
+      <div class="hereniging-sub">Mitch heeft je gemist</div>
+    `;
+    startConfetti();
+    return;
+  }
+
+  const dagen = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const uren  = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const min   = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const sec   = Math.floor((diff % (1000 * 60)) / 1000);
+
+  document.getElementById("her-dagen").textContent = String(dagen).padStart(2, "0");
+  document.getElementById("her-uren").textContent  = String(uren).padStart(2, "0");
+  document.getElementById("her-min").textContent   = String(min).padStart(2, "0");
+  document.getElementById("her-sec").textContent   = String(sec).padStart(2, "0");
+}
+
+updateHereniging();
+setInterval(updateHereniging, 1000);
+
 function startConfetti() {
   if (typeof confetti === "undefined") return;
   const kleuren = ["#46F55E", "#4CA3F8", "#F5151A", "#885225", "#a4a88d"];
