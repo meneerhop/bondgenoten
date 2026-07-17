@@ -109,7 +109,7 @@ async function laadFotos() {
     const poster = leesNaamUitBestand(f.name);
     return `<div class="fotos-item-wrap">
       <button class="fotos-item" data-index="${i}" aria-label="Foto vergroten">
-        <img src="${url}" alt="${f.name}" loading="lazy" />
+        <img src="${url}" alt="${f.name}" loading="lazy" onerror="this.closest('.fotos-item-wrap').remove()" />
       </button>
       ${verwijderKnop}
       ${poster ? `<span class="fotos-poster">${poster}</span>` : ""}
