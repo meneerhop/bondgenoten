@@ -1,0 +1,30 @@
+const GROEP_KLEUR = {
+  gieren:       { bg: "#49534e", tekst: "#f2f3ee" },
+  slangen:      { bg: "#6f7b6b", tekst: "#f2f3ee" },
+  haaien:       { bg: "#a4a88d", tekst: "#2c332f" },
+  vossen:       { bg: "#c8b89a", tekst: "#2c332f" },
+  bloedzuigers: { bg: "#8b4e4e", tekst: "#f2f3ee" },
+};
+
+const KANDIDATEN = [
+  { naam: "Naam 1",  foto: "", groep: "gieren",       actief: true },
+  { naam: "Naam 2",  foto: "", groep: "gieren",       actief: true },
+  { naam: "Naam 3",  foto: "", groep: "gieren",       actief: true },
+  { naam: "Naam 4",  foto: "", groep: "gieren",       actief: true },
+  { naam: "Naam 5",  foto: "", groep: "slangen",      actief: true },
+  { naam: "Naam 6",  foto: "", groep: "slangen",      actief: true },
+  { naam: "Naam 7",  foto: "", groep: "slangen",      actief: true },
+  { naam: "Naam 8",  foto: "", groep: "slangen",      actief: true },
+  { naam: "Naam 9",  foto: "", groep: "haaien",       actief: true },
+  { naam: "Naam 10", foto: "", groep: "haaien",       actief: true },
+  { naam: "Naam 11", foto: "", groep: "haaien",       actief: true },
+  { naam: "Naam 12", foto: "", groep: "haaien",       actief: true },
+  { naam: "Naam 13", foto: "", groep: "vossen",       actief: true },
+  { naam: "Naam 14", foto: "", groep: "vossen",       actief: true },
+  { naam: "Naam 15", foto: "", groep: "vossen",       actief: true },
+  { naam: "Naam 16", foto: "", groep: "vossen",       actief: true },
+  { naam: "Naam 17", foto: "", groep: "bloedzuigers", actief: true },
+  { naam: "Naam 18", foto: "", groep: "bloedzuigers", actief: true },
+  { naam: "Naam 19", foto: "", groep: "bloedzuigers", actief: true },
+  { naam: "Naam 20", foto: "", groep: "bloedzuigers", actief: true },
+];

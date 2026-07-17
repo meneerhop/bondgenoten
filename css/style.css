@@ -234,6 +234,80 @@ header.site { position: relative; }
 
 .nav-icon { font-size: 20px; width: 28px; text-align: center; }
 
+.nav-chevron {
+  margin-left: auto;
+  font-size: 18px;
+  transition: transform 0.2s;
+  opacity: 0.5;
+}
+
+.nav-accordion-trigger { cursor: pointer; user-select: none; }
+.nav-accordion-trigger--open .nav-chevron { transform: rotate(90deg); }
+
+.nav-accordion {
+  display: none;
+  flex-direction: column;
+  background: var(--accent-zacht);
+  border-top: 1px solid var(--lijn);
+  border-bottom: 1px solid var(--lijn);
+  padding: 6px 0;
+}
+
+.nav-accordion--open { display: flex; }
+
+.nav-sub {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px 10px 36px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+  text-decoration: none;
+  transition: background 0.1s;
+}
+
+.nav-sub:hover { background: var(--lijn); color: var(--inkt); }
+.nav-sub--actief { color: var(--blackhills); }
+
+.nav-bondjes-lijst { padding: 6px 16px 4px; }
+
+.nav-bondje { margin-bottom: 10px; }
+
+.nav-bondje-naam {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  padding: 3px 8px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.nav-bondje-leden {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-left: 4px;
+}
+
+.nav-bondje-lid {
+  font-size: 12px;
+  color: var(--inkt);
+  background: var(--kaart);
+  border: 1px solid var(--lijn);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+
+.nav-bondje-lid--uit {
+  color: var(--inkt-zacht);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
 body.nav-open { overflow: hidden; }
 
 /* ---------- Dashboard ---------- */
@@ -394,6 +468,14 @@ body.nav-open { overflow: hidden; }
   font-size: 11.5px;
   color: var(--inkt-zacht);
   margin-top: 2px;
+}
+
+.ps-stad--bevestigd { border-color: var(--moonstone); }
+.ps-stad--bevestigd .ps-stad-naam { color: var(--blackhills); }
+
+.ps-stad--onbekend {
+  border-style: dashed;
+  opacity: 0.6;
 }
 
 /* ---------- Navigatie (tabs) ---------- */

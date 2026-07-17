@@ -12,7 +12,8 @@ function dagKey(d) {
 }
 
 function initHeader() {
-  document.getElementById("kijklink").href = KIJK_URL;
+  const kijklink = document.getElementById("kijklink");
+  if (kijklink) kijklink.href = KIJK_URL;
 
   const nu = new Date();
   const start = new Date(TRIP.vertrek + "T00:00:00");
