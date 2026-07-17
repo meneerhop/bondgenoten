@@ -5,7 +5,19 @@ function laadLokaal() {
 }
 
 function slaLokaalOp(data) {
-  localStorage.setItem(VSP_KEY, JSON.stringify(data));
+  try { localStorage.setItem(VSP_KEY, JSON.stringify(data)); } catch (e) { console.warn("localStorage niet beschikbaar:", e); }
+}
+
+function getLokaalePick(lokaal, cyclusNr, speler) {
+  const sleutel = String(cyclusNr);
+  return lokaal[sleutel] && lokaal[sleutel][speler] ? lokaal[sleutel][speler] : null;
+}
+
+function setLokaalePick(lokaal, cyclusNr, speler, keuze) {
+  const sleutel = String(cyclusNr);
+  if (!lokaal[sleutel]) lokaal[sleutel] = {};
+  lokaal[sleutel][speler] = keuze;
+  slaLokaalOp(lokaal);
 }
 
 async function laadData() {
@@ -30,7 +42,7 @@ function berekenScores(data, lokaal) {
   data.cycli.forEach(c => {
     if (!c.winnaar) return;
     data.spelers.forEach(s => {
-      const keuze = c.voorspellingen[s] || (lokaal[c.nr] && lokaal[c.nr][s]);
+      const keuze = c.voorspellingen[s] || getLokaalePick(lokaal, c.nr, s);
       if (keuze === c.winnaar) scores[s]++;
     });
   });
@@ -87,7 +99,7 @@ function keuzePreviewHTML(naam) {
 
 function actieveCyclusHTML(cyclus, spelers, lokaal) {
   if (!cyclus) return `<p class="leeg">Geen actieve cyclus.</p>`;
-  const picks = lokaal[cyclus.nr] || {};
+  const picks = s => getLokaalePick(lokaal, cyclus.nr, s) || "";
 
   return `
     <div class="vsp-actief">
@@ -99,9 +111,9 @@ function actieveCyclusHTML(cyclus, spelers, lokaal) {
         ${spelers.map(s => `
           <div class="vsp-kaart" id="vsp-kaart-${s}">
             <div class="vsp-kaart-speler">${s}</div>
-            <div class="vsp-preview" id="vsp-preview-${s}">${keuzePreviewHTML(picks[s])}</div>
+            <div class="vsp-preview" id="vsp-preview-${s}">${keuzePreviewHTML(picks(s))}</div>
             <select class="vsp-dropdown" data-speler="${s}" id="vsp-select-${s}">
-              ${kandidatenOpties(picks[s])}
+              ${kandidatenOpties(picks(s))}
             </select>
           </div>`).join("")}
       </div>
@@ -122,7 +134,7 @@ function geschiedenisHTML(data, lokaal) {
           <span class="vsp-chip" style="background:${winKleur.bg};color:${winKleur.tekst}">${c.winnaar}</span>
         </div>
         ${data.spelers.map(s => {
-          const keuze = c.voorspellingen[s] || (lokaal[c.nr] && lokaal[c.nr][s]);
+          const keuze = c.voorspellingen[s] || getLokaalePick(lokaal, c.nr, s);
           const goed = keuze === c.winnaar;
           const kl = keuze ? groepKleur(keuze) : { bg: "var(--lijn)", tekst: "var(--inkt-zacht)" };
           return `<div class="vsp-historie-speler">
@@ -157,10 +169,9 @@ async function render() {
         sel.addEventListener("change", () => {
           const speler = sel.dataset.speler;
           const keuze  = sel.value;
+          if (!keuze) return;
           const lokaal = laadLokaal();
-          if (!lokaal[actief.nr]) lokaal[actief.nr] = {};
-          lokaal[actief.nr][speler] = keuze;
-          slaLokaalOp(lokaal);
+          setLokaalePick(lokaal, actief.nr, speler, keuze);
           document.getElementById(`vsp-preview-${speler}`).innerHTML = keuzePreviewHTML(keuze);
         });
       });
