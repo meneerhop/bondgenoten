@@ -1,8 +1,8 @@
 // config.js — vul dit één keer in
 
 // Uit je Supabase-project: Settings → API
-const SUPABASE_URL = "https://JOUW-PROJECT.supabase.co";
-const SUPABASE_ANON_KEY = "JOUW-ANON-PUBLIC-KEY";
+const SUPABASE_URL = "https://hprhawqzksknaaaxnzqx.supabase.co/rest/v1/";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwcmhhd3F6a3NrbmFhYXhuenF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNjk4ODUsImV4cCI6MjA5OTg0NTg4NX0.zboq_q0rzbWB8Xipe-tpmKF0iJ35K-j2yCuTFKFkmRA";
 
 // Reisgegevens (voor de dagteller en aftelklok)
 const TRIP = {
