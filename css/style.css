@@ -1196,6 +1196,75 @@ form.paneel textarea:focus {
 .status--ok { color: var(--moonstone); }
 .status--fout { color: #a4432f; }
 
+/* ---------- Foto lightbox ---------- */
+#fotos-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+#fotos-lightbox.lb--open { display: flex; }
+
+.lb-achtergrond {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+}
+
+.lb-foto {
+  position: relative;
+  max-width: 92vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.lb-sluit {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.lb-pijl {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.lb-pijl--links  { left: 12px; }
+.lb-pijl--rechts { right: 12px; }
+
+body.lb-actief { overflow: hidden; }
+
+/* ---------- Easter egg ---------- */
 .nav-easter-egg {
   margin: auto 0 18px;
   text-align: center;
@@ -1347,6 +1416,9 @@ form.paneel textarea:focus {
 
 .fotos-item-wrap {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .fotos-item {
@@ -1388,6 +1460,14 @@ form.paneel textarea:focus {
 }
 
 .fotos-item-wrap:hover .fotos-verwijder { opacity: 1; }
+
+.fotos-poster {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+  text-align: center;
+  line-height: 1.2;
+}
 
 .fotos-grid .leeg {
   grid-column: 1 / -1;

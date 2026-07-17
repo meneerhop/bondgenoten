@@ -12,6 +12,11 @@ function naamInBestand(bestandsnaam) {
   return delen.length >= 2 ? delen[1] : "";
 }
 
+function leesNaamUitBestand(bestandsnaam) {
+  const raw = naamInBestand(bestandsnaam);
+  return raw.replace(/_/g, " ");
+}
+
 function renderUploadBalk() {
   const balk = document.getElementById("fotos-login-balk");
   const naam = getNaam();
@@ -92,20 +97,28 @@ async function laadFotos() {
   const naam = getNaam();
   const veiligNaam = naam ? naam.replace(/[^a-z0-9]/gi, "_") : null;
 
-  grid.innerHTML = data.map(f => {
-    const url = `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${BUCKET}/${FOLDER}/${f.name}`;
+  const urls = data.map(f => `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${BUCKET}/${FOLDER}/${f.name}`);
+
+  grid.innerHTML = data.map((f, i) => {
+    const url = urls[i];
     const pad  = `${FOLDER}/${f.name}`;
     const eigenFoto = veiligNaam && naamInBestand(f.name) === veiligNaam;
     const verwijderKnop = eigenFoto
       ? `<button class="fotos-verwijder" data-pad="${pad}" aria-label="Verwijder foto">✕</button>`
       : "";
+    const poster = leesNaamUitBestand(f.name);
     return `<div class="fotos-item-wrap">
-      <a class="fotos-item" href="${url}" target="_blank" rel="noopener">
+      <button class="fotos-item" data-index="${i}" aria-label="Foto vergroten">
         <img src="${url}" alt="${f.name}" loading="lazy" />
-      </a>
+      </button>
       ${verwijderKnop}
+      ${poster ? `<span class="fotos-poster">${poster}</span>` : ""}
     </div>`;
   }).join("");
+
+  grid.querySelectorAll(".fotos-item").forEach(btn => {
+    btn.addEventListener("click", () => openLightbox(urls, parseInt(btn.dataset.index)));
+  });
 
   grid.querySelectorAll(".fotos-verwijder").forEach(btn => {
     btn.addEventListener("click", e => {
@@ -113,6 +126,61 @@ async function laadFotos() {
       verwijderFoto(btn.dataset.pad, btn.closest(".fotos-item-wrap"));
     });
   });
+}
+
+let lbUrls = [], lbIndex = 0;
+
+function openLightbox(urls, index) {
+  lbUrls = urls;
+  lbIndex = index;
+
+  let lb = document.getElementById("fotos-lightbox");
+  if (!lb) {
+    lb = document.createElement("div");
+    lb.id = "fotos-lightbox";
+    lb.innerHTML = `
+      <div class="lb-achtergrond"></div>
+      <button class="lb-sluit" aria-label="Sluiten">✕</button>
+      <button class="lb-pijl lb-pijl--links" aria-label="Vorige">‹</button>
+      <img class="lb-foto" src="" alt="" />
+      <button class="lb-pijl lb-pijl--rechts" aria-label="Volgende">›</button>`;
+    document.body.appendChild(lb);
+    lb.querySelector(".lb-achtergrond").addEventListener("click", sluitLightbox);
+    lb.querySelector(".lb-sluit").addEventListener("click", sluitLightbox);
+    lb.querySelector(".lb-pijl--links").addEventListener("click", () => navigeerLb(-1));
+    lb.querySelector(".lb-pijl--rechts").addEventListener("click", () => navigeerLb(1));
+    document.addEventListener("keydown", lbKeydown);
+  }
+
+  updateLightbox();
+  lb.classList.add("lb--open");
+  document.body.classList.add("lb-actief");
+}
+
+function sluitLightbox() {
+  document.getElementById("fotos-lightbox")?.classList.remove("lb--open");
+  document.body.classList.remove("lb-actief");
+}
+
+function navigeerLb(richting) {
+  lbIndex = (lbIndex + richting + lbUrls.length) % lbUrls.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  const foto = document.querySelector(".lb-foto");
+  if (foto) foto.src = lbUrls[lbIndex];
+  const links  = document.querySelector(".lb-pijl--links");
+  const rechts = document.querySelector(".lb-pijl--rechts");
+  if (links)  links.style.display  = lbUrls.length > 1 ? "" : "none";
+  if (rechts) rechts.style.display = lbUrls.length > 1 ? "" : "none";
+}
+
+function lbKeydown(e) {
+  if (!document.getElementById("fotos-lightbox")?.classList.contains("lb--open")) return;
+  if (e.key === "Escape")     sluitLightbox();
+  if (e.key === "ArrowLeft")  navigeerLb(-1);
+  if (e.key === "ArrowRight") navigeerLb(1);
 }
 
 renderUploadBalk();
