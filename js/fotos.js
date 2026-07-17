@@ -97,23 +97,42 @@ async function laadFotos() {
   const naam = getNaam();
   const veiligNaam = naam ? naam.replace(/[^a-z0-9]/gi, "_") : null;
 
+  const fmtDag = new Intl.DateTimeFormat("nl-NL", { weekday: "long", day: "numeric", month: "long" });
+
   const urls = data.map(f => `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${BUCKET}/${FOLDER}/${f.name}`);
 
-  grid.innerHTML = data.map((f, i) => {
-    const url = urls[i];
-    const pad  = `${FOLDER}/${f.name}`;
-    const eigenFoto = veiligNaam && naamInBestand(f.name) === veiligNaam;
-    const verwijderKnop = eigenFoto
-      ? `<button class="fotos-verwijder" data-pad="${pad}" aria-label="Verwijder foto">✕</button>`
-      : "";
-    const poster = leesNaamUitBestand(f.name);
-    return `<div class="fotos-item-wrap">
-      <button class="fotos-item" data-index="${i}" aria-label="Foto vergroten">
-        <img src="${url}" alt="${f.name}" loading="lazy" onerror="this.closest('.fotos-item-wrap').remove()" />
-      </button>
-      ${verwijderKnop}
-      ${poster ? `<span class="fotos-poster">${poster}</span>` : ""}
-    </div>`;
+  // Groepeer per dag
+  const groepen = [];
+  let huidigeDag = null;
+  data.forEach((f, i) => {
+    const datum = f.created_at ? new Date(f.created_at) : null;
+    const dagSleutel = datum ? datum.toISOString().slice(0, 10) : "onbekend";
+    if (dagSleutel !== huidigeDag) {
+      huidigeDag = dagSleutel;
+      groepen.push({ label: datum ? fmtDag.format(datum) : "", items: [] });
+    }
+    groepen[groepen.length - 1].items.push({ f, i, url: urls[i] });
+  });
+
+  grid.innerHTML = groepen.map(g => {
+    const items = g.items.map(({ f, i, url }) => {
+      const pad = `${FOLDER}/${f.name}`;
+      const eigenFoto = veiligNaam && naamInBestand(f.name) === veiligNaam;
+      const verwijderKnop = eigenFoto
+        ? `<button class="fotos-verwijder" data-pad="${pad}" aria-label="Verwijder foto">✕</button>`
+        : "";
+      const poster = leesNaamUitBestand(f.name);
+      return `<div class="fotos-item-wrap">
+        <button class="fotos-item" data-index="${i}" aria-label="Foto vergroten">
+          <img src="${url}" alt="${f.name}" loading="lazy" onerror="this.closest('.fotos-item-wrap').remove()" />
+        </button>
+        ${verwijderKnop}
+        ${poster ? `<span class="fotos-poster">${poster}</span>` : ""}
+      </div>`;
+    }).join("");
+    return `
+      <div class="fotos-dag-header">${g.label}</div>
+      <div class="fotos-dag-grid">${items}</div>`;
   }).join("");
 
   grid.querySelectorAll(".fotos-item").forEach(btn => {

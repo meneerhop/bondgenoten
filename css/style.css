@@ -1413,6 +1413,23 @@ body.lb-actief { overflow: hidden; }
 }
 
 .fotos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fotos-dag-header {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--lijn);
+  margin-bottom: 4px;
+}
+
+.fotos-dag-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
@@ -1474,12 +1491,11 @@ body.lb-actief { overflow: hidden; }
 }
 
 .fotos-grid .leeg {
-  grid-column: 1 / -1;
   text-align: center;
   color: var(--inkt-zacht);
   padding: 32px 0;
 }
 
 @media (min-width: 400px) {
-  .fotos-grid { grid-template-columns: repeat(3, 1fr); }
+  .fotos-dag-grid { grid-template-columns: repeat(3, 1fr); }
 }
