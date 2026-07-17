@@ -6,30 +6,32 @@ const GROEP_KLEUR = {
   bloedzuigers: { bg: "#885225", tekst: "#ffffff", logo: "https://i.ibb.co/kVSNmbMD/Chat-GPT-Image-17-jul-2026-11-39-31.png" },
 };
 
+const BASE = "https://hprhawqzksknaaaxnzqx.supabase.co/storage/v1/object/public/fotos/";
+
 const KANDIDATEN = [
   // Bloedzuigers
-  { naam: "Can",       foto: "", groep: "bloedzuigers", actief: true },
-  { naam: "Fabiënne", foto: "", groep: "bloedzuigers", actief: true },
-  { naam: "Milan",     foto: "", groep: "bloedzuigers", actief: true },
-  { naam: "Wesley",    foto: "", groep: "bloedzuigers", actief: true },
+  { naam: "Can",        foto: BASE + "can.jpg",        groep: "bloedzuigers", actief: true },
+  { naam: "Fabiënne",  foto: BASE + "fabienne.jpg",   groep: "bloedzuigers", actief: true },
+  { naam: "Milan",      foto: BASE + "milan.jpg",      groep: "bloedzuigers", actief: true },
+  { naam: "Wesley",     foto: BASE + "wesley.jpg",     groep: "bloedzuigers", actief: true },
   // Gieren
-  { naam: "Anouk",     foto: "", groep: "gieren",       actief: true },
-  { naam: "Diederik",  foto: "", groep: "gieren",       actief: true },
-  { naam: "Dominique", foto: "", groep: "gieren",       actief: true },
-  { naam: "Sayf",      foto: "", groep: "gieren",       actief: true },
+  { naam: "Anouk",      foto: BASE + "anouk.jpg",      groep: "gieren",       actief: true },
+  { naam: "Diederik",   foto: BASE + "diederik.jpg",   groep: "gieren",       actief: true },
+  { naam: "Dominique",  foto: BASE + "dominique.jpg",  groep: "gieren",       actief: true },
+  { naam: "Sayf",       foto: BASE + "sayf.jpg",       groep: "gieren",       actief: true },
   // Haaien
-  { naam: "Delano",    foto: "", groep: "haaien",       actief: true },
-  { naam: "Fatima",    foto: "", groep: "haaien",       actief: true },
-  { naam: "Julia",     foto: "", groep: "haaien",       actief: true },
-  { naam: "Roma",      foto: "", groep: "haaien",       actief: true },
+  { naam: "Delano",     foto: BASE + "delano.jpg",     groep: "haaien",       actief: true },
+  { naam: "Fatima",     foto: BASE + "fatima.jpg",     groep: "haaien",       actief: true },
+  { naam: "Julia",      foto: BASE + "julia.jpg",      groep: "haaien",       actief: true },
+  { naam: "Roma",       foto: BASE + "roma.jpg",       groep: "haaien",       actief: true },
   // Slangen
-  { naam: "Mila",      foto: "", groep: "slangen",      actief: true },
-  { naam: "Ricardo",   foto: "", groep: "slangen",      actief: true },
-  { naam: "Simone",    foto: "", groep: "slangen",      actief: true },
-  { naam: "Valentijne",foto: "", groep: "slangen",      actief: true },
+  { naam: "Mila",       foto: BASE + "mila.jpg",       groep: "slangen",      actief: true },
+  { naam: "Ricardo",    foto: BASE + "ricardo.jpg",    groep: "slangen",      actief: true },
+  { naam: "Simone",     foto: BASE + "simone.jpg",     groep: "slangen",      actief: true },
+  { naam: "Valentijne", foto: BASE + "valentijne.jpg", groep: "slangen",      actief: true },
   // Vossen
-  { naam: "Casper",    foto: "", groep: "vossen",       actief: true },
-  { naam: "Jordy",     foto: "", groep: "vossen",       actief: true },
-  { naam: "Joshlyn",   foto: "", groep: "vossen",       actief: true },
-  { naam: "Nyssa",     foto: "", groep: "vossen",       actief: true },
+  { naam: "Casper",     foto: BASE + "casper.jpg",     groep: "vossen",       actief: true },
+  { naam: "Jordy",      foto: BASE + "jordy.jpg",      groep: "vossen",       actief: true },
+  { naam: "Joshlyn",    foto: BASE + "joshlyn.jpg",    groep: "vossen",       actief: true },
+  { naam: "Nyssa",      foto: BASE + "nyssa.jpg",      groep: "vossen",       actief: true },
 ];
