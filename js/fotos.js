@@ -124,7 +124,7 @@ async function laadFotos() {
       const poster = leesNaamUitBestand(f.name);
       return `<div class="fotos-item-wrap">
         <button class="fotos-item" data-index="${i}" aria-label="Foto vergroten">
-          <img src="${url}" alt="${f.name}" loading="lazy" onerror="this.closest('.fotos-item-wrap').remove()" />
+          <img src="${url}" alt="${f.name}" loading="lazy" />
         </button>
         ${verwijderKnop}
         ${poster ? `<span class="fotos-poster">${poster}</span>` : ""}
@@ -134,6 +134,18 @@ async function laadFotos() {
       <div class="fotos-dag-header">${g.label}</div>
       <div class="fotos-dag-grid">${items}</div>`;
   }).join("");
+
+  grid.querySelectorAll(".fotos-item img").forEach(img => {
+    img.addEventListener("error", () => {
+      const wrap = img.closest(".fotos-item-wrap");
+      const dagGrid = wrap.closest(".fotos-dag-grid");
+      wrap.remove();
+      if (!dagGrid.querySelector(".fotos-item-wrap")) {
+        dagGrid.previousElementSibling?.remove();
+        dagGrid.remove();
+      }
+    });
+  });
 
   grid.querySelectorAll(".fotos-item").forEach(btn => {
     btn.addEventListener("click", () => openLightbox(urls, parseInt(btn.dataset.index)));
