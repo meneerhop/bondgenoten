@@ -2,66 +2,61 @@ const sb = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY)
 const BUCKET = "fotos";
 const FOLDER = "reis";
 
-let huidigGebruiker = null;
-
-async function checkLogin() {
-  const { data } = await sb.auth.getSession();
-  huidigGebruiker = data.session?.user || null;
-  renderLoginBalk();
+function getNaam() {
+  return (localStorage.getItem("fotos-naam") || "").trim();
 }
 
-function renderLoginBalk() {
+function renderUploadBalk() {
   const balk = document.getElementById("fotos-login-balk");
-  if (huidigGebruiker) {
+  const naam = getNaam();
+  if (naam) {
     balk.innerHTML = `
-      <span class="fotos-ingelogd">Ingelogd als ${huidigGebruiker.email}</span>
-      <button class="knop knop--stil fotos-logout-btn" id="fotos-logout">Uitloggen</button>
+      <span class="fotos-ingelogd">📷 Uploaden als <strong>${naam}</strong></span>
+      <button class="knop knop--stil" id="fotos-wissel-naam">Wijzig naam</button>
       <label class="knop knop--groen fotos-upload-label">
-        📷 Foto uploaden
+        Foto's toevoegen
         <input type="file" id="fotos-input" accept="image/*" multiple hidden />
       </label>`;
-    document.getElementById("fotos-logout").addEventListener("click", uitloggen);
+    document.getElementById("fotos-wissel-naam").addEventListener("click", () => {
+      localStorage.removeItem("fotos-naam");
+      renderUploadBalk();
+    });
     document.getElementById("fotos-input").addEventListener("change", uploadFotos);
   } else {
     balk.innerHTML = `
-      <form class="fotos-login-form" id="fotos-login-form">
-        <input type="email" placeholder="E-mail" id="fotos-email" class="fotos-input" required />
-        <input type="password" placeholder="Wachtwoord" id="fotos-ww" class="fotos-input" required />
-        <button type="submit" class="knop knop--groen">Inloggen</button>
+      <form class="fotos-login-form" id="fotos-naam-form">
+        <input type="text" placeholder="Jouw naam" id="fotos-naam-input" class="fotos-input" required autocomplete="nickname" />
+        <button type="submit" class="knop knop--groen">Doorgaan</button>
       </form>`;
-    document.getElementById("fotos-login-form").addEventListener("submit", inloggen);
+    document.getElementById("fotos-naam-form").addEventListener("submit", e => {
+      e.preventDefault();
+      const waarde = document.getElementById("fotos-naam-input").value.trim();
+      if (!waarde) return;
+      localStorage.setItem("fotos-naam", waarde);
+      renderUploadBalk();
+    });
   }
-}
-
-async function inloggen(e) {
-  e.preventDefault();
-  const email = document.getElementById("fotos-email").value;
-  const ww    = document.getElementById("fotos-ww").value;
-  const { error } = await sb.auth.signInWithPassword({ email, password: ww });
-  if (error) { alert("Inloggen mislukt: " + error.message); return; }
-  await checkLogin();
-}
-
-async function uitloggen() {
-  await sb.auth.signOut();
-  huidigGebruiker = null;
-  renderLoginBalk();
 }
 
 async function uploadFotos(e) {
   const bestanden = [...e.target.files];
   if (!bestanden.length) return;
+  const naam = getNaam();
   const status = document.getElementById("fotos-status");
   status.textContent = `Uploaden (0/${bestanden.length})…`;
 
   let ok = 0;
   for (const bestand of bestanden) {
-    const naam = `${FOLDER}/${Date.now()}_${bestand.name.replace(/[^a-z0-9._-]/gi, "_")}`;
-    const { error } = await sb.storage.from(BUCKET).upload(naam, bestand, { upsert: false });
+    const veiligNaam = bestand.name.replace(/[^a-z0-9._-]/gi, "_");
+    const pad = `${FOLDER}/${Date.now()}_${naam.replace(/[^a-z0-9]/gi, "_")}_${veiligNaam}`;
+    const { error } = await sb.storage.from(BUCKET).upload(pad, bestand, { upsert: false });
     if (!error) ok++;
   }
-  status.textContent = `${ok} foto('s) geüpload!`;
-  setTimeout(() => { status.textContent = ""; }, 3000);
+
+  status.textContent = ok === bestanden.length
+    ? `${ok} foto('s) geüpload! 🎉`
+    : `${ok} van ${bestanden.length} geüpload (${bestanden.length - ok} mislukt)`;
+  setTimeout(() => { status.textContent = ""; }, 4000);
   e.target.value = "";
   laadFotos();
 }
@@ -87,9 +82,5 @@ async function laadFotos() {
   }).join("");
 }
 
-async function init() {
-  await checkLogin();
-  laadFotos();
-}
-
-init();
+renderUploadBalk();
+laadFotos();
