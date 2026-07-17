@@ -15,6 +15,7 @@ function kandidaatHTML(k) {
             ? `<img src="${kleur.logo}" alt="${k.groep}" class="kandidaat-foto" />`
             : `<div class="kandidaat-foto kandidaat-initialen" style="background:${kleur.bg};color:${kleur.tekst}">${initialen(k.naam)}</div>`
         }
+        ${kleur.logo && k.foto ? `<img src="${kleur.logo}" alt="${k.groep}" class="kandidaat-bondje-logo" />` : ""}
       </div>
       <div class="kandidaat-naam">${k.naam}</div>
       <div class="kandidaat-groep${k.groep === "gieren" ? " kandidaat-groep--gieren" : ""}" style="background:${kleur.bg};color:${kleur.tekst}">${k.groep}</div>
