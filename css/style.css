@@ -166,7 +166,7 @@ header.site { position: relative; }
   position: fixed;
   inset: 0;
   background: rgba(44, 51, 47, 0.45);
-  z-index: 100;
+  z-index: 1000;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
@@ -445,6 +445,8 @@ body.nav-open { overflow: hidden; }
   overflow: hidden;
   border: 1px solid var(--lijn);
   margin-top: 10px;
+  position: relative;
+  z-index: 0;
 }
 
 .kaart-marker {
@@ -489,6 +491,36 @@ body.nav-open { overflow: hidden; }
 .ps-stad--onbekend {
   border-style: dashed;
   opacity: 0.6;
+}
+
+/* ---------- Interne tabs (bijv. Bondgenoten) ---------- */
+.inner-tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 2px solid var(--lijn);
+  margin: 16px 0 0;
+}
+
+.inner-tab {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  transition: color 0.15s, background 0.15s;
+}
+
+.inner-tab:hover { background: var(--accent-zacht); color: var(--inkt); }
+
+.inner-tab--actief {
+  color: var(--inkt);
+  border-bottom-color: var(--blackhills);
 }
 
 /* ---------- Navigatie (tabs) ---------- */

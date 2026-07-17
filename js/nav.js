@@ -1,23 +1,13 @@
 (function () {
   const huidig = location.pathname.split("/").pop() || "index.html";
+  const bondgenotenPaginas = ["bondgenoten.html", "tijdlijn.html"];
 
-  function bondjesHTML() {
-    if (typeof KANDIDATEN === "undefined" || typeof GROEP_KLEUR === "undefined") return "";
-    return Object.keys(GROEP_KLEUR).map(groep => {
-      const k = GROEP_KLEUR[groep];
-      const leden = KANDIDATEN.filter(l => l.groep === groep);
-      return `
-        <div class="nav-bondje">
-          <div class="nav-bondje-header" style="background:${k.bg};color:${k.tekst}">
-            ${k.logo ? `<img src="${k.logo}" alt="${groep}" class="nav-bondje-logo" />` : ""}
-            <span class="nav-bondje-naam">${groep}</span>
-          </div>
-          <div class="nav-bondje-leden">
-            ${leden.map(l => `<span class="nav-bondje-lid${l.actief ? "" : " nav-bondje-lid--uit"}">${l.naam}</span>`).join("")}
-          </div>
-        </div>`;
-    }).join("");
-  }
+  const PAGINAS = [
+    { label: "Home",           href: "index.html",       icon: "⌂" },
+    { label: "de Bondgenoten", href: "bondgenoten.html", icon: "📺", match: bondgenotenPaginas },
+    { label: "Vluchten",       href: "vluchten.html",    icon: "✈" },
+    { label: "Polarsteps",     href: "polarsteps.html",  icon: "🗺" },
+  ];
 
   const btn = document.createElement("button");
   btn.className = "hamburger";
@@ -30,35 +20,18 @@
     <div class="nav-lade">
       <button class="nav-sluit" aria-label="Menu sluiten">✕</button>
       <nav class="nav-menu">
-
-        <a href="index.html" class="nav-item${huidig === "index.html" ? " nav-item--actief" : ""}">
-          <span class="nav-icon">⌂</span><span>Home</span>
-        </a>
-
-        <div class="nav-item nav-accordion-trigger${["tijdlijn.html","bondgenoten.html"].includes(huidig) ? " nav-item--actief" : ""}" data-target="nav-bondjes">
-          <span class="nav-icon">📺</span><span>Bondjes</span><span class="nav-chevron">›</span>
-        </div>
-        <div class="nav-accordion" id="nav-bondjes">
-          <a href="tijdlijn.html" class="nav-sub${huidig === "tijdlijn.html" ? " nav-sub--actief" : ""}">📅 Tijdlijn</a>
-          <a href="bondgenoten.html" class="nav-sub${huidig === "bondgenoten.html" ? " nav-sub--actief" : ""}">👥 Kandidaten</a>
-          <div class="nav-bondjes-lijst" id="nav-bondjes-lijst"></div>
-        </div>
-
-        <a href="vluchten.html" class="nav-item${huidig === "vluchten.html" ? " nav-item--actief" : ""}">
-          <span class="nav-icon">✈</span><span>Vluchten</span>
-        </a>
-
-        <a href="polarsteps.html" class="nav-item${huidig === "polarsteps.html" ? " nav-item--actief" : ""}">
-          <span class="nav-icon">🗺</span><span>Polarsteps</span>
-        </a>
-
+        ${PAGINAS.map(p => {
+          const actief = p.match ? p.match.includes(huidig) : p.href === huidig;
+          return `<a href="${p.href}" class="nav-item${actief ? " nav-item--actief" : ""}">
+            <span class="nav-icon">${p.icon}</span><span>${p.label}</span>
+          </a>`;
+        }).join("")}
       </nav>
     </div>`;
 
   function open() {
     overlay.classList.add("nav-overlay--open");
     document.body.classList.add("nav-open");
-    overlay.querySelector("#nav-bondjes-lijst").innerHTML = bondjesHTML();
   }
   function sluit() {
     overlay.classList.remove("nav-overlay--open");
@@ -70,25 +43,7 @@
   overlay.addEventListener("click", e => { if (e.target === overlay) sluit(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") sluit(); });
 
-  overlay.addEventListener("click", e => {
-    const trigger = e.target.closest(".nav-accordion-trigger");
-    if (!trigger) return;
-    const id = trigger.dataset.target;
-    const acc = document.getElementById(id);
-    if (acc) {
-      acc.classList.toggle("nav-accordion--open");
-      trigger.classList.toggle("nav-accordion-trigger--open");
-    }
-  });
-
   const header = document.querySelector("header.site");
   if (header) header.appendChild(btn);
   document.body.appendChild(overlay);
-
-  if (["tijdlijn.html","bondgenoten.html"].includes(huidig)) {
-    const acc = overlay.querySelector("#nav-bondjes");
-    const trigger = overlay.querySelector("[data-target='nav-bondjes']");
-    if (acc) acc.classList.add("nav-accordion--open");
-    if (trigger) trigger.classList.add("nav-accordion-trigger--open");
-  }
 })();
