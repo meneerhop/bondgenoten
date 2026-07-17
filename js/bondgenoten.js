@@ -15,7 +15,7 @@ function kandidaatHTML(k) {
         }
       </div>
       <div class="kandidaat-naam">${k.naam}</div>
-      <div class="kandidaat-groep" style="background:${kleur.bg};color:${kleur.tekst}">${k.groep}</div>
+      <div class="kandidaat-groep${k.groep === "gieren" ? " kandidaat-groep--gieren" : ""}" style="background:${kleur.bg};color:${kleur.tekst}">${k.groep}</div>
     </div>`;
 }
 
