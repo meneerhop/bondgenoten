@@ -29,7 +29,7 @@ async function renderRanking() {
           <span class="rank-naam${isGieren ? " rank-naam--gieren" : ""}" style="background:${kleur.bg};color:${kleur.tekst}">${item.groep}</span>
         </div>
         <div class="rank-balk-wrap">
-          <div class="rank-balk" style="width:${breedte}%;background:${kleur.bg}${isGieren ? ";border:1px solid var(--lijn)" : ""}"></div>
+          <div class="rank-balk" style="width:${breedte}%;background:${isGieren ? "#c8c9be" : kleur.bg}"></div>
         </div>
         <div class="rank-punten">${item.punten}</div>
       </div>`;
