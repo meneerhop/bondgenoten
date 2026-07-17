@@ -3,10 +3,11 @@
   const bondgenotenPaginas = ["bondgenoten.html", "tijdlijn.html"];
 
   const PAGINAS = [
-    { label: "Home",           href: "index.html",       icon: "⌂" },
-    { label: "de Bondgenoten", href: "bondgenoten.html", icon: "📺", match: bondgenotenPaginas },
-    { label: "Vluchten",       href: "vluchten.html",    icon: "✈" },
-    { label: "Polarsteps",     href: "polarsteps.html",  icon: "🗺" },
+    { label: "Home",           href: "index.html",        icon: "⌂" },
+    { label: "de Bondgenoten", href: "bondgenoten.html",  icon: "📺", match: bondgenotenPaginas },
+    { label: "Voorspelling",   href: "voorspelling.html", icon: "🏆" },
+    { label: "Vluchten",       href: "vluchten.html",     icon: "✈" },
+    { label: "Polarsteps",     href: "polarsteps.html",   icon: "🗺" },
   ];
 
   const btn = document.createElement("button");

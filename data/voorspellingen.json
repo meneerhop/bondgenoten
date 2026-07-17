@@ -1,0 +1,15 @@
+{
+  "spelers": ["Jij", "Dieuw"],
+  "cycli": [
+    {
+      "nr": 1,
+      "label": "Cyclus 1",
+      "datum": "2026-07-22",
+      "voorspellingen": {
+        "Jij": "Anouk",
+        "Dieuw": "Casper"
+      },
+      "winnaar": null
+    }
+  ]
+}
