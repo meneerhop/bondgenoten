@@ -3,7 +3,7 @@ const GROEP_KLEUR = {
   slangen:      { bg: "#46F55E", tekst: "#1a3a1f", logo: "https://images.vakantieveilingen.nl/hotels/hotels-nederland/overnachting-bb-de-bondgenoten-team-de-slangen-korting/eb0ed0.jpg?q=70&auto=compress,format,enhance" },
   haaien:       { bg: "#4CA3F8", tekst: "#0a2a4a", logo: "https://images.vakantieveilingen.nl/hotels/hotels-nederland/overnachting-bb-de-bondgenoten-team-de-haaien-korting/3f4f6b.jpg?q=70&auto=compress,format,enhance" },
   vossen:       { bg: "#F5151A", tekst: "#ffffff", logo: "https://images.vakantieveilingen.nl/hotels/hotels-nederland/overnachting-bb-de-bondgenoten-team-de-vossen-korting/244bf0.jpg?q=70&auto=compress,format,enhance" },
-  bloedzuigers: { bg: "#885225", tekst: "#ffffff", logo: "https://i.ibb.co/hxZz81tJ/Chat-GPT-Image-17-jul-2026-11-39-31.png" },
+  bloedzuigers: { bg: "#885225", tekst: "#ffffff", logo: "https://i.ibb.co/kVSNmbMD/Chat-GPT-Image-17-jul-2026-11-39-31.png" },
 };
 
 const KANDIDATEN = [
