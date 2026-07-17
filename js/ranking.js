@@ -37,7 +37,7 @@ async function renderRanking() {
 
   el.innerHTML = `
     <div class="rank-lijst">${rijen.join("")}</div>
-    <p class="vpn-tip" style="margin-top:16px;">Punten bijwerken via <code>data/ranking.json</code>.</p>`;
+`;
 }
 
 renderRanking();
