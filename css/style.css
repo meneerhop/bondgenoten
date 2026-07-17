@@ -586,6 +586,28 @@ body.nav-open { overflow: hidden; }
   text-transform: capitalize;
 }
 
+.vsp-preview { margin-bottom: 8px; min-height: 36px; }
+
+.vsp-dropdown {
+  width: 100%;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1.5px solid var(--lijn);
+  border-radius: 8px;
+  padding: 7px 8px;
+  background: var(--papier);
+  color: var(--inkt);
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.vsp-dropdown:focus {
+  outline: 2px solid var(--moonstone);
+  outline-offset: 1px;
+  border-color: var(--moonstone);
+}
+
 .vsp-historie { margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
 
 .vsp-historie-rij {
