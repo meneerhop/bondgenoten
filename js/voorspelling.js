@@ -73,7 +73,6 @@ function actieveCyclusHTML(cyclus, spelers) {
         <div class="vsp-ton">🏆 Wie wint de ton?</div>
       </div>
       <div class="vsp-kaarten">${kaarten}</div>
-      <p class="vpn-tip" style="margin-top:8px;">Pas voorspellingen aan via <a href="admin.html" style="color:var(--moonstone);font-weight:600">admin.html</a> of in <code>data/voorspellingen.json</code>.</p>
     </div>`;
 }
 
