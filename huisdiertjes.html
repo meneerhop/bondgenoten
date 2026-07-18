@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Huisdiertjes — Dieuw in Thailand</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .dieren-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .dieren-tab {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid var(--lijn);
+      background: var(--kaart);
+      border-radius: var(--radius);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--inkt-zacht);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+
+    .dieren-tab--actief {
+      border-color: var(--blackhills);
+      background: var(--blackhills);
+      color: #f2f3ee;
+    }
+
+    .dieren-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .dieren-foto {
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: var(--lijn);
+      position: relative;
+    }
+
+    .dieren-foto img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.2s;
+    }
+
+    .dieren-foto img:hover {
+      transform: scale(1.04);
+    }
+
+    .dieren-foto--groot {
+      grid-column: span 2;
+      aspect-ratio: 16/9;
+    }
+
+    .dieren-laaien {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      font-size: 28px;
+      position: absolute;
+      inset: 0;
+    }
+
+    .dieren-sectie { display: none; }
+    .dieren-sectie--actief { display: block; }
+
+    .dieren-hero {
+      background: var(--blackhills);
+      color: #f2f3ee;
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .dieren-hero-emoji { font-size: 40px; margin-bottom: 8px; }
+    .dieren-hero h2 { margin: 0 0 4px; font-size: 20px; }
+    .dieren-hero p { margin: 0; font-size: 13px; opacity: 0.75; }
+
+    .meer-knop {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      background: var(--moonstone);
+      color: #f2f3ee;
+      border: none;
+      border-radius: var(--radius);
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: opacity 0.15s;
+    }
+
+    .meer-knop:hover { opacity: 0.85; }
+    .meer-knop:disabled { opacity: 0.4; cursor: default; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="eyebrow">HUISDIERTJES 🐾</div>
+      <h1>Puppies & Kittens</h1>
+    </header>
+
+    <main>
+
+      <div class="dieren-tabs">
+        <button class="dieren-tab dieren-tab--actief" data-tab="puppies">🐶 Labradors</button>
+        <button class="dieren-tab" data-tab="kittens">🐱 Kittens</button>
+      </div>
+
+      <div id="sectie-puppies" class="dieren-sectie dieren-sectie--actief">
+        <div class="dieren-hero">
+          <div class="dieren-hero-emoji">🐶</div>
+          <h2>Bruine Labrador Puppies</h2>
+          <p>De liefste hondjes van het internet</p>
+        </div>
+        <div id="grid-puppies" class="dieren-grid"></div>
+        <button class="meer-knop" id="meer-puppies">Meer puppies laden 🐾</button>
+      </div>
+
+      <div id="sectie-kittens" class="dieren-sectie">
+        <div class="dieren-hero">
+          <div class="dieren-hero-emoji">🐱</div>
+          <h2>Schattige Kittens</h2>
+          <p>Fluffige vriendjes voor een slechte dag</p>
+        </div>
+        <div id="grid-kittens" class="dieren-grid"></div>
+        <button class="meer-knop" id="meer-kittens">Meer kittens laden 🐾</button>
+      </div>
+
+      <a href="index.html" class="knop knop--groen" style="display:block;text-align:center;margin-top:8px;">
+        ← Terug naar de reis
+      </a>
+
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/kandidaten.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    const tabs = document.querySelectorAll(".dieren-tab");
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("dieren-tab--actief"));
+        tab.classList.add("dieren-tab--actief");
+        document.querySelectorAll(".dieren-sectie").forEach(s => s.classList.remove("dieren-sectie--actief"));
+        document.getElementById("sectie-" + tab.dataset.tab).classList.add("dieren-sectie--actief");
+      });
+    });
+
+    function maakFotoEl(src, groot) {
+      const div = document.createElement("div");
+      div.className = "dieren-foto" + (groot ? " dieren-foto--groot" : "");
+      div.innerHTML = `<div class="dieren-laaien">⏳</div>`;
+      const img = document.createElement("img");
+      img.src = src;
+      img.loading = "lazy";
+      img.alt = "";
+      img.onload = () => div.querySelector(".dieren-laaien").remove();
+      img.onerror = () => { div.querySelector(".dieren-laaien").textContent = "😢"; };
+      div.appendChild(img);
+      return div;
+    }
+
+    async function laadPuppies() {
+      const knop = document.getElementById("meer-puppies");
+      knop.disabled = true;
+      knop.textContent = "Laden…";
+      try {
+        const res = await fetch("https://dog.ceo/api/breed/labrador/images/random/10");
+        const data = await res.json();
+        const grid = document.getElementById("grid-puppies");
+        data.message.forEach((url, i) => {
+          grid.appendChild(maakFotoEl(url, i === 0));
+        });
+      } catch {
+        document.getElementById("grid-puppies").insertAdjacentHTML("beforeend",
+          `<p style="color:var(--inkt-zacht);grid-column:span 2">Kon geen foto's laden 😢</p>`);
+      }
+      knop.disabled = false;
+      knop.textContent = "Meer puppies laden 🐾";
+    }
+
+    async function laadKittens() {
+      const knop = document.getElementById("meer-kittens");
+      knop.disabled = true;
+      knop.textContent = "Laden…";
+      try {
+        const res = await fetch("https://api.thecatapi.com/v1/images/search?limit=10&mime_types=jpg,png");
+        const data = await res.json();
+        const grid = document.getElementById("grid-kittens");
+        data.forEach((item, i) => {
+          grid.appendChild(maakFotoEl(item.url, i === 0));
+        });
+      } catch {
+        document.getElementById("grid-kittens").insertAdjacentHTML("beforeend",
+          `<p style="color:var(--inkt-zacht);grid-column:span 2">Kon geen foto's laden 😢</p>`);
+      }
+      knop.disabled = false;
+      knop.textContent = "Meer kittens laden 🐾";
+    }
+
+    document.getElementById("meer-puppies").addEventListener("click", laadPuppies);
+    document.getElementById("meer-kittens").addEventListener("click", laadKittens);
+
+    laadPuppies();
+    laadKittens();
+  </script>
+</body>
+</html>

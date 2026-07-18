@@ -10,6 +10,7 @@
     { label: "Vluchten",       href: "vluchten.html",     icon: "✈" },
     { label: "Polarsteps",     href: "polarsteps.html",   icon: "🗺" },
     { label: "Rotterdam",      href: "rotterdam.html",    icon: "🌉" },
+    { label: "Huisdiertjes",  href: "huisdiertjes.html", icon: "🐾" },
   ];
 
   const btn = document.createElement("button");
