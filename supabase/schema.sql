@@ -40,6 +40,26 @@ create policy "fotos publiek lezen" on storage.objects
 create policy "fotos ingelogd uploaden" on storage.objects
   for insert with check (bucket_id = 'fotos' and auth.role() = 'authenticated');
 
+-- VOORSPELLINGEN (picks per speler per cyclus):
+-- Voer dit uit in de SQL Editor om de picks-tabel aan te maken.
+
+create table if not exists picks (
+  id           uuid primary key default gen_random_uuid(),
+  speler       text not null,
+  cyclus_nr    int  not null,
+  keuze        text not null,
+  created_at   timestamptz not null default now(),
+  gewijzigd_op timestamptz not null default now(),
+  unique(speler, cyclus_nr)
+);
+
+alter table picks enable row level security;
+
+-- Iedereen mag lezen en schrijven (de site is privé/noindex)
+create policy "picks publiek lezen"    on picks for select using (true);
+create policy "picks publiek schrijven" on picks for insert with check (true);
+create policy "picks publiek wijzigen"  on picks for update using (true);
+
 -- GEBRUIKERS:
 -- Ga naar Authentication → Users → Add user en maak een account
 -- voor jezelf (en eventueel voor haar) met e-mail + wachtwoord.
