@@ -1623,6 +1623,7 @@ body.lb-actief { overflow: hidden; }
   background: linear-gradient(135deg, var(--moonstone) 0%, var(--blackhills) 100%);
   color: #fff;
   text-align: center;
+  flex-direction: column;
   padding: 20px 16px 16px;
   margin-bottom: 10px;
   border-radius: var(--radius);
