@@ -1618,6 +1618,70 @@ body.lb-actief { overflow: hidden; }
   font-weight: 700;
 }
 
+/* ---------- Turflijst ---------- */
+.turflijst-kaart {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.turflijst-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.turflijst-titel {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+}
+
+.turflijst-teller {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--blackhills);
+}
+
+.turflijst {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+}
+
+.turf-dag {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1.5px solid var(--lijn);
+  background: var(--papier);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+}
+
+.turf-dag--voorbij {
+  background: var(--blackhills);
+  border-color: var(--blackhills);
+  color: #f2f3ee;
+  font-size: 14px;
+}
+
+.turf-dag--vandaag {
+  border-color: var(--moonstone);
+  border-width: 2.5px;
+  color: var(--blackhills);
+  font-weight: 700;
+}
+
 /* ---------- Vertrek countdown ---------- */
 .dash-kaart--vertrek {
   background: linear-gradient(135deg, var(--moonstone) 0%, var(--blackhills) 100%);

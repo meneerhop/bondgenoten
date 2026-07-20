@@ -109,6 +109,32 @@ function updateHereniging() {
 updateHereniging();
 setInterval(updateHereniging, 1000);
 
+function initTurflijst() {
+  const lijst = document.getElementById("turflijst");
+  if (!lijst) return;
+
+  const start   = new Date(TRIP.vertrek + "T00:00:00");
+  const eind    = new Date(TRIP.thuiskomst + "T00:00:00");
+  const totaal  = Math.round((eind - start) / DAG_MS);
+  const nu      = new Date();
+  const voorbij = Math.max(0, Math.min(totaal, Math.floor((nu - start) / DAG_MS)));
+  const gestart = nu >= start;
+
+  for (let i = 0; i < totaal; i++) {
+    const el = document.createElement("div");
+    el.className = "turf-dag";
+    if (i < voorbij)                        el.classList.add("turf-dag--voorbij");
+    else if (i === voorbij && gestart)      el.classList.add("turf-dag--vandaag");
+    el.textContent = i < voorbij ? "✓" : String(i + 1);
+    lijst.appendChild(el);
+  }
+
+  const teller = document.getElementById("turf-teller");
+  if (teller) teller.textContent = `${voorbij} / ${totaal}`;
+}
+
+initTurflijst();
+
 function startConfetti() {
   if (typeof confetti === "undefined") return;
   const kleuren = ["#46F55E", "#4CA3F8", "#F5151A", "#885225", "#a4a88d"];
