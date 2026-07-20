@@ -331,7 +331,35 @@ header.site { position: relative; }
 body.nav-open { overflow: hidden; }
 
 /* ---------- Dashboard ---------- */
-.dashboard { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+.dashboard {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dash-kaart--featured {
+  grid-column: 1 / -1;
+}
+
+.dashboard .dash-kaart {
+  padding: 12px 10px;
+  gap: 8px;
+}
+
+.dashboard .dash-kaart-icon { font-size: 20px; }
+.dashboard .dash-kaart-titel { font-size: 13px; }
+.dashboard .dash-kaart-pijl { font-size: 17px; }
+
+.dashboard-liefde {
+  text-align: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--landscape);
+  padding: 18px 0 4px;
+}
 
 .dash-kaart {
   display: flex;
