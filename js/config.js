@@ -71,3 +71,18 @@ const VLUCHTEN = [
     ],
   },
 ];
+
+// Itineraris — vul steden aan naarmate de route duidelijk wordt
+const ITINERARIS = [
+  // { stad: "Chiang Mai", van: "2026-07-25", tot: "2026-07-28" },
+];
+
+function huidigeLocatie() {
+  const nu = new Date();
+  for (const stop of ITINERARIS) {
+    const van = new Date(stop.van + "T00:00:00");
+    const tot = new Date(stop.tot + "T23:59:59");
+    if (nu >= van && nu <= tot) return stop.stad;
+  }
+  return null;
+}

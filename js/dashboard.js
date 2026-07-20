@@ -11,7 +11,7 @@ function dagKey(d) {
   const nu     = new Date();
   const start  = new Date(TRIP.vertrek + "T00:00:00");
   const eind   = new Date(TRIP.thuiskomst + "T00:00:00");
-  const totaal = Math.round((eind - start) / DAG_MS);
+  const totaal = Math.round((eind - start) / DAG_MS) + 1;
   const dag    = Math.floor((nu - start) / DAG_MS) + 1;
   const rest   = Math.max(0, Math.ceil((eind - nu) / DAG_MS));
 
@@ -40,6 +40,10 @@ function dagKey(d) {
     aftel.textContent  = rest === 1 ? "morgen weer thuis!" : `nog ${rest} dagen`;
     if (balk) balk.style.width = `${Math.min(100, Math.round((dag / totaal) * 100))}%`;
   }
+
+  const loc = huidigeLocatie();
+  const psSub = document.getElementById("ps-locatie-sub");
+  if (psSub && loc) psSub.textContent = `📍 Nu in: ${loc}`;
 })();
 
 // Vertrek countdown — vlucht BRU → BKK wo 22 jul 13:20 CEST

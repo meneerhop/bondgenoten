@@ -38,34 +38,41 @@ function bouwVluchten() {
 
 function bouwAftelkaart() {
   const kaart = document.getElementById("aftelkaart");
-  const label = document.getElementById("aftelLabel");
-  const tijd = document.getElementById("aftelTijd");
+  if (!kaart) return;
 
   function update() {
     const nu = new Date();
     const volgende = VLUCHTEN
-      .map((r) => ({ richting: r.richting, moment: new Date(r.vertrekIso) }))
-      .filter((r) => r.moment > nu)
+      .map(r => ({ richting: r.richting, moment: new Date(r.vertrekIso) }))
+      .filter(r => r.moment > nu)
       .sort((a, b) => a.moment - b.moment)[0];
 
+    kaart.hidden = false;
+
     if (!volgende) {
-      kaart.hidden = false;
-      label.textContent = "Reis voltooid";
-      tijd.textContent = "Welkom thuis! 🎉";
+      kaart.innerHTML = `
+        <div class="aftelkaart-label">Reis voltooid</div>
+        <div class="aftelkaart-sub">Welkom thuis! 🎉</div>`;
       return;
     }
 
-    kaart.hidden = false;
-    label.textContent = `${volgende.richting} vertrekt over`;
-    let ms = volgende.moment - nu;
-    const d = Math.floor(ms / 86400000); ms -= d * 86400000;
-    const u = Math.floor(ms / 3600000); ms -= u * 3600000;
-    const m = Math.floor(ms / 60000); ms -= m * 60000;
-    const s = Math.floor(ms / 1000);
-    tijd.textContent =
-      d > 0
-        ? `${d} ${d === 1 ? "dag" : "dagen"}, ${u}u ${String(m).padStart(2, "0")}m`
-        : `${u}u ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
+    const diff = volgende.moment - nu;
+    const d = Math.floor(diff / 86400000);
+    const u = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    kaart.innerHTML = `
+      <div class="aftelkaart-label">${volgende.richting} vertrekt over</div>
+      <div class="aftelkaart-blokken">
+        <div class="aftelkaart-blok"><span>${String(d).padStart(2,'0')}</span><small>dagen</small></div>
+        <div class="aftelkaart-sep">:</div>
+        <div class="aftelkaart-blok"><span>${String(u).padStart(2,'0')}</span><small>uren</small></div>
+        <div class="aftelkaart-sep">:</div>
+        <div class="aftelkaart-blok"><span>${String(m).padStart(2,'0')}</span><small>min</small></div>
+        <div class="aftelkaart-sep">:</div>
+        <div class="aftelkaart-blok"><span>${String(s).padStart(2,'0')}</span><small>sec</small></div>
+      </div>`;
   }
 
   update();

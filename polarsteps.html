@@ -2,6 +2,7 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex" />
   <title>Polarsteps — Dieuw in Thailand</title>
@@ -32,9 +33,9 @@
           <div class="ps-stat-waarde" id="ps-dagen">–</div>
           <div class="ps-stat-label">dagen</div>
         </div>
-        <div class="ps-stat">
-          <div class="ps-stat-waarde">🇹🇭</div>
-          <div class="ps-stat-label">Thailand</div>
+        <div class="ps-stat" id="ps-stad-stat">
+          <div class="ps-stat-waarde" id="ps-stad-waarde">🇹🇭</div>
+          <div class="ps-stat-label" id="ps-stad-label">Thailand</div>
         </div>
         <div class="ps-stat">
           <div class="ps-stat-waarde">2</div>
@@ -96,6 +97,12 @@
     const eind  = new Date(TRIP.thuiskomst + "T00:00:00");
     const totaal = Math.round((eind - start) / (24 * 3600 * 1000));
     document.getElementById("ps-dagen").textContent = totaal;
+
+    const locatie = huidigeLocatie();
+    if (locatie) {
+      document.getElementById("ps-stad-waarde").textContent = locatie;
+      document.getElementById("ps-stad-label").textContent = "huidige stop";
+    }
   </script>
 </body>
 </html>
