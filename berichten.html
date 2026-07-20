@@ -25,14 +25,6 @@
       overflow: hidden;
     }
 
-    .bericht-kaart--thuis {
-      border-left: 3px solid var(--landscape);
-    }
-
-    .bericht-kaart--reis {
-      border-left: 3px solid var(--moonstone);
-    }
-
     .bericht-meta {
       display: flex;
       align-items: center;
@@ -40,15 +32,12 @@
       margin-bottom: 10px;
     }
 
-    .bericht-afzender {
-      font-size: 11px;
+    .bericht-naam {
+      font-size: 12px;
       font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      color: var(--moonstone);
+      letter-spacing: 0.05em;
     }
-
-    .bericht-afzender--thuis { color: var(--landscape); }
-    .bericht-afzender--reis  { color: var(--moonstone); }
 
     .bericht-datum {
       font-size: 11px;
@@ -99,8 +88,6 @@
       color: var(--inkt-zacht);
       font-size: 14px;
     }
-
-    .filter-balk { margin-top: 16px; }
 
     .plaatsen-sectie {
       margin-top: 18px;
@@ -225,12 +212,6 @@
 
     <div class="dagbericht" id="dagbericht"></div>
 
-    <div class="filter-balk">
-      <button class="filter-knop filter-knop--actief" data-filter="alle">Alle</button>
-      <button class="filter-knop" data-filter="thuis">Van thuis</button>
-      <button class="filter-knop" data-filter="reis">Van de reis</button>
-    </div>
-
     <div class="plaatsen-sectie" id="plaatsen-sectie">
       <!-- ingevuld via JS -->
     </div>
@@ -243,79 +224,13 @@
   <script src="js/config.js"></script>
   <script src="js/nav.js"></script>
   <script>
-    const AFZENDERS = {
-      thuis: { label: "💌 Van thuis", cls: "thuis" },
-      reis:  { label: "🌴 Van de reis", cls: "reis" },
-    };
-
     const fmtDatum = new Intl.DateTimeFormat("nl-NL", {
       weekday: "long", day: "numeric", month: "long"
     });
 
-    let alleBerichten = [];
-    let huidigFilter = "alle";
-
-    async function laadBerichten() {
-      const lijst = document.getElementById("berichten-lijst");
-      try {
-        const res = await fetch(
-          SUPABASE_URL + "posts?order=created_at.desc&select=*",
-          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
-        );
-        alleBerichten = await res.json();
-        toonBerichten();
-      } catch (e) {
-        lijst.innerHTML = `<div class="leeg">Kon berichten niet laden. Probeer het later opnieuw.</div>`;
-      }
-    }
-
-    function toonBerichten() {
-      const lijst = document.getElementById("berichten-lijst");
-      const gefilterd = huidigFilter === "alle"
-        ? alleBerichten
-        : alleBerichten.filter(b => b.kind === huidigFilter);
-
-      if (!gefilterd.length) {
-        lijst.innerHTML = `
-          <div class="berichten-leeg">
-            <span class="berichten-leeg-emoji">💬</span>
-            Nog geen berichten hier
-          </div>`;
-        return;
-      }
-
-      lijst.innerHTML = "";
-      for (const b of gefilterd) {
-        const meta = AFZENDERS[b.kind] || AFZENDERS.thuis;
-        const datum = fmtDatum.format(new Date(b.created_at));
-
-        const kaart = document.createElement("div");
-        kaart.className = `bericht-kaart bericht-kaart--${meta.cls}`;
-
-        const afzenderNaam = b.naam || meta.label;
-
-        let html = `
-          <div class="bericht-meta">
-            <span class="bericht-afzender bericht-afzender--${meta.cls}">${escHtml(afzenderNaam)}</span>
-            <span class="bericht-datum">${datum}</span>
-          </div>`;
-
-        if (b.note) {
-          html += `<p class="bericht-tekst">${escHtml(b.note)}</p>`;
-        }
-
-        if (b.photo_url) {
-          html += `<img class="bericht-foto" src="${escHtml(b.photo_url)}" alt="${escHtml(b.photo_caption || "")}" loading="lazy">`;
-        }
-
-        if (b.photo_caption) {
-          html += `<div class="bericht-caption">${escHtml(b.photo_caption)}</div>`;
-        }
-
-        kaart.innerHTML = html;
-        lijst.appendChild(kaart);
-      }
-    }
+    const fmtDatum = new Intl.DateTimeFormat("nl-NL", {
+      weekday: "long", day: "numeric", month: "long"
+    });
 
     function escHtml(s) {
       return String(s)
@@ -325,14 +240,47 @@
         .replace(/"/g, "&quot;");
     }
 
-    document.querySelectorAll(".filter-knop").forEach(knop => {
-      knop.addEventListener("click", () => {
-        document.querySelectorAll(".filter-knop").forEach(k => k.classList.remove("filter-knop--actief"));
-        knop.classList.add("filter-knop--actief");
-        huidigFilter = knop.dataset.filter;
-        toonBerichten();
-      });
-    });
+    async function laadBerichten() {
+      const lijst = document.getElementById("berichten-lijst");
+      try {
+        const res = await fetch(
+          SUPABASE_URL + "posts?order=created_at.desc&select=*",
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+        );
+        const berichten = await res.json();
+
+        if (!berichten.length) {
+          lijst.innerHTML = `
+            <div class="berichten-leeg">
+              <span class="berichten-leeg-emoji">💬</span>
+              Nog geen berichten
+            </div>`;
+          return;
+        }
+
+        lijst.innerHTML = "";
+        for (const b of berichten) {
+          const datum = fmtDatum.format(new Date(b.created_at));
+          const kaart = document.createElement("div");
+          kaart.className = "bericht-kaart";
+
+          let html = `
+            <div class="bericht-meta">
+              <span class="bericht-naam">${escHtml(b.naam || "Anoniem")}</span>
+              <span class="bericht-datum">${datum}</span>
+            </div>`;
+
+          if (b.note) html += `<p class="bericht-tekst">${escHtml(b.note)}</p>`;
+          if (b.photo_url) html += `<img class="bericht-foto" src="${escHtml(b.photo_url)}" alt="${escHtml(b.photo_caption || "")}" loading="lazy">`;
+          if (b.photo_caption) html += `<div class="bericht-caption">${escHtml(b.photo_caption)}</div>`;
+
+          kaart.innerHTML = html;
+          lijst.appendChild(kaart);
+        }
+      } catch (e) {
+        lijst.innerHTML = `<div class="leeg">Kon berichten niet laden. Probeer het later opnieuw.</div>`;
+      }
+    }
 
     laadBerichten();
 
