@@ -22,7 +22,6 @@
       box-shadow: var(--schaduw);
       padding: 16px;
       position: relative;
-      overflow: hidden;
     }
 
     .bericht-meta {
@@ -44,6 +43,25 @@
       color: var(--inkt-zacht);
       margin-left: auto;
       flex-shrink: 0;
+    }
+
+    .bericht-verwijder {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: var(--inkt-zacht);
+      padding: 2px 4px;
+      border-radius: 4px;
+      line-height: 1;
+      opacity: 0.4;
+      transition: opacity 0.15s, color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .bericht-verwijder:hover {
+      opacity: 1;
+      color: #a4432f;
     }
 
     .bericht-tekst {
@@ -89,9 +107,7 @@
       font-size: 14px;
     }
 
-    .plaatsen-sectie {
-      margin-top: 18px;
-    }
+    .plaatsen-sectie { margin-top: 18px; }
 
     .plaatsen-toggle {
       width: 100%;
@@ -150,10 +166,7 @@
       box-sizing: border-box;
     }
 
-    .plaatsen-textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
+    .plaatsen-textarea { min-height: 90px; resize: vertical; }
 
     .plaatsen-input:focus,
     .plaatsen-textarea:focus {
@@ -162,11 +175,7 @@
       border-color: var(--moonstone);
     }
 
-    .plaatsen-rij {
-      display: flex;
-      gap: 8px;
-    }
-
+    .plaatsen-rij { display: flex; gap: 8px; }
     .plaatsen-rij .knop { flex: 1; text-align: center; }
 
     .dagbericht {
@@ -213,7 +222,19 @@
     <div class="dagbericht" id="dagbericht"></div>
 
     <div class="plaatsen-sectie" id="plaatsen-sectie">
-      <!-- ingevuld via JS -->
+      <button class="plaatsen-toggle" id="plaatsen-toggle">✏️ Bericht plaatsen</button>
+      <form class="plaatsen-paneel" id="post-form" hidden>
+        <label class="plaatsen-label">Jouw naam
+          <input class="plaatsen-input" type="text" id="pl-naam" placeholder="bijv. Mitch" required />
+        </label>
+        <label class="plaatsen-label">Bericht
+          <textarea class="plaatsen-textarea" id="pl-noot" placeholder="Schrijf iets liefs…" required></textarea>
+        </label>
+        <div class="plaatsen-rij">
+          <button class="knop knop--groen" type="submit" id="pl-verstuur">Versturen</button>
+        </div>
+        <div class="status" id="pl-status"></div>
+      </form>
     </div>
 
     <div class="berichten-lijst" id="berichten-lijst">
@@ -224,10 +245,6 @@
   <script src="js/config.js"></script>
   <script src="js/nav.js"></script>
   <script>
-    const fmtDatum = new Intl.DateTimeFormat("nl-NL", {
-      weekday: "long", day: "numeric", month: "long"
-    });
-
     const fmtDatum = new Intl.DateTimeFormat("nl-NL", {
       weekday: "long", day: "numeric", month: "long"
     });
@@ -260,14 +277,15 @@
 
         lijst.innerHTML = "";
         for (const b of berichten) {
-          const datum = fmtDatum.format(new Date(b.created_at));
           const kaart = document.createElement("div");
           kaart.className = "bericht-kaart";
+          kaart.dataset.id = b.id;
 
           let html = `
             <div class="bericht-meta">
               <span class="bericht-naam">${escHtml(b.naam || "Anoniem")}</span>
-              <span class="bericht-datum">${datum}</span>
+              <span class="bericht-datum">${fmtDatum.format(new Date(b.created_at))}</span>
+              <button class="bericht-verwijder" title="Verwijderen">🗑</button>
             </div>`;
 
           if (b.note) html += `<p class="bericht-tekst">${escHtml(b.note)}</p>`;
@@ -275,6 +293,9 @@
           if (b.photo_caption) html += `<div class="bericht-caption">${escHtml(b.photo_caption)}</div>`;
 
           kaart.innerHTML = html;
+
+          kaart.querySelector(".bericht-verwijder").addEventListener("click", () => verwijder(b.id, kaart));
+
           lijst.appendChild(kaart);
         }
       } catch (e) {
@@ -282,24 +303,22 @@
       }
     }
 
-    laadBerichten();
-
-    // --- Bericht plaatsen ---
-    const sectie = document.getElementById("plaatsen-sectie");
-    sectie.innerHTML = `
-      <button class="plaatsen-toggle" id="plaatsen-toggle">✏️ Bericht plaatsen</button>
-      <form class="plaatsen-paneel" id="post-form" hidden>
-        <label class="plaatsen-label">Jouw naam
-          <input class="plaatsen-input" type="text" id="pl-naam" placeholder="bijv. Mitch" required />
-        </label>
-        <label class="plaatsen-label">Bericht
-          <textarea class="plaatsen-textarea" id="pl-noot" placeholder="Schrijf iets liefs…" required></textarea>
-        </label>
-        <div class="plaatsen-rij">
-          <button class="knop knop--groen" type="submit" id="pl-verstuur">Versturen</button>
-        </div>
-        <div class="status" id="pl-status"></div>
-      </form>`;
+    async function verwijder(id, kaart) {
+      if (!confirm("Bericht verwijderen?")) return;
+      try {
+        const res = await fetch(SUPABASE_URL + "posts?id=eq." + id, {
+          method: "DELETE",
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: "Bearer " + SUPABASE_ANON_KEY,
+          },
+        });
+        if (!res.ok) throw new Error("status " + res.status);
+        kaart.remove();
+      } catch (e) {
+        alert("Verwijderen mislukt: " + e.message);
+      }
+    }
 
     document.getElementById("plaatsen-toggle").addEventListener("click", () => {
       const form = document.getElementById("post-form");
@@ -329,7 +348,7 @@
           body: JSON.stringify({ naam, note: noot, kind: "thuis" }),
         });
 
-        if (!res.ok) throw new Error("Plaatsen mislukt (status " + res.status + ")");
+        if (!res.ok) throw new Error("status " + res.status);
 
         status.textContent = "Verstuurd! ❤️";
         status.className = "status status--ok";
@@ -379,6 +398,7 @@
     }
 
     toonDagbericht();
+    laadBerichten();
   </script>
 </body>
 </html>
