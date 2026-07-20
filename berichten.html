@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Berichten — Dieuw in Thailand</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .berichten-lijst {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .bericht-kaart {
+      background: var(--kaart);
+      border: 1px solid var(--lijn);
+      border-radius: var(--radius);
+      box-shadow: var(--schaduw);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bericht-kaart--thuis {
+      border-left: 3px solid var(--landscape);
+    }
+
+    .bericht-kaart--reis {
+      border-left: 3px solid var(--moonstone);
+    }
+
+    .bericht-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .bericht-afzender {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .bericht-afzender--thuis { color: var(--landscape); }
+    .bericht-afzender--reis  { color: var(--moonstone); }
+
+    .bericht-datum {
+      font-size: 11px;
+      color: var(--inkt-zacht);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .bericht-tekst {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--inkt);
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    .bericht-foto {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      margin-top: 12px;
+    }
+
+    .bericht-caption {
+      font-size: 12px;
+      color: var(--inkt-zacht);
+      text-align: center;
+      font-style: italic;
+      margin-top: 6px;
+    }
+
+    .berichten-leeg {
+      text-align: center;
+      padding: 48px 0 32px;
+      color: var(--inkt-zacht);
+      font-size: 15px;
+    }
+
+    .berichten-leeg-emoji {
+      font-size: 40px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .berichten-laden {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--inkt-zacht);
+      font-size: 14px;
+    }
+
+    .filter-balk { margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="eyebrow">DIEUW IN THAILAND</div>
+      <h1>💌 Berichten</h1>
+    </header>
+
+    <div class="filter-balk">
+      <button class="filter-knop filter-knop--actief" data-filter="alle">Alle</button>
+      <button class="filter-knop" data-filter="thuis">Van thuis</button>
+      <button class="filter-knop" data-filter="reis">Van de reis</button>
+    </div>
+
+    <div class="berichten-lijst" id="berichten-lijst">
+      <div class="berichten-laden">Berichten laden…</div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    const AFZENDERS = {
+      thuis: { label: "💌 Van thuis", cls: "thuis" },
+      reis:  { label: "🌴 Van de reis", cls: "reis" },
+    };
+
+    const fmtDatum = new Intl.DateTimeFormat("nl-NL", {
+      weekday: "long", day: "numeric", month: "long"
+    });
+
+    let alleBerichten = [];
+    let huidigFilter = "alle";
+
+    async function laadBerichten() {
+      const lijst = document.getElementById("berichten-lijst");
+      try {
+        const res = await fetch(
+          SUPABASE_URL + "posts?order=created_at.desc&select=*",
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+        );
+        alleBerichten = await res.json();
+        toonBerichten();
+      } catch (e) {
+        lijst.innerHTML = `<div class="leeg">Kon berichten niet laden. Probeer het later opnieuw.</div>`;
+      }
+    }
+
+    function toonBerichten() {
+      const lijst = document.getElementById("berichten-lijst");
+      const gefilterd = huidigFilter === "alle"
+        ? alleBerichten
+        : alleBerichten.filter(b => b.kind === huidigFilter);
+
+      if (!gefilterd.length) {
+        lijst.innerHTML = `
+          <div class="berichten-leeg">
+            <span class="berichten-leeg-emoji">💬</span>
+            Nog geen berichten hier
+          </div>`;
+        return;
+      }
+
+      lijst.innerHTML = "";
+      for (const b of gefilterd) {
+        const meta = AFZENDERS[b.kind] || AFZENDERS.thuis;
+        const datum = fmtDatum.format(new Date(b.created_at));
+
+        const kaart = document.createElement("div");
+        kaart.className = `bericht-kaart bericht-kaart--${meta.cls}`;
+
+        let html = `
+          <div class="bericht-meta">
+            <span class="bericht-afzender bericht-afzender--${meta.cls}">${meta.label}</span>
+            <span class="bericht-datum">${datum}</span>
+          </div>`;
+
+        if (b.note) {
+          html += `<p class="bericht-tekst">${escHtml(b.note)}</p>`;
+        }
+
+        if (b.photo_url) {
+          html += `<img class="bericht-foto" src="${escHtml(b.photo_url)}" alt="${escHtml(b.photo_caption || "")}" loading="lazy">`;
+        }
+
+        if (b.photo_caption) {
+          html += `<div class="bericht-caption">${escHtml(b.photo_caption)}</div>`;
+        }
+
+        kaart.innerHTML = html;
+        lijst.appendChild(kaart);
+      }
+    }
+
+    function escHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    document.querySelectorAll(".filter-knop").forEach(knop => {
+      knop.addEventListener("click", () => {
+        document.querySelectorAll(".filter-knop").forEach(k => k.classList.remove("filter-knop--actief"));
+        knop.classList.add("filter-knop--actief");
+        huidigFilter = knop.dataset.filter;
+        toonBerichten();
+      });
+    });
+
+    laadBerichten();
+  </script>
+</body>
+</html>
