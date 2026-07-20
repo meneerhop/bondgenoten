@@ -1618,6 +1618,71 @@ body.lb-actief { overflow: hidden; }
   font-weight: 700;
 }
 
+/* ---------- Vertrek countdown ---------- */
+.dash-kaart--vertrek {
+  background: linear-gradient(135deg, var(--moonstone) 0%, var(--blackhills) 100%);
+  color: #fff;
+  text-align: center;
+  padding: 20px 16px 16px;
+  margin-bottom: 10px;
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+}
+
+.vertrek-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 14px;
+}
+
+.vertrek-aftel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.vertrek-blok {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+}
+
+.vertrek-blok span {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.vertrek-blok small {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.vertrek-sep {
+  font-size: 26px;
+  font-weight: 700;
+  opacity: 0.5;
+  padding: 0 1px;
+  line-height: 1.15;
+}
+
+.vertrek-sub {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
 /* ---------- Hereniging afteltimer ---------- */
 .dash-kaart--hereniging {
   background: linear-gradient(135deg, #c45555 0%, #a03030 100%);

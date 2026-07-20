@@ -42,6 +42,39 @@ function dagKey(d) {
   }
 })();
 
+// Vertrek countdown — vlucht BRU → BKK wo 22 jul 13:20 CEST
+const VERTREK = new Date(VLUCHTEN[0].vertrekIso);
+
+function updateVertrek() {
+  const vertrekKaart    = document.getElementById("vertrek-kaart");
+  const herenigingKaart = document.getElementById("hereniging-kaart");
+  if (!vertrekKaart) return;
+
+  const diff = VERTREK - new Date();
+
+  if (diff <= 0) {
+    vertrekKaart.style.display    = "none";
+    if (herenigingKaart) herenigingKaart.style.display = "";
+    return;
+  }
+
+  vertrekKaart.style.display = "";
+  if (herenigingKaart) herenigingKaart.style.display = "none";
+
+  const dagen = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const uren  = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const min   = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const sec   = Math.floor((diff % (1000 * 60)) / 1000);
+
+  document.getElementById("ver-dagen").textContent = String(dagen).padStart(2, "0");
+  document.getElementById("ver-uren").textContent  = String(uren).padStart(2, "0");
+  document.getElementById("ver-min").textContent   = String(min).padStart(2, "0");
+  document.getElementById("ver-sec").textContent   = String(sec).padStart(2, "0");
+}
+
+updateVertrek();
+setInterval(updateVertrek, 1000);
+
 // Hereniging afteltimer — landing Brussel di 18 aug 06:50 CEST
 const HERENIGING = new Date("2026-08-18T06:50:00+02:00");
 

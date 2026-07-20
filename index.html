@@ -41,6 +41,20 @@
         <div class="dash-kaart dash-kaart--compact" id="afl-countdown"></div>
       </div>
 
+      <div class="dash-kaart dash-kaart--vertrek" id="vertrek-kaart" style="display:none">
+        <div class="vertrek-label">Tot jullie vliegen! ✈️</div>
+        <div class="vertrek-aftel">
+          <div class="vertrek-blok"><span id="ver-dagen">--</span><small>dagen</small></div>
+          <div class="vertrek-sep">:</div>
+          <div class="vertrek-blok"><span id="ver-uren">--</span><small>uren</small></div>
+          <div class="vertrek-sep">:</div>
+          <div class="vertrek-blok"><span id="ver-min">--</span><small>min</small></div>
+          <div class="vertrek-sep">:</div>
+          <div class="vertrek-blok"><span id="ver-sec">--</span><small>sec</small></div>
+        </div>
+        <div class="vertrek-sub">Brussel (BRU) → Bangkok (BKK)</div>
+      </div>
+
       <div class="dash-kaart dash-kaart--hereniging" id="hereniging-kaart">
         <div class="hereniging-label">Tot Dieuw thuis is om Mitch weer te knuffelen</div>
         <div class="hereniging-aftel">
@@ -110,10 +124,23 @@
           <div class="dash-kaart-pijl">›</div>
         </a>
 
-        <div class="kijkbalk" style="margin-top:8px;">
-          <a class="knop knop--groen" id="kijklink" href="#" target="_blank" rel="noopener">▶ Kijk de aflevering op KIJK</a>
-        </div>
-        <p class="vpn-tip">Tip: zet je VPN op een Nederlandse server, anders doet KIJK moeilijk. 🌏</p>
+        <a href="huisdiertjes.html" class="dash-kaart">
+          <div class="dash-kaart-icon">🐾</div>
+          <div class="dash-kaart-body">
+            <div class="dash-kaart-titel">Huisdiertjes</div>
+            <div class="dash-kaart-sub">Puppies & kittens voor als je ze mist</div>
+          </div>
+          <div class="dash-kaart-pijl">›</div>
+        </a>
+
+        <a id="kijklink" href="#" class="dash-kaart" target="_blank" rel="noopener">
+          <div class="dash-kaart-icon">📺</div>
+          <div class="dash-kaart-body">
+            <div class="dash-kaart-titel">Kijk op KIJK</div>
+            <div class="dash-kaart-sub">VPN op NL vereist · kijk.nl 🌏</div>
+          </div>
+          <div class="dash-kaart-pijl">↗</div>
+        </a>
 
       </div>
     </main>
