@@ -7,12 +7,6 @@ const SCHEMA = [
   "2026-07-17T21:00", "2026-07-18T21:00",
 ];
 
-// Vanaf 20 juli: ma t/m vr om 20:00 (SBS6)
-const VAST_VANAF = new Date("2026-07-20T00:00:00");
-const VAST_DAGEN = [1, 2, 3, 4, 5]; // ma=1 … vr=5
-const VAST_UUR   = 20;
-const VAST_MIN   = 0;
-
 function volgendeUitzending() {
   const nu = new Date();
 
@@ -22,28 +16,18 @@ function volgendeUitzending() {
     if (d > nu) return { datum: d, nr: i + 1 };
   }
 
-  // 2. Tel hoeveel dagelijkse VAST-afleveringen al zijn uitgezonden
+  // 2. Dagelijkse afleveringen: ma t/m vr 20:00 vanaf 20 jul
+  // d loopt altijd naar het volgende weekdag-moment; skip weekenden expliciet.
+  const d = new Date("2026-07-20T20:00:00");
   let geaird = 0;
-  const teller = new Date(VAST_VANAF);
-  teller.setHours(VAST_UUR, VAST_MIN, 0, 0);
-  while (teller <= nu) {
-    if (VAST_DAGEN.includes(teller.getDay())) geaird++;
-    teller.setDate(teller.getDate() + 1);
+
+  while (d <= nu) {
+    geaird++;
+    d.setDate(d.getDate() + 1);
+    while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() + 1);
   }
 
-  // 3. Volgende datum zoeken
-  const start = nu > VAST_VANAF ? nu : VAST_VANAF;
-  const doel = new Date(start);
-  doel.setHours(VAST_UUR, VAST_MIN, 0, 0);
-
-  for (let i = 0; i < 7; i++) {
-    const kandidaat = new Date(doel);
-    kandidaat.setDate(doel.getDate() + i);
-    if (VAST_DAGEN.includes(kandidaat.getDay()) && kandidaat > nu) {
-      return { datum: kandidaat, nr: SCHEMA.length + geaird + 1 };
-    }
-  }
-  return null;
+  return { datum: d, nr: SCHEMA.length + geaird + 1 };
 }
 
 function formatCountdown(ms) {
