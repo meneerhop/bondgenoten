@@ -102,6 +102,86 @@
 
     .filter-balk { margin-top: 16px; }
 
+    .plaatsen-sectie {
+      margin-top: 18px;
+    }
+
+    .plaatsen-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--kaart);
+      border: 1.5px dashed var(--lijn);
+      border-radius: var(--radius);
+      padding: 13px 16px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--inkt-zacht);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .plaatsen-toggle:hover {
+      border-color: var(--moonstone);
+      color: var(--inkt);
+    }
+
+    .plaatsen-paneel {
+      background: var(--kaart);
+      border: 1px solid var(--lijn);
+      border-radius: var(--radius);
+      box-shadow: var(--schaduw);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .plaatsen-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--inkt-zacht);
+      display: grid;
+      gap: 6px;
+    }
+
+    .plaatsen-input,
+    .plaatsen-textarea {
+      font: inherit;
+      font-size: 15px;
+      border: 1.5px solid var(--lijn);
+      border-radius: 10px;
+      padding: 10px 12px;
+      width: 100%;
+      background: var(--papier);
+      color: var(--inkt);
+      box-sizing: border-box;
+    }
+
+    .plaatsen-textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .plaatsen-input:focus,
+    .plaatsen-textarea:focus {
+      outline: 2px solid var(--moonstone);
+      outline-offset: 1px;
+      border-color: var(--moonstone);
+    }
+
+    .plaatsen-rij {
+      display: flex;
+      gap: 8px;
+    }
+
+    .plaatsen-rij .knop { flex: 1; text-align: center; }
+
     .dagbericht {
       background: linear-gradient(135deg, #7c4a5c 0%, var(--blackhills) 100%);
       color: #fff;
@@ -151,11 +231,16 @@
       <button class="filter-knop" data-filter="reis">Van de reis</button>
     </div>
 
+    <div class="plaatsen-sectie" id="plaatsen-sectie">
+      <!-- ingevuld via JS -->
+    </div>
+
     <div class="berichten-lijst" id="berichten-lijst">
       <div class="berichten-laden">Berichten laden…</div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/nav.js"></script>
   <script>
@@ -249,6 +334,127 @@
     });
 
     laadBerichten();
+
+    // --- Bericht plaatsen ---
+    const sb = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY);
+
+    async function initPlaatsen() {
+      const { data } = await sb.auth.getSession();
+      renderPlaatsen(!!data.session);
+    }
+
+    function renderPlaatsen(ingelogd) {
+      const sectie = document.getElementById("plaatsen-sectie");
+
+      if (!ingelogd) {
+        sectie.innerHTML = `
+          <button class="plaatsen-toggle" id="plaatsen-toggle">✏️ Bericht plaatsen</button>
+          <form class="plaatsen-paneel" id="login-form" hidden>
+            <label class="plaatsen-label">E-mail
+              <input class="plaatsen-input" type="email" id="pl-email" autocomplete="username" required />
+            </label>
+            <label class="plaatsen-label">Wachtwoord
+              <input class="plaatsen-input" type="password" id="pl-ww" autocomplete="current-password" required />
+            </label>
+            <div class="plaatsen-rij">
+              <button class="knop" type="submit">Inloggen</button>
+            </div>
+            <div class="status" id="pl-login-status"></div>
+          </form>`;
+
+        document.getElementById("plaatsen-toggle").addEventListener("click", () => {
+          const form = document.getElementById("login-form");
+          form.hidden = !form.hidden;
+        });
+
+        document.getElementById("login-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const status = document.getElementById("pl-login-status");
+          status.textContent = "Bezig…";
+          status.className = "status";
+          const { error } = await sb.auth.signInWithPassword({
+            email: document.getElementById("pl-email").value.trim(),
+            password: document.getElementById("pl-ww").value,
+          });
+          if (error) {
+            status.textContent = "Inloggen mislukt: " + error.message;
+            status.className = "status status--fout";
+          } else {
+            renderPlaatsen(true);
+          }
+        });
+
+      } else {
+        sectie.innerHTML = `
+          <form class="plaatsen-paneel" id="post-form">
+            <label class="plaatsen-label">Bericht
+              <textarea class="plaatsen-textarea" id="pl-noot" placeholder="Schrijf iets liefs…"></textarea>
+            </label>
+            <label class="plaatsen-label">Foto (optioneel)
+              <input class="plaatsen-input" type="file" id="pl-foto" accept="image/*" />
+            </label>
+            <label class="plaatsen-label">Onderschrift bij foto
+              <input class="plaatsen-input" type="text" id="pl-caption" placeholder="bijv. Moffel mist je ook" />
+            </label>
+            <div class="plaatsen-rij">
+              <button class="knop knop--groen" type="submit" id="pl-verstuur">Plaatsen</button>
+              <button class="knop knop--stil" type="button" id="pl-uitloggen">Uitloggen</button>
+            </div>
+            <div class="status" id="pl-post-status"></div>
+          </form>`;
+
+        document.getElementById("pl-uitloggen").addEventListener("click", async () => {
+          await sb.auth.signOut();
+          renderPlaatsen(false);
+        });
+
+        document.getElementById("post-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const knop = document.getElementById("pl-verstuur");
+          const status = document.getElementById("pl-post-status");
+          knop.disabled = true;
+          status.textContent = "Bezig…";
+          status.className = "status";
+
+          try {
+            const noot = document.getElementById("pl-noot").value.trim();
+            const bestand = document.getElementById("pl-foto").files[0];
+            const caption = document.getElementById("pl-caption").value.trim();
+
+            if (!noot && !bestand) throw new Error("Schrijf iets of voeg een foto toe.");
+
+            let photo_url = null;
+            if (bestand) {
+              const ext = (bestand.name.split(".").pop() || "jpg").toLowerCase();
+              const pad = `${Date.now()}.${ext}`;
+              const { error: upErr } = await sb.storage.from("fotos").upload(pad, bestand, { cacheControl: "31536000", upsert: false });
+              if (upErr) throw upErr;
+              photo_url = sb.storage.from("fotos").getPublicUrl(pad).data.publicUrl;
+            }
+
+            const { error } = await sb.from("posts").insert({
+              note: noot || null,
+              photo_url,
+              photo_caption: caption || null,
+              kind: "thuis",
+            });
+            if (error) throw error;
+
+            status.textContent = "Geplaatst! ✅";
+            status.className = "status status--ok";
+            document.getElementById("post-form").reset();
+            await laadBerichten();
+          } catch (err) {
+            status.textContent = "Mislukt: " + err.message;
+            status.className = "status status--fout";
+          } finally {
+            knop.disabled = false;
+          }
+        });
+      }
+    }
+
+    initPlaatsen();
 
     const DAGBERICHTEN = [
       "Je bent mooi",
