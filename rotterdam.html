@@ -7,8 +7,100 @@
   <meta name="robots" content="noindex" />
   <title>De knapste vrouw uit Rotterdam — Dieuw in Thailand</title>
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Rotterdam pagina: romantisch palet ─────────────────── */
+    body.rtd-pagina {
+      background-color: #fff0f4;
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><text x='8'  y='32' font-size='26' fill='%23f4a8be' opacity='0.28'>♥</text><text x='54' y='70' font-size='17' fill='%23f4a8be' opacity='0.20'>♥</text><text x='3'  y='80' font-size='11' fill='%23f0b8cc' opacity='0.18'>♥</text><text x='68' y='18' font-size='11' fill='%23f0b8cc' opacity='0.18'>♥</text><text x='40' y='12' font-size='8'  fill='%23f4a8be' opacity='0.14'>♥</text><text x='76' y='50' font-size='8'  fill='%23f4a8be' opacity='0.14'>♥</text></svg>");
+      background-repeat: repeat;
+    }
+
+    .rtd-pagina .wrap {
+      /* licht roze waas over de kaart-achtergronden */
+      --kaart: #fffcfd;
+      --papier: #fff0f4;
+      --lijn: #f2d0da;
+      --accent-zacht: #fde8ef;
+    }
+
+    /* Hero ─────────────────────────────────────────────────── */
+    .rtd-pagina .rtd-hero {
+      background: linear-gradient(135deg, #c94f6d 0%, #8b2040 100%);
+      box-shadow: 0 4px 24px rgba(140, 32, 64, 0.22);
+    }
+
+    .rtd-pagina .rtd-naam {
+      font-size: 28px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+    }
+
+    /* Stats ────────────────────────────────────────────────── */
+    .rtd-pagina .ps-stat {
+      background: rgba(255,255,255,0.88);
+      border-color: #f2d0da;
+    }
+
+    .rtd-pagina .ps-stat-waarde { color: #8b2040; }
+
+    /* Sectie-titels ────────────────────────────────────────── */
+    .rtd-pagina .sectie-titel { color: #c94f6d; }
+
+    /* Waarom-lijst ─────────────────────────────────────────── */
+    .rtd-pagina .rtd-item {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid #f2d0da;
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(180,50,80,0.06);
+    }
+
+    /* Citaat-kaart ─────────────────────────────────────────── */
+    .rtd-pagina .rtd-kaart {
+      background: rgba(255,255,255,0.78);
+      border-left-color: #c94f6d;
+      border-radius: 12px;
+    }
+
+    .rtd-pagina .rtd-kaart-tekst {
+      color: #5c1a2e;
+      font-size: 15px;
+    }
+
+    .rtd-pagina .rtd-kaart-naam { color: #c94f6d; font-weight: 600; }
+
+    /* Rotterdam facts ───────────────────────────────────────── */
+    .rtd-pagina .rtd-rotterdam {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid #f2d0da;
+    }
+
+    .rtd-pagina .rtd-feit { border-bottom-color: #f2d0da; }
+
+    .rtd-pagina .rtd-feit--highlight span:first-child { color: #8b2040; }
+    .rtd-pagina .rtd-feit--highlight span:last-child  { color: #c94f6d; }
+
+    /* Terug knop ───────────────────────────────────────────── */
+    .rtd-pagina .knop--rtd {
+      background: linear-gradient(135deg, #c94f6d, #8b2040);
+      color: #fff;
+    }
+
+    /* Grote hartjes decoratie boven de hero ─────────────────── */
+    .rtd-hartjes {
+      text-align: center;
+      font-size: 28px;
+      letter-spacing: 8px;
+      margin-bottom: 10px;
+      opacity: 0.75;
+      animation: rtd-klop 1.6s ease-in-out infinite;
+    }
+
+    @keyframes rtd-klop {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.12); }
+    }
+  </style>
 </head>
-<body>
+<body class="rtd-pagina">
   <div class="wrap">
     <header class="site">
       <div class="eyebrow">ROTTERDAM 010</div>
@@ -16,6 +108,8 @@
     </header>
 
     <main>
+
+      <div class="rtd-hartjes">♥ ♥ ♥</div>
 
       <div class="rtd-hero">
         <div class="rtd-naam">Dieuwertje Pure Arlar</div>
@@ -29,7 +123,7 @@
         </div>
         <div class="ps-stat">
           <div class="ps-stat-waarde">❤️</div>
-          <div class="ps-stat-label"></div>
+          <div class="ps-stat-label">voor altijd</div>
         </div>
         <div class="ps-stat">
           <div class="ps-stat-waarde">1ste</div>
@@ -69,7 +163,7 @@
         <div class="rtd-kaart-tekst">
           "Ze is de meest lieve en zorgzaamste meid van de omgeving Rotterdam."
         </div>
-        <div class="rtd-kaart-naam">— Mitchell</div>
+        <div class="rtd-kaart-naam">— Mitchell ♥</div>
       </div>
 
       <div class="rtd-rotterdam">
@@ -80,7 +174,7 @@
         <div class="rtd-feit rtd-feit--highlight"><span>Dieuwertje Arlar</span><span>knapste student</span></div>
       </div>
 
-      <a href="index.html" class="knop knop--groen" style="display:block;text-align:center;margin-top:24px;">
+      <a href="index.html" class="knop knop--rtd" style="display:block;text-align:center;margin-top:24px;">
         ← Terug naar de reis
       </a>
 
