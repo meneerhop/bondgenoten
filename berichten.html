@@ -101,6 +101,39 @@
     }
 
     .filter-balk { margin-top: 16px; }
+
+    .dagbericht {
+      background: linear-gradient(135deg, #7c4a5c 0%, var(--blackhills) 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 28px 22px 24px;
+      margin-top: 18px;
+      text-align: center;
+      box-shadow: var(--schaduw);
+    }
+
+    .dagbericht-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 14px;
+    }
+
+    .dagbericht-tekst {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0 0 14px;
+    }
+
+    .dagbericht-van {
+      font-size: 12px;
+      opacity: 0.65;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -109,6 +142,8 @@
       <div class="eyebrow">DIEUW IN THAILAND</div>
       <h1>💌 Berichten</h1>
     </header>
+
+    <div class="dagbericht" id="dagbericht"></div>
 
     <div class="filter-balk">
       <button class="filter-knop filter-knop--actief" data-filter="alle">Alle</button>
@@ -214,6 +249,51 @@
     });
 
     laadBerichten();
+
+    const DAGBERICHTEN = [
+      "Je bent mooi",
+      "Je bent knap",
+      "Ik mis je",
+      "Je bent geweldig",
+      "Je bent mijn liefste",
+      "Ik hou van je",
+      "Je lacht het mooiste",
+      "Je bent zo sterk",
+      "Je bent bijzonder",
+      "Je bent mijn zonnetje",
+      "Je maakt me blij",
+      "Je bent de liefste",
+      "Ik denk aan je",
+      "Je bent mijn alles",
+      "Je bent uniek",
+      "Je doet het geweldig",
+      "Je bent een schat",
+      "Jij bent genoeg",
+      "Je bent zo lief",
+      "Ik ben trots op jou",
+      "Je bent prachtig",
+      "Je geeft me vlinders",
+      "Je bent een straal van licht",
+      "Je bent mijn beste vriend",
+      "Je bent onvervangbaar",
+      "Je bent een avontuur waard",
+      "Je bent mijn favoriete persoon",
+      "Je hebt het mooiste hart",
+    ];
+
+    function toonDagbericht() {
+      const el = document.getElementById("dagbericht");
+      if (!el) return;
+      const nu = new Date();
+      const dagVanHetJaar = Math.floor((nu - new Date(nu.getFullYear(), 0, 0)) / 86400000);
+      const bericht = DAGBERICHTEN[dagVanHetJaar % DAGBERICHTEN.length];
+      el.innerHTML = `
+        <div class="dagbericht-label">Bericht van Mitch</div>
+        <p class="dagbericht-tekst">${bericht}</p>
+        <div class="dagbericht-van">— Mitch ❤️</div>`;
+    }
+
+    toonDagbericht();
   </script>
 </body>
 </html>
