@@ -139,6 +139,54 @@ function initTurflijst() {
 
 initTurflijst();
 
+async function laadBerichtje() {
+  const el = document.getElementById("berichtje-kaart");
+  if (!el) return;
+
+  try {
+    const res = await fetch(
+      SUPABASE_URL + "posts?kind=eq.thuis&order=created_at.desc&limit=1&select=*",
+      { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+    );
+    const rows = await res.json();
+    if (!rows.length) { el.style.display = "none"; return; }
+    const post = rows[0];
+    const datum = new Date(post.created_at);
+    const datumStr = datum.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
+
+    const header = document.createElement("div");
+    header.className = "berichtje-header";
+    header.innerHTML = `<span class="berichtje-label">💌 Berichtje van thuis</span><span class="berichtje-datum">${datumStr}</span>`;
+    el.appendChild(header);
+
+    if (post.note) {
+      const noot = document.createElement("div");
+      noot.className = "berichtje-noot";
+      noot.textContent = post.note;
+      el.appendChild(noot);
+    }
+
+    if (post.photo_url) {
+      const foto = document.createElement("img");
+      foto.className = "berichtje-foto";
+      foto.src = post.photo_url;
+      foto.alt = post.photo_caption || "";
+      el.appendChild(foto);
+    }
+
+    if (post.photo_caption) {
+      const cap = document.createElement("div");
+      cap.className = "berichtje-caption";
+      cap.textContent = post.photo_caption;
+      el.appendChild(cap);
+    }
+  } catch (e) {
+    el.style.display = "none";
+  }
+}
+
+laadBerichtje();
+
 function startConfetti() {
   if (typeof confetti === "undefined") return;
   const kleuren = ["#46F55E", "#4CA3F8", "#F5151A", "#885225", "#a4a88d"];

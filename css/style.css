@@ -1033,6 +1033,8 @@ nav.tabs a[aria-current="page"] {
 /* ---------- Vluchten ---------- */
 .vlucht-blok { margin-top: 20px; }
 
+.vlucht-blok--voorbij { opacity: 0.4; }
+
 .vlucht-blok > h2 {
   font-size: 13px;
   font-weight: 700;
@@ -1787,6 +1789,56 @@ body.lb-actief { overflow: hidden; }
 .rtd-feit--highlight span:last-child {
   color: var(--moonstone);
   font-weight: 700;
+}
+
+/* ---------- Berichtje van thuis ---------- */
+.dash-kaart--berichtje {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  border-left: 3px solid var(--landscape);
+  margin-bottom: 10px;
+}
+
+.berichtje-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.berichtje-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+}
+
+.berichtje-datum {
+  font-size: 11px;
+  color: var(--inkt-zacht);
+  flex-shrink: 0;
+}
+
+.berichtje-noot {
+  font-size: 15px;
+  color: var(--inkt);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.berichtje-foto {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.berichtje-caption {
+  font-size: 12px;
+  color: var(--inkt-zacht);
+  text-align: center;
+  font-style: italic;
 }
 
 /* ---------- Turflijst ---------- */

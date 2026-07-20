@@ -6,7 +6,7 @@ function bouwVluchten() {
 
   for (const reis of VLUCHTEN) {
     const blok = document.createElement("section");
-    blok.className = "vlucht-blok";
+    blok.className = "vlucht-blok" + (new Date(reis.vertrekIso) < new Date() ? " vlucht-blok--voorbij" : "");
     blok.innerHTML = `<h2>${reis.richting} · ${reis.datumLabel} · ${reis.totaal}</h2>`;
 
     for (const seg of reis.segmenten) {

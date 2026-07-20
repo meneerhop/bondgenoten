@@ -16,13 +16,22 @@ const VAST_MIN   = 0;
 function volgendeUitzending() {
   const nu = new Date();
 
-  // Zoek eerst in de vaste lijst
-  for (const str of SCHEMA) {
-    const d = new Date(str);
-    if (d > nu) return d;
+  // 1. Vaste schema — episodes 1 t/m SCHEMA.length
+  for (let i = 0; i < SCHEMA.length; i++) {
+    const d = new Date(SCHEMA[i]);
+    if (d > nu) return { datum: d, nr: i + 1 };
   }
 
-  // Daarna: ma t/m vr 20:00 vanaf 20 juli
+  // 2. Tel hoeveel dagelijkse VAST-afleveringen al zijn uitgezonden
+  let geaird = 0;
+  const teller = new Date(VAST_VANAF);
+  teller.setHours(VAST_UUR, VAST_MIN, 0, 0);
+  while (teller <= nu) {
+    if (VAST_DAGEN.includes(teller.getDay())) geaird++;
+    teller.setDate(teller.getDate() + 1);
+  }
+
+  // 3. Volgende datum zoeken
   const start = nu > VAST_VANAF ? nu : VAST_VANAF;
   const doel = new Date(start);
   doel.setHours(VAST_UUR, VAST_MIN, 0, 0);
@@ -30,7 +39,9 @@ function volgendeUitzending() {
   for (let i = 0; i < 7; i++) {
     const kandidaat = new Date(doel);
     kandidaat.setDate(doel.getDate() + i);
-    if (VAST_DAGEN.includes(kandidaat.getDay()) && kandidaat > nu) return kandidaat;
+    if (VAST_DAGEN.includes(kandidaat.getDay()) && kandidaat > nu) {
+      return { datum: kandidaat, nr: SCHEMA.length + geaird + 1 };
+    }
   }
   return null;
 }
@@ -50,14 +61,15 @@ const DAGNAMEN = ["zo","ma","di","wo","do","vr","za"];
 function tickAfl() {
   const el = document.getElementById("afl-countdown");
   if (!el) return;
-  const doel = volgendeUitzending();
-  if (!doel) { el.innerHTML = ""; return; }
-  const ms = doel - new Date();
-  const tijdStr = `${doel.getHours()}:${String(doel.getMinutes()).padStart(2,"0")}`;
+  const res = volgendeUitzending();
+  if (!res) { el.innerHTML = ""; return; }
+  const { datum, nr } = res;
+  const ms = datum - new Date();
+  const tijdStr = `${datum.getHours()}:${String(datum.getMinutes()).padStart(2,"0")}`;
   el.innerHTML = `
-    <span class="afl-label">📺 De Bondgenoten</span>
+    <span class="afl-label">📺 Aflevering ${nr}</span>
     <span class="afl-tijd">${formatCountdown(ms)}</span>
-    <span class="afl-sub">${DAGNAMEN[doel.getDay()]} ${doel.getDate()}/${doel.getMonth()+1} · ${tijdStr}</span>`;
+    <span class="afl-sub">${DAGNAMEN[datum.getDay()]} ${datum.getDate()}/${datum.getMonth()+1} · ${tijdStr}</span>`;
 }
 
 tickAfl();
