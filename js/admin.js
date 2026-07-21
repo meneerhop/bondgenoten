@@ -46,6 +46,7 @@ postPaneel.addEventListener("submit", async (e) => {
   toonStatus(postStatus, "Bezig met plaatsen…");
 
   try {
+    const naam = document.getElementById("naam").value.trim();
     const noot = document.getElementById("noot").value.trim();
     const bestand = document.getElementById("foto").files[0];
     const onderschrift = document.getElementById("onderschrift").value.trim();
@@ -67,6 +68,7 @@ postPaneel.addEventListener("submit", async (e) => {
     }
 
     const { error } = await sb.from("posts").insert({
+      naam: naam || null,
       note: noot || null,
       photo_url,
       photo_caption: onderschrift || null,

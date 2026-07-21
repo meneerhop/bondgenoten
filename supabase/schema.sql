@@ -9,7 +9,8 @@ create table if not exists posts (
   note text,                -- jouw commentaar bij de aflevering / berichtje
   photo_url text,           -- publieke URL van de foto in storage
   photo_caption text,       -- bijv. "Moffel mist je ook"
-  kind text not null default 'thuis'  -- 'thuis' (van jou) of 'reis' (van haar)
+  kind text not null default 'thuis',  -- 'thuis' (van jou) of 'reis' (van haar)
+  naam text                             -- naam van de afzender
 );
 
 alter table posts enable row level security;

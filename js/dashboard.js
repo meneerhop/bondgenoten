@@ -156,7 +156,8 @@ async function laadBerichtje() {
 
     const header = document.createElement("div");
     header.className = "berichtje-header";
-    header.innerHTML = `<span class="berichtje-label">💌 Berichtje van thuis</span><span class="berichtje-datum">${datumStr}</span>`;
+    const afzender = post.naam ? post.naam : "thuis";
+    header.innerHTML = `<span class="berichtje-label">💌 Berichtje van ${afzender}</span><span class="berichtje-datum">${datumStr}</span>`;
     el.appendChild(header);
 
     if (post.note) {
