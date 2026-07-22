@@ -11,6 +11,7 @@
     { label: "Vluchten",       href: "vluchten.html",     icon: "✈" },
     { label: "Polarsteps",     href: "polarsteps.html",   icon: "🗺" },
     { label: "Rotterdam",      href: "rotterdam.html",    icon: "🌉" },
+    { label: "Thailand",       href: "thailand.html",     icon: "🇹🇭" },
     { label: "Huisdiertjes",  href: "huisdiertjes.html", icon: "🐾" },
   ];
 

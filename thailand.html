@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇹🇭</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Thailand — Dieuw in Thailand</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ---- Tabs ---- */
+    .wb-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      margin: 14px 0 18px;
+      scrollbar-width: none;
+    }
+    .wb-tabs::-webkit-scrollbar { display: none; }
+    .wb-tab {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      white-space: nowrap;
+      border: 1.5px solid var(--lijn);
+      border-radius: 99px;
+      padding: 5px 14px;
+      background: var(--kaart);
+      color: var(--inkt-zacht);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      flex-shrink: 0;
+    }
+    .wb-tab:hover { background: var(--accent-zacht); color: var(--inkt); }
+    .wb-tab--actief { background: var(--blackhills); color: #f2f3ee; border-color: var(--blackhills); }
+
+    /* ---- Zoekbalk ---- */
+    .wb-zoek-wrap { position: relative; margin: 18px 0 4px; }
+    .wb-zoek {
+      width: 100%;
+      font: inherit;
+      font-size: 15px;
+      border: 1.5px solid var(--lijn);
+      border-radius: 10px;
+      padding: 11px 14px 11px 38px;
+      background: var(--kaart);
+      color: var(--inkt);
+      box-sizing: border-box;
+      transition: border-color 0.15s;
+    }
+    .wb-zoek:focus { outline: 2px solid var(--moonstone); outline-offset: 1px; border-color: var(--moonstone); }
+    .wb-zoek-icoon {
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px; pointer-events: none; opacity: 0.5;
+    }
+
+    /* ---- Zinnenkaartjes ---- */
+    .wb-grid { display: flex; flex-direction: column; gap: 10px; }
+    .wb-kaart {
+      background: var(--kaart);
+      border: 1px solid var(--lijn);
+      border-radius: var(--radius);
+      box-shadow: var(--schaduw);
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2px 12px;
+    }
+    .wb-nl {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 17px; font-weight: 700;
+      color: var(--inkt); grid-column: 1; align-self: center;
+    }
+    .wb-fav {
+      grid-column: 2; grid-row: 1 / 4; align-self: center;
+      background: none; border: none; cursor: pointer;
+      font-size: 20px; line-height: 1; padding: 4px;
+      opacity: 0.25; transition: opacity 0.15s, transform 0.12s;
+    }
+    .wb-fav:hover { opacity: 0.6; transform: scale(1.15); }
+    .wb-fav--actief { opacity: 1; }
+    .wb-thai { grid-column: 1; font-size: 18px; color: var(--blackhills); margin: 3px 0 2px; line-height: 1.4; }
+    .wb-uitspraak { grid-column: 1; font-size: 13px; color: var(--moonstone); font-weight: 600; font-style: italic; }
+    .wb-cat-badge {
+      grid-column: 1;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--landscape); margin-top: 6px;
+    }
+    .wb-leeg { text-align: center; padding: 40px 0; color: var(--inkt-zacht); font-size: 14.5px; }
+
+    /* ---- Converter ---- */
+    .conv-kaart {
+      background: var(--blackhills);
+      color: #f2f3ee;
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--schaduw);
+    }
+    .conv-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; opacity: 0.7; margin-bottom: 10px;
+    }
+    .conv-rij {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+    .conv-veld {
+      font: inherit;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 22px; font-weight: 700;
+      background: rgba(255,255,255,0.12);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      color: #f2f3ee;
+      padding: 12px 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .conv-veld:focus { outline: none; border-color: var(--landscape); background: rgba(255,255,255,0.18); }
+    .conv-veld::placeholder { opacity: 0.4; }
+    .conv-wissel {
+      background: rgba(255,255,255,0.15);
+      border: none; border-radius: 50%;
+      width: 36px; height: 36px;
+      font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .conv-wissel:hover { background: rgba(255,255,255,0.25); }
+    .conv-munt {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; opacity: 0.7; margin-top: 4px; text-align: center;
+    }
+    .conv-kolom { display: flex; flex-direction: column; gap: 2px; }
+    .conv-koers {
+      font-size: 12px; color: var(--inkt-zacht);
+      text-align: center; margin-top: 8px;
+    }
+    .conv-koers a { color: var(--moonstone); text-decoration: none; }
+
+    /* ---- Tips ---- */
+    .tips-sectie { margin-bottom: 22px; }
+    .tips-sectie-titel {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--moonstone); margin: 0 0 10px;
+    }
+    .tips-lijst { display: flex; flex-direction: column; gap: 8px; }
+    .tips-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--kaart);
+      border: 1px solid var(--lijn);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      box-shadow: var(--schaduw);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .tips-item-icoon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+    .tips-item b { display: block; font-size: 13.5px; color: var(--inkt); margin-bottom: 2px; }
+    .tips-item span { color: var(--inkt-zacht); }
+    .tips-nood {
+      background: var(--accent-zacht);
+      border-left: 3px solid var(--moonstone);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .tips-nood b { font-family: "Space Grotesk", sans-serif; font-size: 13px; display: block; margin-bottom: 6px; color: var(--blackhills); }
+    .tips-nood-rij { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid var(--lijn); }
+    .tips-nood-rij:last-child { border-bottom: none; }
+    .tips-nood-rij span:last-child { font-weight: 700; font-family: "Space Grotesk", sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="eyebrow">DIEUW IN THAILAND</div>
+      <h1>🇹🇭 Thailand</h1>
+    </header>
+
+    <nav class="inner-tabs" id="th-tabs">
+      <button class="inner-tab inner-tab--actief" data-tab="woorden">Woordenboekje</button>
+      <button class="inner-tab" data-tab="converter">Converter</button>
+      <button class="inner-tab" data-tab="tips">Tips & info</button>
+    </nav>
+
+    <main>
+
+      <!-- ===== WOORDENBOEKJE ===== -->
+      <section id="tab-woorden">
+        <div class="wb-zoek-wrap">
+          <span class="wb-zoek-icoon">🔍</span>
+          <input class="wb-zoek" type="search" id="wb-zoek" placeholder="Zoek een zin…" />
+        </div>
+        <div class="wb-tabs" id="wb-tabs"></div>
+        <div class="wb-grid" id="wb-grid"></div>
+      </section>
+
+      <!-- ===== CONVERTER ===== -->
+      <section id="tab-converter" hidden>
+        <div class="conv-kaart">
+          <div class="conv-label">Wisselkoers</div>
+          <div class="conv-rij">
+            <div class="conv-kolom">
+              <input class="conv-veld" type="number" id="conv-van" placeholder="0" min="0" />
+              <div class="conv-munt" id="conv-van-munt">EUR</div>
+            </div>
+            <button class="conv-wissel" id="conv-wissel" title="Omwisselen">⇄</button>
+            <div class="conv-kolom">
+              <input class="conv-veld" type="number" id="conv-naar" placeholder="0" min="0" />
+              <div class="conv-munt" id="conv-naar-munt">THB</div>
+            </div>
+          </div>
+        </div>
+        <p class="conv-koers" id="conv-koers-tekst">Wisselkoers laden…</p>
+      </section>
+
+      <!-- ===== TIPS ===== -->
+      <section id="tab-tips" hidden>
+
+        <div class="tips-sectie">
+          <div class="tips-sectie-titel">Etiquette</div>
+          <div class="tips-lijst">
+            <div class="tips-item"><span class="tips-item-icoon">🙏</span><div><b>Wai-groet</b><span>Vouw je handen samen voor je borst en buig lichtjes voor respect. Gebruik het terug als iemand het eerst doet.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">👑</span><div><b>Koning</b><span>Spreek nooit negatief over de koninklijke familie — dit is bij wet verboden.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">👣</span><div><b>Schoenen uit</b><span>Trek je schoenen uit bij tempels, huizen en sommige winkeltjes. Let op het schoenenrek bij de deur.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">👕</span><div><b>Kleding bij tempels</b><span>Bedek schouders en knieën bij tempels. Sarongs worden vaak verhuurd bij de ingang.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">😊</span><div><b>Glimlach</b><span>Thailand heet "Land of Smiles" — glimlach terug, het opent deuren.</span></div></div>
+          </div>
+        </div>
+
+        <div class="tips-sectie">
+          <div class="tips-sectie-titel">Praktisch</div>
+          <div class="tips-lijst">
+            <div class="tips-item"><span class="tips-item-icoon">💸</span><div><b>Fooien</b><span>Geen verplichting, maar 20–50 THB is vriendelijk in restaurants. Afronden bij tuk-tuks en taxichauffeurs.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">🚕</span><div><b>Taxi's</b><span>Vraag altijd om de meter aan te zetten ("meter krap!"). Grab-app werkt ook uitstekend.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">💧</span><div><b>Water</b><span>Drink geen kraanwater. Flesjeswater kost ±10 THB. 7-Eleven is overal.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">☀️</span><div><b>Zon</b><span>Smeer elke ochtend zonnebrand — de zon is veel intenser dan thuis. Factor 50+ aanbevolen.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">🦟</span><div><b>Muggen</b><span>Gebruik DEET-muggenspray 's avonds, vooral buiten Bangkok. Dengue komt voor.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">🛵</span><div><b>Scooter</b><span>Rij alleen als je ervaring hebt. Draag altijd een helm. Veel ongelukken met toeristen.</span></div></div>
+            <div class="tips-item"><span class="tips-item-icoon">📶</span><div><b>Simkaart</b><span>Koop een toeristen-simkaart bij het vliegveld (AIS/DTAC/True Move). Data-pakket voor ±300 THB/maand.</span></div></div>
+          </div>
+        </div>
+
+        <div class="tips-sectie">
+          <div class="tips-sectie-titel">Noodgevallen</div>
+          <div class="tips-nood">
+            <b>Handige nummers</b>
+            <div class="tips-nood-rij"><span>Politie</span><span>191</span></div>
+            <div class="tips-nood-rij"><span>Ambulance</span><span>1669</span></div>
+            <div class="tips-nood-rij"><span>Tourist Police</span><span>1155</span></div>
+            <div class="tips-nood-rij"><span>Brand</span><span>199</span></div>
+            <div class="tips-nood-rij"><span>Belgische ambassade BKK</span><span>+66 2 108 1800</span></div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/kandidaten.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+    // ===== Inner tabs =====
+    document.querySelectorAll(".inner-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".inner-tab").forEach(t => t.classList.remove("inner-tab--actief"));
+        tab.classList.add("inner-tab--actief");
+        document.querySelectorAll("main > section").forEach(s => s.hidden = true);
+        document.getElementById("tab-" + tab.dataset.tab).hidden = false;
+      });
+    });
+
+    // ===== Woordenboekje =====
+    const ZINNEN = [
+      { nl: "Hallo",                    thai: "สวัสดี",                uitspraak: "Sa-wat-dee (kaa)",             cat: "Begroeting" },
+      { nl: "Hoe gaat het?",            thai: "สบายดีไหม",             uitspraak: "Sa-baai-dee mai?",             cat: "Begroeting" },
+      { nl: "Goed, dank je",            thai: "สบายดี ขอบคุณ",         uitspraak: "Sa-baai-dee, khob-khun",       cat: "Begroeting" },
+      { nl: "Dank je wel",              thai: "ขอบคุณ",                uitspraak: "Khob-khun (kaa)",              cat: "Begroeting" },
+      { nl: "Heel erg bedankt",         thai: "ขอบคุณมาก",             uitspraak: "Khob-khun maak",               cat: "Begroeting" },
+      { nl: "Graag gedaan",             thai: "ไม่เป็นไร",             uitspraak: "Mai pen rai",                  cat: "Begroeting" },
+      { nl: "Sorry / Excuus",           thai: "ขอโทษ",                 uitspraak: "Kho-toot (kaa)",               cat: "Begroeting" },
+      { nl: "Tot ziens",                thai: "ลาก่อน",                uitspraak: "Laa-gon",                      cat: "Begroeting" },
+      { nl: "Ja",                       thai: "ใช่",                   uitspraak: "Chai",                         cat: "Begroeting" },
+      { nl: "Nee",                      thai: "ไม่",                   uitspraak: "Mai",                          cat: "Begroeting" },
+      { nl: "Ik begrijp het niet",      thai: "ไม่เข้าใจ",             uitspraak: "Mai kao jai",                  cat: "Begroeting" },
+      { nl: "Kun je dat herhalen?",     thai: "พูดอีกทีได้ไหม",        uitspraak: "Puut iik tii dai mai?",        cat: "Begroeting" },
+      { nl: "Spreek je Engels?",        thai: "พูดภาษาอังกฤษได้ไหม",  uitspraak: "Puut phaasaa Ang-grit dai mai?", cat: "Begroeting" },
+
+      { nl: "Lekker!",                  thai: "อร่อย",                 uitspraak: "A-roi!",                       cat: "Eten & drinken" },
+      { nl: "Heel lekker!",             thai: "อร่อยมาก",              uitspraak: "A-roi maak!",                  cat: "Eten & drinken" },
+      { nl: "Niet pittig",              thai: "ไม่เผ็ด",               uitspraak: "Mai phet",                     cat: "Eten & drinken" },
+      { nl: "Een beetje pittig",        thai: "เผ็ดนิดหน่อย",          uitspraak: "Phet nit noi",                 cat: "Eten & drinken" },
+      { nl: "Vegetarisch",              thai: "เจ / มังสวิรัติ",       uitspraak: "Jay / Mang-sa-wi-rat",         cat: "Eten & drinken" },
+      { nl: "Geen vlees",               thai: "ไม่เอาเนื้อ",           uitspraak: "Mai ao nuea",                  cat: "Eten & drinken" },
+      { nl: "Water (zonder ijs)",       thai: "น้ำเปล่า",              uitspraak: "Naam plao",                    cat: "Eten & drinken" },
+      { nl: "Met ijs",                  thai: "ใส่น้ำแข็ง",            uitspraak: "Sai naam khaeng",              cat: "Eten & drinken" },
+      { nl: "Koffie",                   thai: "กาแฟ",                  uitspraak: "Gaa-fae",                      cat: "Eten & drinken" },
+      { nl: "Bier",                     thai: "เบียร์",                uitspraak: "Bia",                          cat: "Eten & drinken" },
+      { nl: "De rekening",              thai: "เช็คบิล",               uitspraak: "Chek bin",                     cat: "Eten & drinken" },
+      { nl: "Apart betalen",            thai: "แยกบิล",                uitspraak: "Yaek bin",                     cat: "Eten & drinken" },
+
+      { nl: "Hoeveel kost het?",        thai: "เท่าไหร่",              uitspraak: "Tao rai?",                     cat: "Transport" },
+      { nl: "Te duur",                  thai: "แพงเกินไป",             uitspraak: "Phaeng goen pai",              cat: "Transport" },
+      { nl: "Kun je korting geven?",    thai: "ลดได้ไหม",              uitspraak: "Lot dai mai?",                 cat: "Transport" },
+      { nl: "Stop hier",                thai: "จอดตรงนี้",             uitspraak: "Jot trong nee",                cat: "Transport" },
+      { nl: "Rechtdoor",                thai: "ตรงไป",                 uitspraak: "Trong pai",                    cat: "Transport" },
+      { nl: "Links",                    thai: "ซ้าย",                  uitspraak: "Saai",                         cat: "Transport" },
+      { nl: "Rechts",                   thai: "ขวา",                   uitspraak: "Khwaa",                        cat: "Transport" },
+      { nl: "Waar is…?",               thai: "…อยู่ที่ไหน",           uitspraak: "…yoo tee nai?",               cat: "Transport" },
+      { nl: "Vliegveld",                thai: "สนามบิน",               uitspraak: "Sa-naam-bin",                  cat: "Transport" },
+      { nl: "Taxi",                     thai: "แท็กซี่",               uitspraak: "Taek-see",                     cat: "Transport" },
+      { nl: "Tuk-tuk",                  thai: "ตุ๊กตุ๊ก",              uitspraak: "Tuk-tuk",                      cat: "Transport" },
+      { nl: "Hotel",                    thai: "โรงแรม",                uitspraak: "Rong-raem",                    cat: "Transport" },
+
+      { nl: "Hoeveel kost dit?",        thai: "นี่เท่าไหร่",           uitspraak: "Nee tao rai?",                 cat: "Winkelen" },
+      { nl: "Ik neem dit",              thai: "เอาอันนี้",             uitspraak: "Ao an nee",                    cat: "Winkelen" },
+      { nl: "Ik wil dit niet",          thai: "ไม่เอา",                uitspraak: "Mai ao",                       cat: "Winkelen" },
+      { nl: "Goedkoper?",               thai: "ถูกกว่านี้ได้ไหม",     uitspraak: "Tuuk gwaa nee dai mai?",       cat: "Winkelen" },
+      { nl: "Ik kijk alleen",           thai: "ดูเฉยๆ",                uitspraak: "Duu choei choei",              cat: "Winkelen" },
+      { nl: "Markt",                    thai: "ตลาด",                  uitspraak: "Ta-laat",                      cat: "Winkelen" },
+      { nl: "Mooi!",                    thai: "สวยมาก",                uitspraak: "Suay maak!",                   cat: "Winkelen" },
+
+      { nl: "Help!",                    thai: "ช่วยด้วย",              uitspraak: "Chuay duay!",                  cat: "Noodgeval" },
+      { nl: "Bel de politie",           thai: "โทรหาตำรวจ",            uitspraak: "Toh haa tam-ruat",             cat: "Noodgeval" },
+      { nl: "Ik heb een dokter nodig",  thai: "ต้องการหมอ",            uitspraak: "Tong gaan mor",                cat: "Noodgeval" },
+      { nl: "Ziekenhuis",               thai: "โรงพยาบาล",             uitspraak: "Rong pha-ya-baan",             cat: "Noodgeval" },
+      { nl: "Ik ben ziek",              thai: "ฉันป่วย",               uitspraak: "Chan puay",                    cat: "Noodgeval" },
+      { nl: "Ik ben verdwaald",         thai: "ฉันหลงทาง",             uitspraak: "Chan long taang",              cat: "Noodgeval" },
+      { nl: "Apotheek",                 thai: "ร้านขายยา",             uitspraak: "Raan kaai yaa",                cat: "Noodgeval" },
+      { nl: "Dief!",                    thai: "ขโมย",                  uitspraak: "Kha-moi!",                     cat: "Noodgeval" },
+
+      { nl: "1 – één",                 thai: "หนึ่ง",                 uitspraak: "Nueng",                        cat: "Getallen" },
+      { nl: "2 – twee",                thai: "สอง",                   uitspraak: "Song",                         cat: "Getallen" },
+      { nl: "3 – drie",                thai: "สาม",                   uitspraak: "Sam",                          cat: "Getallen" },
+      { nl: "4 – vier",                thai: "สี่",                   uitspraak: "See",                          cat: "Getallen" },
+      { nl: "5 – vijf",                thai: "ห้า",                   uitspraak: "Haa",                          cat: "Getallen" },
+      { nl: "6 – zes",                 thai: "หก",                    uitspraak: "Hok",                          cat: "Getallen" },
+      { nl: "7 – zeven",               thai: "เจ็ด",                  uitspraak: "Jet",                          cat: "Getallen" },
+      { nl: "8 – acht",                thai: "แปด",                   uitspraak: "Paet",                         cat: "Getallen" },
+      { nl: "9 – negen",               thai: "เก้า",                  uitspraak: "Gao",                          cat: "Getallen" },
+      { nl: "10 – tien",               thai: "สิบ",                   uitspraak: "Sip",                          cat: "Getallen" },
+      { nl: "20 – twintig",            thai: "ยี่สิบ",                uitspraak: "Yii-sip",                      cat: "Getallen" },
+      { nl: "100 – honderd",           thai: "หนึ่งร้อย",             uitspraak: "Nueng roi",                    cat: "Getallen" },
+    ];
+
+    const CATS = ["Favorieten", "Alles", ...new Set(ZINNEN.map(z => z.cat))];
+    let actieveCat = "Alles";
+    let zoekTekst  = "";
+
+    function getFavorieten() {
+      try { return JSON.parse(localStorage.getItem("wb-favorieten") || "[]"); } catch { return []; }
+    }
+
+    function toggleFavoriet(index) {
+      const favs = getFavorieten();
+      const i = favs.indexOf(index);
+      if (i === -1) favs.push(index); else favs.splice(i, 1);
+      localStorage.setItem("wb-favorieten", JSON.stringify(favs));
+      renderWoorden();
+    }
+
+    function renderWoordTabs() {
+      const el = document.getElementById("wb-tabs");
+      el.innerHTML = CATS.map(cat =>
+        `<button class="wb-tab${cat === actieveCat ? " wb-tab--actief" : ""}" data-cat="${cat}">${cat}</button>`
+      ).join("");
+      el.querySelectorAll(".wb-tab").forEach(btn => {
+        btn.addEventListener("click", () => { actieveCat = btn.dataset.cat; renderWoorden(); });
+      });
+    }
+
+    function renderWoorden() {
+      renderWoordTabs();
+      const favs  = getFavorieten();
+      const query = zoekTekst.toLowerCase();
+      let lijst   = ZINNEN.map((z, i) => ({ ...z, index: i }));
+
+      if (actieveCat === "Favorieten") {
+        lijst = lijst.filter(z => favs.includes(z.index));
+      } else if (actieveCat !== "Alles") {
+        lijst = lijst.filter(z => z.cat === actieveCat);
+      }
+
+      if (query) {
+        lijst = lijst.filter(z =>
+          z.nl.toLowerCase().includes(query) ||
+          z.uitspraak.toLowerCase().includes(query) ||
+          z.thai.includes(query)
+        );
+      }
+
+      const grid = document.getElementById("wb-grid");
+      if (!lijst.length) {
+        grid.innerHTML = `<div class="wb-leeg">${actieveCat === "Favorieten" ? "Nog geen favorieten — tik op ♡ om ze op te slaan." : "Geen zinnen gevonden."}</div>`;
+        return;
+      }
+
+      grid.innerHTML = lijst.map(z => {
+        const isFav = favs.includes(z.index);
+        return `<div class="wb-kaart">
+          <div class="wb-nl">${z.nl}</div>
+          <button class="wb-fav${isFav ? " wb-fav--actief" : ""}" data-index="${z.index}" aria-label="Favoriet">${isFav ? "♥" : "♡"}</button>
+          <div class="wb-thai">${z.thai}</div>
+          <div class="wb-uitspraak">${z.uitspraak}</div>
+          <div class="wb-cat-badge">${z.cat}</div>
+        </div>`;
+      }).join("");
+
+      grid.querySelectorAll(".wb-fav").forEach(btn => {
+        btn.addEventListener("click", () => toggleFavoriet(parseInt(btn.dataset.index)));
+      });
+    }
+
+    document.getElementById("wb-zoek").addEventListener("input", e => {
+      zoekTekst = e.target.value;
+      renderWoorden();
+    });
+
+    renderWoorden();
+
+    // ===== Converter =====
+    let koers = null;
+    let richting = "EUR_THB"; // of "THB_EUR"
+
+    async function laadKoers() {
+      try {
+        const res  = await fetch("https://api.frankfurter.app/latest?from=EUR&to=THB");
+        const data = await res.json();
+        koers = data.rates.THB;
+        document.getElementById("conv-koers-tekst").textContent =
+          `1 EUR = ${koers.toFixed(2)} THB · Live koers`;
+      } catch {
+        koers = 38.5; // fallback
+        document.getElementById("conv-koers-tekst").textContent =
+          `1 EUR ≈ ${koers.toFixed(2)} THB · Geschatte koers`;
+      }
+    }
+
+    function convReken(bron, doel, factor) {
+      const val = parseFloat(bron.value);
+      doel.value = isNaN(val) ? "" : (val * factor).toFixed(2);
+    }
+
+    function updateConverter() {
+      const van  = document.getElementById("conv-van");
+      const naar = document.getElementById("conv-naar");
+      const factor = richting === "EUR_THB" ? koers : (1 / koers);
+      convReken(van, naar, factor);
+    }
+
+    document.getElementById("conv-van").addEventListener("input", () => {
+      if (!koers) return;
+      const factor = richting === "EUR_THB" ? koers : (1 / koers);
+      convReken(document.getElementById("conv-van"), document.getElementById("conv-naar"), factor);
+    });
+
+    document.getElementById("conv-naar").addEventListener("input", () => {
+      if (!koers) return;
+      const factor = richting === "EUR_THB" ? (1 / koers) : koers;
+      convReken(document.getElementById("conv-naar"), document.getElementById("conv-van"), factor);
+    });
+
+    document.getElementById("conv-wissel").addEventListener("click", () => {
+      richting = richting === "EUR_THB" ? "THB_EUR" : "EUR_THB";
+      const isEurThb = richting === "EUR_THB";
+      document.getElementById("conv-van-munt").textContent  = isEurThb ? "EUR" : "THB";
+      document.getElementById("conv-naar-munt").textContent = isEurThb ? "THB" : "EUR";
+      document.getElementById("conv-van").value  = "";
+      document.getElementById("conv-naar").value = "";
+    });
+
+    laadKoers();
+  </script>
+</body>
+</html>
