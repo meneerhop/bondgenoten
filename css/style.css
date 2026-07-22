@@ -2122,14 +2122,15 @@ body.lb-actief { overflow: hidden; }
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--moonstone);
+  color: inherit;
+  opacity: 0.75;
   margin-bottom: 8px;
 }
 
 .dagbericht-tekst {
   font-size: 15px;
   line-height: 1.65;
-  color: var(--inkt);
+  color: inherit;
   white-space: pre-wrap;
   margin: 0 0 10px;
 }
@@ -2137,5 +2138,6 @@ body.lb-actief { overflow: hidden; }
 .dagbericht-van {
   font-size: 12.5px;
   font-weight: 600;
-  color: var(--inkt-zacht);
+  color: inherit;
+  opacity: 0.7;
 }
