@@ -2308,3 +2308,126 @@ body.lb-actief { overflow: hidden; }
   font-weight: 700;
   color: var(--inkt);
 }
+
+/* ---------- Mijlpalen ---------- */
+.dash-kaart--mijlpaal {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 10px;
+}
+
+.mijlpaal-kaart--viering {
+  background: linear-gradient(135deg, var(--moonstone) 0%, var(--blackhills) 100%);
+  color: #f2f3ee;
+  text-align: center;
+  padding: 22px 18px 18px;
+  border-color: transparent;
+}
+
+.mijlpaal-emoji-groot {
+  font-size: 40px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.mijlpaal-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin-bottom: 6px;
+}
+
+.mijlpaal-tekst-groot {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.mijlpaal-dag-label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.mijlpaal-kaart--volgende {
+  padding: 14px 16px;
+}
+
+.mijlpaal-header-rij {
+  margin-bottom: 10px;
+}
+
+.mijlpaal-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+}
+
+.mijlpaal-volgende-rij {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mijlpaal-volgende-emoji {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.mijlpaal-volgende-tekst {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--inkt);
+}
+
+.mijlpaal-volgende-sub {
+  font-size: 12px;
+  color: var(--inkt-zacht);
+  margin-top: 2px;
+}
+
+.mijlpaal-feed {
+  border-top: 1px solid var(--lijn);
+  margin-top: 12px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mijlpaal-kaart--viering .mijlpaal-feed {
+  border-top-color: rgba(255, 255, 255, 0.2);
+  margin-top: 14px;
+  padding-top: 12px;
+}
+
+.mijlpaal-feed-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mijlpaal-feed-emoji { font-size: 16px; flex-shrink: 0; }
+
+.mijlpaal-feed-naam {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--inkt);
+  flex: 1;
+}
+
+.mijlpaal-kaart--viering .mijlpaal-feed-naam { color: rgba(255, 255, 255, 0.85); }
+
+.mijlpaal-feed-dag {
+  font-size: 11px;
+  color: var(--inkt-zacht);
+}
+
+.mijlpaal-kaart--viering .mijlpaal-feed-dag { color: rgba(255, 255, 255, 0.5); }
