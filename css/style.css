@@ -2141,3 +2141,148 @@ body.lb-actief { overflow: hidden; }
   color: inherit;
   opacity: 0.7;
 }
+
+/* ---------- Slaap-overlap widget ---------- */
+.dash-kaart--slaap {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  gap: 0;
+}
+
+.so-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.so-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+}
+
+.so-status {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--inkt-zacht);
+}
+
+.so-status--groen { color: #3d9e5f; }
+
+.so-rijen { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+
+.so-rij {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+}
+
+.so-naam {
+  min-width: 100px;
+  font-weight: 600;
+  color: var(--inkt);
+}
+
+.so-tijd {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  min-width: 42px;
+  font-variant-numeric: tabular-nums;
+  color: var(--inkt);
+}
+
+.so-pip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lijn);
+  flex-shrink: 0;
+}
+
+.so-pip--wakker { background: #3d9e5f; }
+
+.so-staat {
+  font-size: 12px;
+  color: var(--inkt-zacht);
+}
+
+.so-balk {
+  display: grid;
+  grid-template-columns: repeat(24, 1fr);
+  gap: 2px;
+  height: 8px;
+}
+
+.so-blok {
+  border-radius: 2px;
+  background: var(--lijn);
+  height: 100%;
+}
+
+.so-blok--overlap { background: var(--landscape); }
+.so-blok--nu { background: var(--blackhills); }
+
+.so-balk-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--inkt-zacht);
+}
+
+.so-overlap-tekst {
+  font-size: 11px;
+  color: var(--inkt-zacht);
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* ---------- Foto reacties ---------- */
+.fotos-reacties {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+
+.reactie-knop {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--kaart);
+  border: 1.5px solid var(--lijn);
+  border-radius: 99px;
+  padding: 3px 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, transform 0.1s;
+  line-height: 1;
+}
+
+.reactie-knop:hover {
+  border-color: var(--moonstone);
+  background: var(--accent-zacht);
+  transform: scale(1.1);
+}
+
+.reactie-knop:active { transform: scale(0.95); }
+
+.reactie-knop--actief {
+  background: var(--accent-zacht);
+  border-color: var(--moonstone);
+}
+
+.reactie-tel {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--inkt);
+}

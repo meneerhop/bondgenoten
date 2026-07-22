@@ -1,20 +1,25 @@
 const sb = window.supabase.createClient(SUPABASE_PROJECT_URL, SUPABASE_ANON_KEY);
 const BUCKET = "fotos";
 const FOLDER = "reis";
+const EMOJIS = ["❤️", "😂", "😮"];
+
+let allReacties = [];
 
 function getNaam() {
   return (localStorage.getItem("fotos-naam") || "").trim();
 }
 
+function veiligNaamVan(naam) {
+  return naam.replace(/[^a-z0-9]/gi, "_");
+}
+
 function naamInBestand(bestandsnaam) {
-  // formaat: {timestamp}_{naam}_{origineel}
   const delen = bestandsnaam.split("_");
   return delen.length >= 2 ? delen[1] : "";
 }
 
 function leesNaamUitBestand(bestandsnaam) {
-  const raw = naamInBestand(bestandsnaam);
-  return raw.replace(/_/g, " ");
+  return naamInBestand(bestandsnaam).replace(/_/g, " ");
 }
 
 function renderUploadBalk() {
@@ -61,7 +66,7 @@ async function uploadFotos(e) {
   let ok = 0;
   for (const bestand of bestanden) {
     const veiligNaam = bestand.name.replace(/[^a-z0-9._-]/gi, "_");
-    const pad = `${FOLDER}/${Date.now()}_${naam.replace(/[^a-z0-9]/gi, "_")}_${veiligNaam}`;
+    const pad = `${FOLDER}/${Date.now()}_${veiligNaamVan(naam)}_${veiligNaam}`;
     const { error } = await sb.storage.from(BUCKET).upload(pad, bestand, { upsert: false });
     if (!error) ok++;
   }
@@ -81,6 +86,74 @@ async function verwijderFoto(pad, el) {
   el.remove();
 }
 
+// ---------- Reacties ----------
+
+async function laadReacties() {
+  try {
+    const res = await fetch(
+      SUPABASE_URL + "posts?kind=eq.reactie&select=id,note,photo_url,naam",
+      { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+    );
+    allReacties = await res.json();
+  } catch { allReacties = []; }
+}
+
+function renderReacties(bestandsnaam) {
+  const el = document.querySelector(`.fotos-reacties[data-pad="${CSS.escape(bestandsnaam)}"]`);
+  if (!el) return;
+
+  const naam = getNaam();
+  const myNaam = naam ? veiligNaamVan(naam) : null;
+
+  el.innerHTML = EMOJIS.map(emoji => {
+    const rijen = allReacties.filter(r => r.photo_url === bestandsnaam && r.note === emoji);
+    const tel   = rijen.length;
+    const ikOok = myNaam && rijen.some(r => r.naam === myNaam);
+    return `<button class="reactie-knop${ikOok ? " reactie-knop--actief" : ""}" data-emoji="${emoji}" data-pad="${bestandsnaam}">
+      ${emoji}${tel > 0 ? `<span class="reactie-tel">${tel}</span>` : ""}
+    </button>`;
+  }).join("");
+
+  el.querySelectorAll(".reactie-knop").forEach(btn => {
+    btn.addEventListener("click", () => toggleReactie(btn.dataset.pad, btn.dataset.emoji));
+  });
+}
+
+async function toggleReactie(bestandsnaam, emoji) {
+  const naam = getNaam();
+  if (!naam) { alert("Kies eerst een naam om te reageren."); return; }
+  const myNaam = veiligNaamVan(naam);
+
+  const bestaande = allReacties.find(
+    r => r.photo_url === bestandsnaam && r.note === emoji && r.naam === myNaam
+  );
+
+  if (bestaande) {
+    await fetch(SUPABASE_URL + `posts?id=eq.${bestaande.id}`, {
+      method: "DELETE",
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
+    });
+    allReacties = allReacties.filter(r => r.id !== bestaande.id);
+  } else {
+    const res = await fetch(SUPABASE_URL + "posts", {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: "Bearer " + SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+        Prefer: "return=representation"
+      },
+      body: JSON.stringify({ kind: "reactie", naam: myNaam, note: emoji, photo_url: bestandsnaam })
+    });
+    const data = await res.json();
+    if (Array.isArray(data) && data[0]) allReacties.push(data[0]);
+  }
+
+  renderReacties(bestandsnaam);
+}
+
+// ---------- Foto's laden ----------
+
 async function laadFotos() {
   const grid = document.getElementById("fotos-grid");
   grid.innerHTML = `<p class="leeg">Laden…</p>`;
@@ -95,17 +168,16 @@ async function laadFotos() {
   }
 
   const naam = getNaam();
-  const veiligNaam = naam ? naam.replace(/[^a-z0-9]/gi, "_") : null;
+  const myNaam = naam ? veiligNaamVan(naam) : null;
 
   const fmtDag = new Intl.DateTimeFormat("nl-NL", { weekday: "long", day: "numeric", month: "long" });
-
-  const urls = data.map(f => `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${BUCKET}/${FOLDER}/${f.name}`);
+  const urls   = data.map(f => `${SUPABASE_PROJECT_URL}/storage/v1/object/public/${BUCKET}/${FOLDER}/${f.name}`);
 
   // Groepeer per dag
   const groepen = [];
   let huidigeDag = null;
   data.forEach((f, i) => {
-    const datum = f.created_at ? new Date(f.created_at) : null;
+    const datum     = f.created_at ? new Date(f.created_at) : null;
     const dagSleutel = datum ? datum.toISOString().slice(0, 10) : "onbekend";
     if (dagSleutel !== huidigeDag) {
       huidigeDag = dagSleutel;
@@ -116,8 +188,8 @@ async function laadFotos() {
 
   grid.innerHTML = groepen.map(g => {
     const items = g.items.map(({ f, i, url }) => {
-      const pad = `${FOLDER}/${f.name}`;
-      const eigenFoto = veiligNaam && naamInBestand(f.name) === veiligNaam;
+      const pad        = `${FOLDER}/${f.name}`;
+      const eigenFoto  = myNaam && naamInBestand(f.name) === myNaam;
       const verwijderKnop = eigenFoto
         ? `<button class="fotos-verwijder" data-pad="${pad}" aria-label="Verwijder foto">✕</button>`
         : "";
@@ -128,6 +200,7 @@ async function laadFotos() {
         </button>
         ${verwijderKnop}
         ${poster ? `<span class="fotos-poster">${poster}</span>` : ""}
+        <div class="fotos-reacties" data-pad="${f.name}"></div>
       </div>`;
     }).join("");
     return `
@@ -137,7 +210,7 @@ async function laadFotos() {
 
   grid.querySelectorAll(".fotos-item img").forEach(img => {
     img.addEventListener("error", () => {
-      const wrap = img.closest(".fotos-item-wrap");
+      const wrap    = img.closest(".fotos-item-wrap");
       const dagGrid = wrap.closest(".fotos-dag-grid");
       wrap.remove();
       if (!dagGrid.querySelector(".fotos-item-wrap")) {
@@ -157,12 +230,18 @@ async function laadFotos() {
       verwijderFoto(btn.dataset.pad, btn.closest(".fotos-item-wrap"));
     });
   });
+
+  // Laad reacties en render ze per foto
+  await laadReacties();
+  data.forEach(f => renderReacties(f.name));
 }
+
+// ---------- Lightbox ----------
 
 let lbUrls = [], lbIndex = 0;
 
 function openLightbox(urls, index) {
-  lbUrls = urls;
+  lbUrls  = urls;
   lbIndex = index;
 
   let lb = document.getElementById("fotos-lightbox");
@@ -199,7 +278,7 @@ function navigeerLb(richting) {
 }
 
 function updateLightbox() {
-  const foto = document.querySelector(".lb-foto");
+  const foto   = document.querySelector(".lb-foto");
   if (foto) foto.src = lbUrls[lbIndex];
   const links  = document.querySelector(".lb-pijl--links");
   const rechts = document.querySelector(".lb-pijl--rechts");
