@@ -60,7 +60,7 @@ function updateSlaapWidget() {
     </div>
     <div class="so-rijen">
       <div class="so-rij">
-        <span class="so-naam">Mitch 🇧🇪</span>
+        <span class="so-naam">Mitch 🇳🇱</span>
         <span class="so-tijd">${tijdStr(nu, "Europe/Amsterdam")}</span>
         <span class="so-pip${mitchWakker ? " so-pip--wakker" : ""}"></span>
         <span class="so-staat">${mitchWakker ? "wakker" : "slaapt"}</span>
