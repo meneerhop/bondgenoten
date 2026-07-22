@@ -41,8 +41,12 @@ function renderKandidaten() {
     ? KANDIDATEN
     : KANDIDATEN.filter(k => k.groep === actieveFilter);
 
-  const actief        = gefilterd.filter(k => k.actief);
-  const uitgeschakeld = gefilterd.filter(k => !k.actief);
+  const sorter = actieveFilter === "alle"
+    ? (a, b) => a.naam.localeCompare(b.naam, "nl")
+    : () => 0;
+
+  const actief        = gefilterd.filter(k => k.actief).sort(sorter);
+  const uitgeschakeld = gefilterd.filter(k => !k.actief).sort(sorter);
 
   const groepen = ["alle", ...Object.keys(GROEP_KLEUR)];
 
