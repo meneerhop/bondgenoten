@@ -12,7 +12,7 @@ const KANDIDATEN = [
   // Bloedzuigers
   { naam: "Can",        foto: BASE + "can.jpg",        groep: "bloedzuigers", actief: true },
   { naam: "Fabiënne",  foto: BASE + "fabienne.jpg",   groep: "bloedzuigers", actief: true },
-  { naam: "Milan",      foto: BASE + "milan.jpg",      groep: "bloedzuigers", actief: true },
+  { naam: "Milan",      foto: BASE + "milan.jpg",      groep: "slangen",      actief: true },
   { naam: "Wesley",     foto: BASE + "wesley.jpg",     groep: "bloedzuigers", actief: true },
   // Gieren
   { naam: "Anouk",      foto: BASE + "anouk.jpg",      groep: "gieren",       actief: true },
@@ -28,7 +28,7 @@ const KANDIDATEN = [
   { naam: "Mila",       foto: BASE + "mila.jpg",       groep: "slangen",      actief: true },
   { naam: "Ricardo",    foto: BASE + "ricardo.jpg",    groep: "slangen",      actief: true },
   { naam: "Simone",     foto: BASE + "simone.jpg",     groep: "slangen",      actief: true },
-  { naam: "Valentijne", foto: BASE + "valentijne.jpg", groep: "slangen",      actief: true },
+  { naam: "Valentijne", foto: BASE + "valentijne.jpg", groep: "bloedzuigers", actief: true },
   // Vossen
   { naam: "Casper",     foto: BASE + "casper.jpg",     groep: "vossen",       actief: true },
   { naam: "Jordy",      foto: BASE + "jordy.jpg",      groep: "vossen",       actief: true },
