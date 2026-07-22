@@ -29,6 +29,7 @@ const VLUCHTEN = [
       {
         code: "HU492 · Hainan Airlines",
         duur: "9u50",
+        radar: "https://www.flightradar24.com/HU492",
         stappen: [
           { tijd: "13:20", plek: "Brussel (BRU)", sub: "wo 22 jul" },
           { tijd: "05:10", plek: "Beijing (PEK) · Terminal 2", sub: "do 23 jul, lokale tijd" },
@@ -38,6 +39,7 @@ const VLUCHTEN = [
       {
         code: "HU429 · Hainan Airlines",
         duur: "5u05",
+        radar: "https://www.flightradar24.com/HU429",
         stappen: [
           { tijd: "08:15", plek: "Beijing (PEK) · Terminal 2", sub: "do 23 jul" },
           { tijd: "12:20", plek: "Bangkok (BKK) · Suvarnabhumi", sub: "do 23 jul, lokale tijd" },
@@ -54,6 +56,7 @@ const VLUCHTEN = [
       {
         code: "HU430 · Hainan Airlines",
         duur: "5u05",
+        radar: "https://www.flightradar24.com/HU430",
         stappen: [
           { tijd: "13:50", plek: "Bangkok (BKK) · Suvarnabhumi", sub: "ma 17 aug" },
           { tijd: "19:55", plek: "Beijing (PEK) · Terminal 2", sub: "ma 17 aug, lokale tijd" },
@@ -63,6 +66,7 @@ const VLUCHTEN = [
       {
         code: "HU491 · Hainan Airlines",
         duur: "9u50",
+        radar: "https://www.flightradar24.com/HU491",
         stappen: [
           { tijd: "03:00", plek: "Beijing (PEK) · Terminal 2", sub: "di 18 aug" },
           { tijd: "06:50", plek: "Brussel (BRU)", sub: "di 18 aug, lokale tijd" },

@@ -29,6 +29,7 @@ function bouwVluchten() {
             )
             .join("")}
         </div>
+        ${seg.radar ? `<div class="vlucht-radar"><a href="${seg.radar}" target="_blank" rel="noopener" class="vlucht-radar-link">✈ Volg live op FlightRadar24 →</a></div>` : ""}
       `;
       blok.appendChild(kaart);
     }

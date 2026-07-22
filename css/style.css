@@ -1188,6 +1188,28 @@ nav.tabs a[aria-current="page"] {
 
 .route .stap span { color: var(--inkt-zacht); }
 
+.vlucht-radar {
+  grid-column: 1 / -1;
+  margin-top: 10px;
+}
+
+.vlucht-radar-link {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--moonstone);
+  text-decoration: none;
+  border: 1.5px solid var(--lijn);
+  border-radius: 99px;
+  padding: 4px 12px;
+  transition: border-color 0.12s, background 0.12s;
+}
+
+.vlucht-radar-link:hover {
+  border-color: var(--moonstone);
+  background: var(--accent-zacht);
+}
+
 .overstap {
   font-size: 12px;
   font-weight: 600;
