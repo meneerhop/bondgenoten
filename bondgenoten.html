@@ -54,13 +54,21 @@
   <script src="js/ranking.js"></script>
   <script src="js/nav.js"></script>
   <script>
+    let clipsInterval = null;
+    let tikTokScriptGeladen = false;
+
     document.querySelectorAll(".inner-tab").forEach(tab => {
       tab.addEventListener("click", () => {
         document.querySelectorAll(".inner-tab").forEach(t => t.classList.remove("inner-tab--actief"));
         tab.classList.add("inner-tab--actief");
         document.querySelectorAll("main > section").forEach(s => s.hidden = true);
         document.getElementById("tab-" + tab.dataset.tab).hidden = false;
-        if (tab.dataset.tab === "clips") laadClips();
+
+        clearInterval(clipsInterval);
+        if (tab.dataset.tab === "clips") {
+          laadClips();
+          clipsInterval = setInterval(laadClips, 30000);
+        }
       });
     });
 
@@ -69,12 +77,16 @@
       return m ? m[1] : null;
     }
 
-    let clipsGeladen = false;
+    function datumNaarMs(s) {
+      const m = { januari:0,februari:1,maart:2,april:3,mei:4,juni:5,juli:6,augustus:7,september:8,oktober:9,november:10,december:11 };
+      if (!s) return 0;
+      const [d, mn, j] = s.toLowerCase().split(' ');
+      return new Date(+j, m[mn] ?? 0, +d).getTime();
+    }
+
+    let vorigeAantal = -1;
 
     async function laadClips() {
-      if (clipsGeladen) return;
-      clipsGeladen = true;
-
       const grid = document.getElementById("clips-grid");
       try {
         const res = await fetch(
@@ -85,8 +97,16 @@
 
         if (!Array.isArray(data) || !data.length) {
           grid.innerHTML = `<p class="leeg" style="text-align:center;padding:32px 0;">Nog geen clips — ze worden hier getoond zodra ze toegevoegd zijn.</p>`;
+          vorigeAantal = 0;
           return;
         }
+
+        // Niet opnieuw renderen als niets veranderd is
+        if (data.length === vorigeAantal) return;
+        vorigeAantal = data.length;
+
+        // Nieuwste datum bovenaan
+        data.sort((a, b) => datumNaarMs(b.photo_caption) - datumNaarMs(a.photo_caption));
 
         // Groepeer per datum
         const groepen = [];
@@ -114,12 +134,18 @@
           return datumHtml + clipsHtml;
         }).join("");
 
-        const script = document.createElement("script");
-        script.async = true;
-        script.src = "https://www.tiktok.com/embed.js";
-        document.body.appendChild(script);
+        if (tikTokScriptGeladen) {
+          if (window.tiktok) window.tiktok.reload();
+        } else {
+          tikTokScriptGeladen = true;
+          const script = document.createElement("script");
+          script.async = true;
+          script.src = "https://www.tiktok.com/embed.js";
+          document.body.appendChild(script);
+        }
       } catch {
-        grid.innerHTML = `<p class="leeg" style="text-align:center;padding:32px 0;">Kon clips niet laden.</p>`;
+        if (vorigeAantal === -1)
+          grid.innerHTML = `<p class="leeg" style="text-align:center;padding:32px 0;">Kon clips niet laden.</p>`;
       }
     }
   </script>
