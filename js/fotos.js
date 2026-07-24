@@ -4,6 +4,15 @@ const FOLDER = "reis";
 const EMOJIS = ["❤️", "😂", "😮"];
 
 let allReacties = [];
+let allComments = [];
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
 
 function getNaam() {
   return (localStorage.getItem("fotos-naam") || "").trim();
@@ -91,11 +100,13 @@ async function verwijderFoto(pad, el) {
 async function laadReacties() {
   try {
     const res = await fetch(
-      SUPABASE_URL + "posts?kind=eq.reactie&select=id,note,photo_url,naam",
+      SUPABASE_URL + "posts?kind=in.(reactie,foto-comment)&select=id,kind,note,photo_url,naam",
       { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
     );
-    allReacties = await res.json();
-  } catch { allReacties = []; }
+    const data = await res.json();
+    allReacties = data.filter(r => r.kind === "reactie");
+    allComments = data.filter(r => r.kind === "foto-comment");
+  } catch { allReacties = []; allComments = []; }
 }
 
 function renderReacties(bestandsnaam) {
@@ -105,7 +116,7 @@ function renderReacties(bestandsnaam) {
   const naam = getNaam();
   const myNaam = naam ? veiligNaamVan(naam) : null;
 
-  el.innerHTML = EMOJIS.map(emoji => {
+  const emojisHtml = EMOJIS.map(emoji => {
     const rijen = allReacties.filter(r => r.photo_url === bestandsnaam && r.note === emoji);
     const tel   = rijen.length;
     const ikOok = myNaam && rijen.some(r => r.naam === myNaam);
@@ -114,8 +125,38 @@ function renderReacties(bestandsnaam) {
     </button>`;
   }).join("");
 
+  const commentHtml = allComments
+    .filter(c => c.photo_url === bestandsnaam)
+    .map(c => `<div class="foto-comment-item">
+      <span class="foto-comment-naam">${escHtml(c.naam.replace(/_/g, " "))}</span>
+      <span class="foto-comment-tekst">${escHtml(c.note)}</span>
+    </div>`)
+    .join("");
+
+  el.innerHTML = `
+    <div class="fotos-reacties-emojis">${emojisHtml}</div>
+    <div class="foto-comments-sectie">
+      ${commentHtml}
+      <form class="foto-comment-form" data-pad="${bestandsnaam}">
+        <input type="text" class="foto-comment-input" placeholder="Reageer…" maxlength="200" />
+        <button type="submit" class="foto-comment-stuur" aria-label="Versturen">→</button>
+      </form>
+    </div>`;
+
   el.querySelectorAll(".reactie-knop").forEach(btn => {
     btn.addEventListener("click", () => toggleReactie(btn.dataset.pad, btn.dataset.emoji));
+  });
+
+  el.querySelector(".foto-comment-form").addEventListener("submit", async e => {
+    e.preventDefault();
+    const input = e.target.querySelector(".foto-comment-input");
+    const tekst = input.value.trim();
+    if (!tekst) return;
+    const knop = e.target.querySelector(".foto-comment-stuur");
+    knop.disabled = true;
+    input.value = "";
+    await plaatsComment(bestandsnaam, tekst);
+    knop.disabled = false;
   });
 }
 
@@ -149,6 +190,26 @@ async function toggleReactie(bestandsnaam, emoji) {
     if (Array.isArray(data) && data[0]) allReacties.push(data[0]);
   }
 
+  renderReacties(bestandsnaam);
+}
+
+async function plaatsComment(bestandsnaam, tekst) {
+  const naam = getNaam();
+  if (!naam) { alert("Kies eerst een naam om te reageren."); return; }
+  const myNaam = veiligNaamVan(naam);
+
+  const res = await fetch(SUPABASE_URL + "posts", {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: "Bearer " + SUPABASE_ANON_KEY,
+      "Content-Type": "application/json",
+      Prefer: "return=representation"
+    },
+    body: JSON.stringify({ kind: "foto-comment", naam: myNaam, note: tekst, photo_url: bestandsnaam })
+  });
+  const data = await res.json();
+  if (Array.isArray(data) && data[0]) allComments.push(data[0]);
   renderReacties(bestandsnaam);
 }
 

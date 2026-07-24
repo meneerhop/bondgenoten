@@ -261,7 +261,7 @@
       const lijst = document.getElementById("berichten-lijst");
       try {
         const res = await fetch(
-          SUPABASE_URL + "posts?order=created_at.desc&select=*",
+          SUPABASE_URL + "posts?order=created_at.desc&select=*&kind=in.(thuis,reis)",
           { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
         );
         const berichten = await res.json();

@@ -2269,9 +2269,15 @@ body.lb-actief { overflow: hidden; }
 /* ---------- Foto reacties ---------- */
 .fotos-reacties {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.fotos-reacties-emojis {
+  display: flex;
   gap: 4px;
   justify-content: center;
-  margin-top: 5px;
   flex-wrap: wrap;
 }
 
@@ -2308,6 +2314,72 @@ body.lb-actief { overflow: hidden; }
   font-weight: 700;
   color: var(--inkt);
 }
+
+.foto-comments-sectie {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.foto-comment-item {
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 0 2px;
+}
+
+.foto-comment-naam {
+  font-weight: 700;
+  color: var(--moonstone);
+  margin-right: 3px;
+}
+
+.foto-comment-tekst {
+  color: var(--inkt);
+}
+
+.foto-comment-form {
+  display: flex;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.foto-comment-input {
+  flex: 1;
+  font: inherit;
+  font-size: 12px;
+  border: 1.5px solid var(--lijn);
+  border-radius: 99px;
+  padding: 4px 10px;
+  background: var(--papier);
+  color: var(--inkt);
+  min-width: 0;
+  transition: border-color 0.15s;
+}
+
+.foto-comment-input:focus {
+  outline: none;
+  border-color: var(--moonstone);
+}
+
+.foto-comment-stuur {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: var(--moonstone);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.12s;
+  align-self: center;
+}
+
+.foto-comment-stuur:hover { opacity: 0.82; }
+.foto-comment-stuur:disabled { opacity: 0.4; cursor: wait; }
 
 /* ---------- Mijlpalen ---------- */
 .dash-kaart--mijlpaal {
