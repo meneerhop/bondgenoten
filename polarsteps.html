@@ -44,7 +44,7 @@
       </div>
 
       <h2 class="sectie-titel" style="margin-top:24px;">Route op de kaart</h2>
-      <p class="vpn-tip" style="margin-bottom:6px;">Eerste stop: Bangkok 🏙 · Volgende stop: Kobai (zondag 27 juli)</p>
+      <p class="vpn-tip" style="margin-bottom:6px;">Eerste stop: Bangkok 🏙 · Volgende stop: Krabi (zondag 27 juli)</p>
       <div id="kaart" class="ps-kaart"></div>
 
       <h2 class="sectie-titel" style="margin-top:24px;">Bevestigde stops</h2>
@@ -54,7 +54,7 @@
           <div class="ps-stad-sub">Aankomst · 2 nachten</div>
         </div>
         <div class="ps-stad ps-stad--bevestigd">
-          <div class="ps-stad-naam">🏝 Kobai</div>
+          <div class="ps-stad-naam">🏝 Krabi</div>
           <div class="ps-stad-sub">Zondag 27 juli</div>
         </div>
       </div>
@@ -89,8 +89,17 @@
 
     L.marker([13.7563, 100.5018], { icon: markerStijl })
       .addTo(kaart)
-      .bindPopup("<strong>Bangkok</strong><br><span style='font-size:12px;color:#6f7b6b'>Aankomst · 2 nachten</span>")
-      .openPopup();
+      .bindPopup("<strong>Bangkok</strong><br><span style='font-size:12px;color:#6f7b6b'>Aankomst · 2 nachten</span>");
+
+    L.marker([8.0863, 98.9063], { icon: markerStijl })
+      .addTo(kaart)
+      .bindPopup("<strong>Krabi</strong><br><span style='font-size:12px;color:#6f7b6b'>Zondag 27 juli</span>");
+
+    L.polyline([[13.7563, 100.5018], [8.0863, 98.9063]], {
+      color: "#6f7b6b", weight: 2, dashArray: "6 5", opacity: 0.6
+    }).addTo(kaart);
+
+    kaart.fitBounds([[8.0863, 98.9063], [13.7563, 100.5018]], { padding: [30, 30] });
 
     const nu = new Date();
     const start = new Date(TRIP.vertrek + "T00:00:00");
