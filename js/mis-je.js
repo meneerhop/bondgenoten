@@ -28,11 +28,11 @@ function renderMisJe(data) {
     if (!uniek.length) {
       namen.textContent = "Wees de eerste die haar mist!";
     } else if (uniek.length === 1) {
-      namen.textContent = `${uniek[0]} mist je ❤️`;
+      namen.textContent = `${uniek[0]} mist elkaar ❤️`;
     } else if (uniek.length === 2) {
-      namen.textContent = `${uniek[0]} en ${uniek[1]} missen je ❤️`;
+      namen.textContent = `${uniek[0]} en ${uniek[1]} missen elkaar ❤️`;
     } else {
-      namen.textContent = `${uniek[0]}, ${uniek[1]} en ${uniek.length - 2} anderen missen je ❤️`;
+      namen.textContent = `${uniek[0]}, ${uniek[1]} en ${uniek.length - 2} anderen missen elkaar ❤️`;
     }
   }
 
