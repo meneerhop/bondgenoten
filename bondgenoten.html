@@ -78,7 +78,7 @@
       const grid = document.getElementById("clips-grid");
       try {
         const res = await fetch(
-          SUPABASE_URL + "posts?kind=eq.clip&select=note&order=created_at.desc",
+          SUPABASE_URL + "posts?kind=eq.clip&select=note,photo_caption&order=created_at.desc",
           { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
         );
         const data = await res.json();
@@ -88,14 +88,30 @@
           return;
         }
 
-        grid.innerHTML = data.map(c => {
-          const id = extractTikTokId(c.note);
-          if (!id) return "";
-          return `<div class="clip-wrap">
-            <blockquote class="tiktok-embed" cite="${c.note}" data-video-id="${id}" style="max-width:605px;min-width:325px;">
-              <section></section>
-            </blockquote>
-          </div>`;
+        // Groepeer per datum
+        const groepen = [];
+        let huidigeDatum = null;
+        for (const c of data) {
+          const datum = c.photo_caption || "";
+          if (datum !== huidigeDatum) {
+            huidigeDatum = datum;
+            groepen.push({ datum, clips: [] });
+          }
+          groepen[groepen.length - 1].clips.push(c);
+        }
+
+        grid.innerHTML = groepen.map(g => {
+          const datumHtml = g.datum ? `<div class="clips-datum">${g.datum}</div>` : "";
+          const clipsHtml = g.clips.map(c => {
+            const id = extractTikTokId(c.note);
+            if (!id) return "";
+            return `<div class="clip-wrap">
+              <blockquote class="tiktok-embed" cite="${c.note}" data-video-id="${id}" style="max-width:605px;min-width:325px;">
+                <section></section>
+              </blockquote>
+            </div>`;
+          }).join("");
+          return datumHtml + clipsHtml;
         }).join("");
 
         const script = document.createElement("script");

@@ -2402,6 +2402,19 @@ body.lb-actief { overflow: hidden; }
   max-width: 540px;
 }
 
+.clips-datum {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--moonstone);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--lijn);
+  width: 100%;
+  max-width: 540px;
+  margin-top: 8px;
+}
+
 /* ---------- Ik mis je ---------- */
 .dash-kaart--mis-je {
   flex-direction: column;
