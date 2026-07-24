@@ -2381,6 +2381,76 @@ body.lb-actief { overflow: hidden; }
 .foto-comment-stuur:hover { opacity: 0.82; }
 .foto-comment-stuur:disabled { opacity: 0.4; cursor: wait; }
 
+/* ---------- Ik mis je ---------- */
+.dash-kaart--mis-je {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 22px 18px 20px;
+  background: linear-gradient(135deg, #fceef3 0%, #fff8fa 100%);
+  border-color: rgba(216, 100, 130, 0.2);
+  margin-bottom: 10px;
+}
+
+.mis-je-teller-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+}
+
+.mis-je-getal {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: #c0466a;
+  line-height: 1;
+}
+
+.mis-je-sublabel {
+  font-size: 13px;
+  color: #a06070;
+  font-weight: 600;
+}
+
+.mis-je-knop {
+  font-size: 54px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  display: block;
+  transition: transform 0.15s;
+  filter: drop-shadow(0 3px 10px rgba(200, 70, 100, 0.22));
+}
+
+.mis-je-knop:hover { transform: scale(1.1); }
+.mis-je-knop:active { transform: scale(0.9); }
+
+.mis-je-knop--gedaan {
+  cursor: default;
+  filter: none;
+  opacity: 0.65;
+}
+
+@keyframes mis-je-klop {
+  0%   { transform: scale(1); }
+  25%  { transform: scale(1.45); }
+  55%  { transform: scale(0.9); }
+  80%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.mis-je-knop--animeer { animation: mis-je-klop 0.55s ease; }
+
+.mis-je-namen {
+  font-size: 12.5px;
+  color: #9a5060;
+  line-height: 1.5;
+}
+
 /* ---------- Mijlpalen ---------- */
 .dash-kaart--mijlpaal {
   flex-direction: column;
