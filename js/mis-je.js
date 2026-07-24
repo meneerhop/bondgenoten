@@ -2,15 +2,6 @@ function getMisJeNaam() {
   return (localStorage.getItem("fotos-naam") || "").trim();
 }
 
-function heeftVandaagGemist(naam) {
-  const vandaag = new Date().toISOString().slice(0, 10);
-  return localStorage.getItem("mis-je-" + naam.toLowerCase()) === vandaag;
-}
-
-function slaVandaagOp(naam) {
-  const vandaag = new Date().toISOString().slice(0, 10);
-  localStorage.setItem("mis-je-" + naam.toLowerCase(), vandaag);
-}
 
 async function laadMisJe() {
   try {
@@ -45,11 +36,6 @@ function renderMisJe(data) {
     }
   }
 
-  const naam = getMisJeNaam();
-  if (knop && naam && heeftVandaagGemist(naam)) {
-    knop.classList.add("mis-je-knop--gedaan");
-    knop.title = "Je hebt haar vandaag al gemist!";
-  }
 }
 
 async function verstuurMisJe() {
@@ -60,14 +46,9 @@ async function verstuurMisJe() {
     localStorage.setItem("fotos-naam", naam);
   }
 
-  if (heeftVandaagGemist(naam)) return;
-
   const knop = document.getElementById("mis-je-knop");
   knop.classList.add("mis-je-knop--animeer");
-  knop.classList.add("mis-je-knop--gedaan");
   setTimeout(() => knop.classList.remove("mis-je-knop--animeer"), 600);
-
-  slaVandaagOp(naam);
 
   if (window.confetti) {
     confetti({
