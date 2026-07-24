@@ -2381,6 +2381,27 @@ body.lb-actief { overflow: hidden; }
 .foto-comment-stuur:hover { opacity: 0.82; }
 .foto-comment-stuur:disabled { opacity: 0.4; cursor: wait; }
 
+/* ---------- Clips (TikTok) ---------- */
+.clips-intro {
+  font-size: 13px;
+  color: var(--inkt-zacht);
+  margin: 14px 0 10px;
+}
+.clips-intro a { color: var(--moonstone); font-weight: 600; text-decoration: none; }
+
+.clips-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.clip-wrap {
+  width: 100%;
+  max-width: 540px;
+}
+
 /* ---------- Ik mis je ---------- */
 .dash-kaart--mis-je {
   flex-direction: column;

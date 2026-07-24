@@ -19,6 +19,7 @@
       <button class="inner-tab inner-tab--actief" data-tab="tijdlijn">Tijdlijn</button>
       <button class="inner-tab" data-tab="kandidaten">Bondjes</button>
       <button class="inner-tab" data-tab="ranking">Ranking</button>
+      <button class="inner-tab" data-tab="clips">📱 Clips</button>
     </nav>
 
     <main>
@@ -37,6 +38,11 @@
       </section>
 
       <section id="tab-ranking" hidden></section>
+
+      <section id="tab-clips" hidden>
+        <p class="clips-intro">TikToks van <a href="https://www.tiktok.com/@debondgenoten" target="_blank" rel="noopener">@debondgenoten</a></p>
+        <div id="clips-grid" class="clips-grid"><p class="leeg" style="text-align:center;padding:32px 0;">Laden…</p></div>
+      </section>
     </main>
   </div>
 
@@ -54,8 +60,52 @@
         tab.classList.add("inner-tab--actief");
         document.querySelectorAll("main > section").forEach(s => s.hidden = true);
         document.getElementById("tab-" + tab.dataset.tab).hidden = false;
+        if (tab.dataset.tab === "clips") laadClips();
       });
     });
+
+    function extractTikTokId(url) {
+      const m = url.match(/\/video\/(\d+)/);
+      return m ? m[1] : null;
+    }
+
+    let clipsGeladen = false;
+
+    async function laadClips() {
+      if (clipsGeladen) return;
+      clipsGeladen = true;
+
+      const grid = document.getElementById("clips-grid");
+      try {
+        const res = await fetch(
+          SUPABASE_URL + "posts?kind=eq.clip&select=note&order=created_at.desc",
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+        );
+        const data = await res.json();
+
+        if (!Array.isArray(data) || !data.length) {
+          grid.innerHTML = `<p class="leeg" style="text-align:center;padding:32px 0;">Nog geen clips — ze worden hier getoond zodra ze toegevoegd zijn.</p>`;
+          return;
+        }
+
+        grid.innerHTML = data.map(c => {
+          const id = extractTikTokId(c.note);
+          if (!id) return "";
+          return `<div class="clip-wrap">
+            <blockquote class="tiktok-embed" cite="${c.note}" data-video-id="${id}" style="max-width:605px;min-width:325px;">
+              <section></section>
+            </blockquote>
+          </div>`;
+        }).join("");
+
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = "https://www.tiktok.com/embed.js";
+        document.body.appendChild(script);
+      } catch {
+        grid.innerHTML = `<p class="leeg" style="text-align:center;padding:32px 0;">Kon clips niet laden.</p>`;
+      }
+    }
   </script>
 </body>
 </html>

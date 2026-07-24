@@ -27,6 +27,19 @@
       <div class="status" id="loginStatus"></div>
     </form>
 
+    <!-- Clips -->
+    <div class="paneel" id="clipPaneel" hidden style="display:none">
+      <h2 style="margin:0 0 4px;font-size:16px;">TikTok clip toevoegen</h2>
+      <p style="margin:0 0 12px;font-size:13px;color:var(--inkt-zacht);">Plak de URL van een TikTok van @debondgenoten</p>
+      <label style="font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--inkt-zacht);display:grid;gap:6px;">
+        TikTok URL
+        <input type="url" id="clip-url" placeholder="https://www.tiktok.com/@debondgenoten/video/…" style="font:inherit;font-size:14px;border:1.5px solid var(--lijn);border-radius:10px;padding:10px 13px;background:var(--papier);" />
+      </label>
+      <button class="knop knop--groen" type="button" id="clip-toevoegen">Clip opslaan</button>
+      <div class="status" id="clip-status"></div>
+      <div id="clip-lijst" style="margin-top:14px;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
     <!-- Posten -->
     <form class="paneel" id="postPaneel" hidden>
       <label>Jouw naam
@@ -50,5 +63,79 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/admin.js"></script>
+  <script>
+    const clipPaneel = document.getElementById("clipPaneel");
+
+    // Overschrijf checkSessie zodat clipPaneel ook meedoet
+    async function checkSessie() {
+      const { data } = await sb.auth.getSession();
+      const ingelogd = !!data.session;
+      document.getElementById("loginPaneel").hidden = ingelogd;
+      document.getElementById("postPaneel").hidden = !ingelogd;
+      clipPaneel.hidden = !ingelogd;
+      clipPaneel.style.display = ingelogd ? "" : "none";
+      if (ingelogd) laadClipLijst();
+    }
+
+    async function laadClipLijst() {
+      const lijst = document.getElementById("clip-lijst");
+      lijst.innerHTML = "Laden…";
+      try {
+        const res = await fetch(
+          SUPABASE_URL + "posts?kind=eq.clip&select=id,note&order=created_at.desc",
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+        );
+        const data = await res.json();
+        if (!data.length) { lijst.innerHTML = "<em style='font-size:13px;color:var(--inkt-zacht)'>Nog geen clips.</em>"; return; }
+        lijst.innerHTML = data.map(c => `
+          <div style="display:flex;align-items:center;gap:10px;background:var(--papier);border:1px solid var(--lijn);border-radius:10px;padding:10px 14px;">
+            <span style="flex:1;font-size:12px;color:var(--inkt-zacht);word-break:break-all;">${c.note}</span>
+            <button data-id="${c.id}" class="clip-del" style="background:none;border:none;cursor:pointer;font-size:16px;opacity:.5;" title="Verwijderen">🗑</button>
+          </div>`).join("");
+        lijst.querySelectorAll(".clip-del").forEach(btn =>
+          btn.addEventListener("click", () => verwijderClip(btn.dataset.id))
+        );
+      } catch { lijst.innerHTML = "Fout bij laden."; }
+    }
+
+    async function verwijderClip(id) {
+      if (!confirm("Clip verwijderen?")) return;
+      await fetch(SUPABASE_URL + "posts?id=eq." + id, {
+        method: "DELETE",
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY }
+      });
+      laadClipLijst();
+    }
+
+    document.getElementById("clip-toevoegen").addEventListener("click", async () => {
+      const url = document.getElementById("clip-url").value.trim();
+      const status = document.getElementById("clip-status");
+      if (!url || !url.includes("tiktok.com")) {
+        status.textContent = "Voer een geldige TikTok URL in.";
+        status.className = "status status--fout";
+        return;
+      }
+      status.textContent = "Opslaan…";
+      status.className = "status";
+      try {
+        const res = await fetch(SUPABASE_URL + "posts", {
+          method: "POST",
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+          body: JSON.stringify({ kind: "clip", note: url, naam: "admin" })
+        });
+        if (!res.ok) throw new Error("status " + res.status);
+        status.textContent = "Clip opgeslagen! ✅";
+        status.className = "status status--ok";
+        document.getElementById("clip-url").value = "";
+        laadClipLijst();
+      } catch (e) {
+        status.textContent = "Mislukt: " + e.message;
+        status.className = "status status--fout";
+      }
+    });
+
+    // Herstart checkSessie zodat clipPaneel ook meedoet
+    checkSessie();
+  </script>
 </body>
 </html>
