@@ -33,7 +33,7 @@
           </a>`;
         }).join("")}
       </nav>
-      <p class="nav-easter-egg"><em>je bent een prinsesje</em></p>
+      <p class="nav-easter-egg"><em>je bent mijn prinsesje</em></p>
     </div>`;
 
   function open() {
