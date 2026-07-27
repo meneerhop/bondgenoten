@@ -12,7 +12,7 @@ async function laadWeer() {
   if (!el) return;
   try {
     const res = await fetch(
-      "https://api.open-meteo.com/v1/forecast?latitude=13.7563&longitude=100.5018" +
+      "https://api.open-meteo.com/v1/forecast?latitude=8.0863&longitude=98.9063" +
       "&current=temperature_2m,apparent_temperature,weather_code,relative_humidity_2m" +
       "&timezone=Asia%2FBangkok"
     );
@@ -25,7 +25,7 @@ async function laadWeer() {
         <div class="weer-temp">${Math.round(c.temperature_2m)}°C</div>
         <div class="weer-sub">Voelt als ${Math.round(c.apparent_temperature)}° · ${c.relative_humidity_2m}% vochtigheid</div>
       </div>
-      <div class="weer-locatie">Bangkok 🇹🇭</div>`;
+      <div class="weer-locatie">Krabi 🇹🇭</div>`;
   } catch {
     el.innerHTML = `<div class="weer-body"><div class="weer-sub">Weer niet beschikbaar</div></div>`;
   }

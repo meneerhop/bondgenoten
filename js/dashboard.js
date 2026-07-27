@@ -11,7 +11,7 @@ function dagKey(d) {
   const nu     = new Date();
   const start  = new Date(TRIP.vertrek + "T00:00:00");
   const eind   = new Date(TRIP.thuiskomst + "T00:00:00");
-  const totaal = Math.round((eind - start) / DAG_MS) + 1;
+  const totaal = Math.round((eind - start) / DAG_MS);
   const dag    = Math.floor((nu - start) / DAG_MS) + 1;
   const rest   = Math.max(0, Math.ceil((eind - nu) / DAG_MS));
 

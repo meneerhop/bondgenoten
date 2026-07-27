@@ -44,7 +44,7 @@
       </div>
 
       <h2 class="sectie-titel" style="margin-top:24px;">Route op de kaart</h2>
-      <p class="vpn-tip" style="margin-bottom:6px;">Eerste stop: Bangkok 🏙 · Volgende stop: Krabi (zondag 27 juli)</p>
+      <p class="vpn-tip" style="margin-bottom:6px;">Nu in: Krabi 🏝 · Vorige stop: Bangkok 🏙</p>
       <div id="kaart" class="ps-kaart"></div>
 
       <h2 class="sectie-titel" style="margin-top:24px;">Bevestigde stops</h2>
@@ -54,8 +54,8 @@
           <div class="ps-stad-sub">Aankomst · 2 nachten</div>
         </div>
         <div class="ps-stad ps-stad--bevestigd">
-          <div class="ps-stad-naam">🏝 Krabi</div>
-          <div class="ps-stad-sub">Zondag 27 juli</div>
+          <div class="ps-stad-naam">🏝 Krabi · 📍 nu hier</div>
+          <div class="ps-stad-sub">Aankomst · 27 juli</div>
         </div>
       </div>
 
@@ -73,7 +73,7 @@
   <script src="js/nav.js"></script>
   <script>
     const kaart = L.map("kaart", { zoomControl: true, scrollWheelZoom: false })
-      .setView([13.7563, 100.5018], 6);
+      .setView([8.0863, 98.9063], 7);
 
     L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/">CARTO</a>',

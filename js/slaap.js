@@ -2,12 +2,12 @@
 // Thailand (TH) = UTC+7, Nederland (NL) = UTC+2 (CEST) → TH is +5u vs NL
 
 const WAKKER = {
-  mitch: { van: 8,  tot: 23 }, // NL-uren
+  mitch: { van: 7,  tot: 23 }, // NL-uren
   dieuw: { van: 7,  tot: 23 }, // TH-uren → in NL: 2u–18u
 };
 
 // Overlap in NL-uren: Mitch wakker v.a. 8u, Dieuw "slaapt" (NL-tijd) na 18u
-const OV_START = 8;
+const OV_START = 7;
 const OV_EIND  = 18;
 
 function nlUur(nu) {
@@ -76,7 +76,7 @@ function updateSlaapWidget() {
     <div class="so-balk-labels">
       <span>0u</span><span>6u</span><span>12u</span><span>18u</span><span>24u</span>
     </div>
-    <div class="so-overlap-tekst">Overlap: ${OV_START}:00–${OV_EIND}:00 NL · ${OV_START + 5}:00–${OV_EIND + 5}:00 TH</div>`;
+    <div class="so-overlap-tekst">Overlap: ${OV_START}:00–${OV_EIND}:00 NL · ${thUur(new Date(nu.getFullYear(), nu.getMonth(), nu.getDate(), OV_START))}:00–${thUur(new Date(nu.getFullYear(), nu.getMonth(), nu.getDate(), OV_EIND))}:00 TH</div>`;
 }
 
 updateSlaapWidget();
