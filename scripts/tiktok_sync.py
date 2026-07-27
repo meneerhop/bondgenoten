@@ -3,6 +3,7 @@ import json
 import os
 import sys
 import requests
+from datetime import datetime, timezone
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
 SUPABASE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
@@ -22,15 +23,16 @@ def fmt_datum(upload_date):
     dag   = int(upload_date[6:8])
     return f"{dag} {MAANDEN[maand - 1]} {jaar}"
 
-def get_tiktok_videos():
-    # Volledige extractie (geen --flat-playlist) zodat upload_date beschikbaar is.
-    # --playlist-end 50 voorkomt timeouts op grote accounts.
+def fmt_datum_ts(ts):
+    if not ts:
+        return ""
+    dt = datetime.fromtimestamp(int(ts), tz=timezone.utc)
+    return f"{dt.day} {MAANDEN[dt.month - 1]} {dt.year}"
+
+def get_all_video_ids():
+    # Flat-playlist: snel alle video-IDs ophalen zonder limiet
     result = subprocess.run(
-        [
-            "yt-dlp", "--skip-download", "--dump-json", "--no-warnings",
-            "--playlist-end", "50",
-            TIKTOK_URL,
-        ],
+        ["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", TIKTOK_URL],
         capture_output=True, text=True,
     )
     videos = []
@@ -42,6 +44,21 @@ def get_tiktok_videos():
     if not videos:
         print("yt-dlp stderr:", result.stderr[:500], file=sys.stderr)
     return videos
+
+def get_video_datum(url):
+    # Individuele extractie voor datum van één nieuwe video
+    result = subprocess.run(
+        ["yt-dlp", "--skip-download", "--dump-json", "--no-warnings", url],
+        capture_output=True, text=True, timeout=30,
+    )
+    try:
+        data = json.loads(result.stdout.strip().splitlines()[0])
+        return (
+            fmt_datum(data.get("upload_date", ""))
+            or fmt_datum_ts(data.get("timestamp"))
+        )
+    except Exception:
+        return ""
 
 def get_existing_urls():
     res = requests.get(
@@ -65,23 +82,26 @@ def insert_clip(url, datum):
     res.raise_for_status()
 
 def main():
-    videos   = get_tiktok_videos()
+    videos   = get_all_video_ids()
     existing = get_existing_urls()
     print(f"{len(videos)} video(s) gevonden op TikTok, {len(existing)} al in Supabase.")
 
     added = 0
     for v in videos:
         vid_id = v.get("id")
-        url    = v.get("webpage_url") or v.get("url") or (
-            f"https://www.tiktok.com/{TIKTOK_USER}/video/{vid_id}" if vid_id else None
-        )
-        if not url or not vid_id:
+        if not vid_id:
             continue
-        # Normaliseer naar canonical URL-formaat
         canonical = f"https://www.tiktok.com/{TIKTOK_USER}/video/{vid_id}"
-        if url in existing or canonical in existing:
+        if canonical in existing or v.get("url") in existing:
             continue
-        datum = fmt_datum(v.get("upload_date", ""))
+
+        # Probeer datum uit flat-data, anders aparte fetch
+        datum = (
+            fmt_datum(v.get("upload_date", ""))
+            or fmt_datum_ts(v.get("timestamp"))
+            or get_video_datum(canonical)
+        )
+
         insert_clip(canonical, datum)
         print(f"  + {canonical}  ({datum or 'datum onbekend'})")
         added += 1
