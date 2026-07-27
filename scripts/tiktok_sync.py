@@ -23,8 +23,14 @@ def fmt_datum(upload_date):
     return f"{dag} {MAANDEN[maand - 1]} {jaar}"
 
 def get_tiktok_videos():
+    # Volledige extractie (geen --flat-playlist) zodat upload_date beschikbaar is.
+    # --playlist-end 50 voorkomt timeouts op grote accounts.
     result = subprocess.run(
-        ["yt-dlp", "--flat-playlist", "--dump-json", "--no-warnings", TIKTOK_URL],
+        [
+            "yt-dlp", "--skip-download", "--dump-json", "--no-warnings",
+            "--playlist-end", "50",
+            TIKTOK_URL,
+        ],
         capture_output=True, text=True,
     )
     videos = []
@@ -66,17 +72,18 @@ def main():
     added = 0
     for v in videos:
         vid_id = v.get("id")
-        url    = v.get("url") or (f"https://www.tiktok.com/{TIKTOK_USER}/video/{vid_id}" if vid_id else None)
-        if not url:
+        url    = v.get("webpage_url") or v.get("url") or (
+            f"https://www.tiktok.com/{TIKTOK_USER}/video/{vid_id}" if vid_id else None
+        )
+        if not url or not vid_id:
             continue
         # Normaliseer naar canonical URL-formaat
-        if vid_id and "/video/" not in url:
-            url = f"https://www.tiktok.com/{TIKTOK_USER}/video/{vid_id}"
-        if url in existing:
+        canonical = f"https://www.tiktok.com/{TIKTOK_USER}/video/{vid_id}"
+        if url in existing or canonical in existing:
             continue
         datum = fmt_datum(v.get("upload_date", ""))
-        insert_clip(url, datum)
-        print(f"  + {url}  ({datum or 'datum onbekend'})")
+        insert_clip(canonical, datum)
+        print(f"  + {canonical}  ({datum or 'datum onbekend'})")
         added += 1
 
     print(f"Klaar — {added} nieuwe clip(s) toegevoegd.")
