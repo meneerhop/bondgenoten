@@ -2,13 +2,14 @@ import subprocess
 import json
 import os
 import sys
+import time
 import requests
 from datetime import datetime, timezone, timedelta
 
-SUPABASE_URL = os.environ["SUPABASE_URL"]
-SUPABASE_KEY = os.environ["SUPABASE_SERVICE_KEY"]
-TIKTOK_USER  = "@debondgenoten"
-TIKTOK_URL   = f"https://www.tiktok.com/{TIKTOK_USER}"
+SUPABASE_URL  = os.environ["SUPABASE_URL"]
+SUPABASE_KEY  = os.environ["SUPABASE_SERVICE_KEY"]
+TIKTOK_USER   = "@debondgenoten"
+TIKTOK_URL    = f"https://www.tiktok.com/{TIKTOK_USER}"
 VENSTER_DAGEN = 14
 
 MAANDEN = [
@@ -16,76 +17,34 @@ MAANDEN = [
     "juli", "augustus", "september", "oktober", "november", "december",
 ]
 
-def fmt_datum(upload_date):
-    if not upload_date or len(upload_date) != 8:
+def fmt_datum(s):
+    if not s or len(s) != 8:
         return ""
-    jaar  = int(upload_date[:4])
-    maand = int(upload_date[4:6])
-    dag   = int(upload_date[6:8])
-    return f"{dag} {MAANDEN[maand - 1]} {jaar}"
+    try:
+        return f"{int(s[6:8])} {MAANDEN[int(s[4:6])-1]} {int(s[:4])}"
+    except Exception:
+        return ""
 
 def fmt_datum_ts(ts):
     if not ts:
         return ""
-    dt = datetime.fromtimestamp(int(ts), tz=timezone.utc)
-    return f"{dt.day} {MAANDEN[dt.month - 1]} {dt.year}"
+    try:
+        dt = datetime.fromtimestamp(int(ts), tz=timezone.utc)
+        return f"{dt.day} {MAANDEN[dt.month-1]} {dt.year}"
+    except Exception:
+        return ""
 
 def parse_nl_datum(s):
     if not s:
         return None
-    delen = s.lower().split()
-    if len(delen) != 3:
-        return None
     try:
-        return datetime(int(delen[2]), MAANDEN.index(delen[1]) + 1, int(delen[0]), tzinfo=timezone.utc)
-    except (ValueError, IndexError):
+        d, m, j = s.lower().split()
+        return datetime(int(j), MAANDEN.index(m) + 1, int(d), tzinfo=timezone.utc)
+    except Exception:
         return None
 
-def supabase_get(path):
-    res = requests.get(
-        f"{SUPABASE_URL}/rest/v1/{path}",
-        headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
-    )
-    res.raise_for_status()
-    return res.json()
-
-def supabase_delete(path):
-    res = requests.delete(
-        f"{SUPABASE_URL}/rest/v1/{path}",
-        headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"},
-    )
-    res.raise_for_status()
-
-def supabase_post(path, body):
-    res = requests.post(
-        f"{SUPABASE_URL}/rest/v1/{path}",
-        headers={
-            "apikey": SUPABASE_KEY,
-            "Authorization": f"Bearer {SUPABASE_KEY}",
-            "Content-Type": "application/json",
-            "Prefer": "return=minimal",
-        },
-        json=body,
-    )
-    res.raise_for_status()
-
-def nettoyer_oude_clips(grens):
-    clips = supabase_get("posts?kind=eq.clip&select=id,photo_caption,created_at")
-    te_verwijderen = []
-    for clip in clips:
-        datum = parse_nl_datum(clip.get("photo_caption", ""))
-        if datum is None:
-            try:
-                datum = datetime.fromisoformat(clip["created_at"].replace("Z", "+00:00"))
-            except Exception:
-                continue
-        if datum < grens:
-            te_verwijderen.append(clip["id"])
-
-    for clip_id in te_verwijderen:
-        supabase_delete(f"posts?id=eq.{clip_id}")
-
-    print(f"{len(te_verwijderen)} oude clip(s) verwijderd.")
+def _headers():
+    return {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"}
 
 def get_all_video_ids():
     result = subprocess.run(
@@ -116,47 +75,65 @@ def get_video_datum(url):
     except Exception:
         return ""
 
-def get_existing_urls():
-    rows = supabase_get("posts?kind=eq.clip&select=note")
-    return {row["note"] for row in rows if row.get("note")}
+def wis_alle_clips():
+    res = requests.delete(
+        f"{SUPABASE_URL}/rest/v1/posts?kind=eq.clip",
+        headers=_headers(),
+    )
+    res.raise_for_status()
+    print("Alle clips verwijderd.")
+
+def insert_clip(url, datum):
+    res = requests.post(
+        f"{SUPABASE_URL}/rest/v1/posts",
+        headers={**_headers(), "Content-Type": "application/json", "Prefer": "return=minimal"},
+        json={"kind": "clip", "note": url, "photo_caption": datum},
+    )
+    res.raise_for_status()
 
 def main():
     grens = datetime.now(timezone.utc) - timedelta(days=VENSTER_DAGEN)
 
-    print(f"--- Opruimen (ouder dan {VENSTER_DAGEN} dagen) ---")
-    nettoyer_oude_clips(grens)
+    print("--- Alle clips verwijderen ---")
+    wis_alle_clips()
 
-    print("--- Nieuwe clips ophalen ---")
-    videos   = get_all_video_ids()
-    existing = get_existing_urls()
-    print(f"{len(videos)} video(s) gevonden op TikTok, {len(existing)} al in Supabase.")
+    print("--- Video-IDs ophalen ---")
+    videos = get_all_video_ids()
+    print(f"{len(videos)} video(s) gevonden op TikTok.")
 
+    # Sorteer op video-ID aflopend: hoogste ID = nieuwste video
+    videos.sort(key=lambda v: int(v.get("id", 0)), reverse=True)
+
+    print("--- Recente clips toevoegen ---")
     added = 0
     for v in videos:
         vid_id = v.get("id")
         if not vid_id:
             continue
         canonical = f"https://www.tiktok.com/{TIKTOK_USER}/video/{vid_id}"
-        if canonical in existing or v.get("url") in existing:
-            continue
 
-        # Datum bepalen
-        datum = (
-            fmt_datum(v.get("upload_date", ""))
-            or fmt_datum_ts(v.get("timestamp"))
-            or get_video_datum(canonical)
-        )
-
-        # Sla over als video buiten het venster valt
+        # Datum: flat-data eerst, dan individuele fetch
+        datum = fmt_datum(v.get("upload_date", "")) or fmt_datum_ts(v.get("timestamp"))
         datum_obj = parse_nl_datum(datum)
-        if datum_obj and datum_obj < grens:
+        if not datum_obj:
+            datum = get_video_datum(canonical)
+            datum_obj = parse_nl_datum(datum)
+            time.sleep(0.5)  # vermijd rate limiting
+
+        # Datum onbekend → overslaan
+        if not datum_obj:
             continue
 
-        supabase_post("posts", {"kind": "clip", "note": canonical, "photo_caption": datum})
-        print(f"  + {canonical}  ({datum or 'datum onbekend'})")
+        # Ouder dan venster → stoppen (we gaan nieuwste-eerst)
+        if datum_obj < grens:
+            print(f"Gestopt bij {datum} (ouder dan {VENSTER_DAGEN} dagen).")
+            break
+
+        insert_clip(canonical, datum)
+        print(f"  + {canonical}  ({datum})")
         added += 1
 
-    print(f"Klaar — {added} nieuwe clip(s) toegevoegd.")
+    print(f"Klaar — {added} clip(s) toegevoegd.")
 
 if __name__ == "__main__":
     main()
