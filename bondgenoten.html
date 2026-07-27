@@ -90,7 +90,7 @@
       const grid = document.getElementById("clips-grid");
       try {
         const res = await fetch(
-          SUPABASE_URL + "posts?kind=eq.clip&select=note,photo_caption&order=created_at.desc",
+          SUPABASE_URL + "posts?kind=eq.clip&select=note,photo_caption,created_at&order=created_at.desc",
           { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
         );
         const data = await res.json();
@@ -105,8 +105,12 @@
         if (data.length === vorigeAantal) return;
         vorigeAantal = data.length;
 
-        // Nieuwste datum bovenaan
-        data.sort((a, b) => datumNaarMs(b.photo_caption) - datumNaarMs(a.photo_caption));
+        // Nieuwste bovenaan — photo_caption als primaire sortering, created_at als fallback
+        function sortTs(item) {
+          const d = datumNaarMs(item.photo_caption);
+          return d > 0 ? d : new Date(item.created_at).getTime();
+        }
+        data.sort((a, b) => sortTs(b) - sortTs(a));
 
         // Groepeer per datum
         const groepen = [];
