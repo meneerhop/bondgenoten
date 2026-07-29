@@ -297,8 +297,12 @@ header.site { position: relative; }
 
 .nav-item--actief {
   background: var(--accent-zacht);
-  color: var(--blackhills);
+  color: var(--moonstone);
+  border-left: 3px solid var(--moonstone);
+  padding-left: 21px;
 }
+
+.nav-item--actief .nav-icon { filter: none; }
 
 .nav-icon { font-size: 20px; width: 28px; text-align: center; }
 
@@ -509,6 +513,13 @@ body.nav-open { overflow: hidden; }
   background: var(--blackhills);
   color: #f2f3ee;
   border-color: transparent;
+}
+
+.dash-kaart--featured {
+  background: var(--kaart);
+  color: var(--inkt);
+  border-color: rgba(0, 0, 0, 0.05);
+  border-left: 3px solid var(--moonstone);
 }
 
 .dash-kaart-icon { font-size: 26px; flex-shrink: 0; }

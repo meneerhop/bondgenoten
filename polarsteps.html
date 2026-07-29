@@ -89,14 +89,15 @@
 
     L.marker([13.7563, 100.5018], { icon: markerStijl })
       .addTo(kaart)
-      .bindPopup("<strong>Bangkok</strong><br><span style='font-size:12px;color:#6f7b6b'>Aankomst · 2 nachten</span>");
+      .bindPopup("<strong>Bangkok</strong><br><span style='font-size:12px;color:var(--inkt-zacht)'>Aankomst · 2 nachten</span>");
 
     L.marker([8.0863, 98.9063], { icon: markerStijl })
       .addTo(kaart)
-      .bindPopup("<strong>Krabi</strong><br><span style='font-size:12px;color:#6f7b6b'>Zondag 27 juli</span>");
+      .bindPopup("<strong>Krabi</strong><br><span style='font-size:12px;color:var(--inkt-zacht)'>Zondag 27 juli</span>");
 
     L.polyline([[13.7563, 100.5018], [8.0863, 98.9063]], {
-      color: "#6f7b6b", weight: 2, dashArray: "6 5", opacity: 0.6
+      color: getComputedStyle(document.documentElement).getPropertyValue("--moonstone").trim() || "#6f7b6b",
+      weight: 2, dashArray: "6 5", opacity: 0.6
     }).addTo(kaart);
 
     kaart.fitBounds([[8.0863, 98.9063], [13.7563, 100.5018]], { padding: [30, 30] });
