@@ -11,7 +11,6 @@
       match: bondgenotenPaginas,
       sub: [
         { label: "de Bondgenoten", href: "bondgenoten.html",  icon: "📺" },
-        { label: "Tijdlijn",       href: "tijdlijn.html",     icon: "📅" },
         { label: "Voorspelling",   href: "voorspelling.html", icon: "🏆" },
       ],
     },
