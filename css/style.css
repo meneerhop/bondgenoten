@@ -35,9 +35,7 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--papier);
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><text x='8' y='32' font-size='26' fill='%23a4a88d' opacity='0.08'>♥</text><text x='54' y='70' font-size='17' fill='%23a4a88d' opacity='0.06'>♥</text><text x='3' y='80' font-size='11' fill='%236f7b6b' opacity='0.05'>♥</text><text x='68' y='18' font-size='11' fill='%236f7b6b' opacity='0.05'>♥</text><text x='40' y='12' font-size='8' fill='%23a4a88d' opacity='0.04'>♥</text><text x='76' y='50' font-size='8' fill='%23a4a88d' opacity='0.04'>♥</text></svg>");
-  background-repeat: repeat;
+  background-color: #f3f3ef;
   color: var(--inkt);
   font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
   font-size: 16px;
@@ -123,13 +121,14 @@ header.site h1 {
 /* ---------- Dagteller ---------- */
 .dagteller {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  margin-bottom: 12px;
 }
 
-.dagteller strong { font-size: 18px; font-weight: 700; color: var(--blackhills); }
-.dagteller span { color: var(--inkt-zacht); font-size: 13.5px; }
+.dagteller strong { font-size: 19px; font-weight: 700; color: var(--blackhills); }
+.dagteller span { color: var(--inkt-zacht); font-size: 13px; }
 
 .voortgang {
   height: 5px;
@@ -417,8 +416,8 @@ body.nav-open { overflow: hidden; }
 
 .dash-kaart-pijl {
   font-size: 22px;
-  font-weight: 300;
-  opacity: 0.4;
+  font-weight: 400;
+  opacity: 0.65;
   flex-shrink: 0;
 }
 
@@ -1993,10 +1992,9 @@ body.lb-actief { overflow: hidden; }
 }
 
 .turf-dag--voorbij {
-  background: var(--blackhills);
-  border-color: var(--blackhills);
-  color: #f2f3ee;
-  font-size: 14px;
+  background: var(--moonstone);
+  border-color: var(--moonstone);
+  color: transparent;
 }
 
 .turf-dag--vandaag {
@@ -2085,12 +2083,11 @@ body.lb-actief { overflow: hidden; }
 }
 
 .hereniging-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
   color: #9a6c20;
   margin-bottom: 14px;
+  line-height: 1.4;
 }
 
 .hereniging-aftel {
@@ -2449,29 +2446,29 @@ body.lb-actief { overflow: hidden; }
 }
 
 .mis-je-getal {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 44px;
+  font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", sans-serif;
+  font-size: 32px;
   font-weight: 700;
   color: #c0466a;
   line-height: 1;
 }
 
 .mis-je-sublabel {
-  font-size: 13px;
+  font-size: 12px;
   color: #a06070;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .mis-je-knop {
-  font-size: 54px;
+  font-size: 64px;
   background: none;
   border: none;
   cursor: pointer;
   line-height: 1;
-  padding: 4px;
+  padding: 6px 4px 2px;
   display: block;
-  transition: transform 0.15s;
-  filter: drop-shadow(0 3px 10px rgba(200, 70, 100, 0.22));
+  transition: transform 0.18s ease;
+  filter: drop-shadow(0 4px 12px rgba(200, 70, 100, 0.28));
 }
 
 .mis-je-knop:hover { transform: scale(1.1); }

@@ -23,7 +23,7 @@ async function laadWeer() {
       <div class="weer-icon">${icon}</div>
       <div class="weer-body">
         <div class="weer-temp">${Math.round(c.temperature_2m)}°C</div>
-        <div class="weer-sub">Voelt als ${Math.round(c.apparent_temperature)}° · ${c.relative_humidity_2m}% vochtigheid</div>
+        <div class="weer-sub">Voelt als ${Math.round(c.apparent_temperature)}°</div>
       </div>
       <div class="weer-locatie">Krabi 🇹🇭</div>`;
   } catch {

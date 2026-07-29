@@ -129,7 +129,7 @@ function initTurflijst() {
     el.className = "turf-dag";
     if (i < voorbij)                        el.classList.add("turf-dag--voorbij");
     else if (i === voorbij && gestart)      el.classList.add("turf-dag--vandaag");
-    el.textContent = i < voorbij ? "✓" : String(i + 1);
+    el.textContent = i < voorbij ? "" : String(i + 1);
     lijst.appendChild(el);
   }
 
