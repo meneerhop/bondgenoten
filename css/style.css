@@ -551,7 +551,7 @@ body.nav-open { overflow: hidden; }
 
 .ios-lijst-item:last-child { border-bottom: none; }
 
-.ios-lijst-item:active { background: var(--accent-zacht); }
+.ios-lijst-item:active { background: var(--accent-zacht); transform: scale(0.99); }
 
 .ios-lijst-icon {
   font-size: 20px;
@@ -589,10 +589,19 @@ body.nav-open { overflow: hidden; }
   gap: 5px;
 }
 
+@keyframes hartje-klop {
+  0%, 100% { transform: scale(1);    opacity: 0.5; }
+  14%       { transform: scale(1.32); opacity: 0.8; }
+  28%       { transform: scale(1);    opacity: 0.5; }
+  42%       { transform: scale(1.16); opacity: 0.65; }
+  56%       { transform: scale(1);    opacity: 0.5; }
+}
+
 .dashboard-liefde-hart {
-  font-size: 18px;
+  font-size: 20px;
   color: #c0466a;
   opacity: 0.5;
+  animation: hartje-klop 2.8s ease-in-out infinite;
 }
 
 .dashboard-liefde-tekst {
@@ -632,10 +641,22 @@ body.nav-open { overflow: hidden; }
 }
 
 .dash-kaart--featured {
-  background: var(--kaart);
+  background: linear-gradient(135deg, rgba(111,123,107,0.06) 0%, var(--kaart) 65%);
   color: var(--inkt);
   border-color: rgba(0, 0, 0, 0.05);
   border-left: 3px solid var(--moonstone);
+  box-shadow: 0 2px 8px rgba(111,123,107,0.1), 0 8px 28px rgba(44,51,47,0.09);
+}
+
+.dash-kaart--featured .dash-kaart-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-zacht);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
 }
 
 .dash-kaart-icon { font-size: 26px; flex-shrink: 0; }
@@ -1895,8 +1916,11 @@ body.lb-actief { overflow: hidden; }
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 16px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--lijn);
+  padding: 14px 16px;
+  background: var(--kaart);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
 }
 
 .fotos-ingelogd {
@@ -1919,7 +1943,7 @@ body.lb-actief { overflow: hidden; }
 .fotos-input {
   font: inherit;
   border: 1.5px solid var(--lijn);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   padding: 10px 12px;
   background: var(--papier);
   flex: 1;

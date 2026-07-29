@@ -195,6 +195,16 @@ function geschiedenisHTML(data, picks) {
 
 async function render() {
   const el = document.getElementById("voorspelling-app");
+  el.innerHTML = `
+    <div class="skel-kaart" style="margin-bottom:12px">
+      <div class="skel-rij"></div><div class="skel-rij skel-rij--midden"></div>
+    </div>
+    <div class="skel-kaart" style="margin-bottom:12px">
+      <div class="skel-rij skel-rij--kort"></div><div class="skel-rij"></div><div class="skel-rij skel-rij--midden"></div>
+    </div>
+    <div class="skel-kaart">
+      <div class="skel-rij"></div><div class="skel-rij skel-rij--kort"></div>
+    </div>`;
   try {
     const [data, picks] = await Promise.all([laadData(), laadAllePicks()]);
     const scores = berekenScores(data, picks);

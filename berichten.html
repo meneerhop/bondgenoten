@@ -138,10 +138,22 @@
       border: 1px solid var(--lijn);
       border-radius: var(--radius);
       box-shadow: var(--schaduw);
-      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 16px;
+      transition: max-height 0.38s cubic-bezier(.4,0,.2,1), padding 0.38s ease, opacity 0.25s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .plaatsen-paneel--open {
+      max-height: 600px;
+      padding: 16px;
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .plaatsen-label {
@@ -230,7 +242,7 @@
 
     <div class="plaatsen-sectie" id="plaatsen-sectie">
       <button class="plaatsen-toggle" id="plaatsen-toggle">✏️ Bericht plaatsen</button>
-      <form class="plaatsen-paneel" id="post-form" hidden>
+      <form class="plaatsen-paneel" id="post-form">
         <label class="plaatsen-label">Jouw naam
           <input class="plaatsen-input" type="text" id="pl-naam" placeholder="bijv. Mitch" required />
         </label>
@@ -329,8 +341,7 @@
     }
 
     document.getElementById("plaatsen-toggle").addEventListener("click", () => {
-      const form = document.getElementById("post-form");
-      form.hidden = !form.hidden;
+      document.getElementById("post-form").classList.toggle("plaatsen-paneel--open");
     });
 
     document.getElementById("post-form").addEventListener("submit", async (e) => {
