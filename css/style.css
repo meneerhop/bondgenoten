@@ -1994,7 +1994,7 @@ body.lb-actief { overflow: hidden; }
 .turf-dag--voorbij {
   background: var(--moonstone);
   border-color: var(--moonstone);
-  color: transparent;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .turf-dag--vandaag {
