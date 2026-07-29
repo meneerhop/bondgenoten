@@ -4,7 +4,7 @@
    Stijl: modern en strak, leesbaar in fel (Thais) zonlicht.
 --------------------------------------------------------- */
 
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 :root {
   /* Pure & Original-palet */
@@ -37,16 +37,15 @@ body {
   margin: 0;
   background-color: #f3f3ef;
   color: var(--inkt);
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+  font-family: "Space Grotesk", -apple-system, sans-serif;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
   overflow-x: hidden;
   max-width: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, .dagteller strong, .klok time {
-  font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", sans-serif;
   letter-spacing: -0.02em;
 }
 
@@ -232,7 +231,7 @@ header.site { position: relative; }
   align-items: center;
   gap: 14px;
   padding: 13px 24px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 15.5px;
   font-weight: 600;
   color: var(--inkt);
@@ -275,7 +274,7 @@ header.site { position: relative; }
   align-items: center;
   gap: 10px;
   padding: 10px 24px 10px 36px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 600;
   color: var(--inkt-zacht);
@@ -362,7 +361,7 @@ body.nav-open { overflow: hidden; }
 
 .dashboard-liefde {
   text-align: center;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -402,7 +401,7 @@ body.nav-open { overflow: hidden; }
 .dash-kaart-body { flex: 1; }
 
 .dash-kaart-titel {
-  font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 14.5px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -462,7 +461,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .rank-naam {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -489,7 +488,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .rank-punten {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 16px;
   font-weight: 700;
   color: var(--blackhills);
@@ -521,7 +520,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .vsp-score {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 52px;
   font-weight: 700;
   line-height: 1;
@@ -534,7 +533,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .vsp-vs {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 18px;
   font-weight: 700;
   opacity: 0.4;
@@ -583,7 +582,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .vsp-ton {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 20px;
   font-weight: 700;
   color: var(--inkt);
@@ -645,7 +644,7 @@ body.nav-open { overflow: hidden; }
   background: none;
   border: 1.5px solid var(--lijn);
   border-radius: 8px;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 12px;
   font-weight: 600;
   color: var(--moonstone);
@@ -705,7 +704,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .vsp-keuze {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 15px;
   font-weight: 700;
   border-radius: 8px;
@@ -818,7 +817,7 @@ body.nav-open { overflow: hidden; }
 .ps-hero-icon { font-size: 34px; flex-shrink: 0; }
 
 .ps-hero-titel {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 15px;
   font-weight: 700;
 }
@@ -849,7 +848,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .ps-stat-waarde {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 22px;
   font-weight: 700;
   color: var(--blackhills);
@@ -899,7 +898,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .ps-stad-naam {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 13.5px;
   font-weight: 700;
   color: var(--inkt);
@@ -928,7 +927,7 @@ body.nav-open { overflow: hidden; }
 }
 
 .inner-tab {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 13.5px;
   font-weight: 600;
   color: var(--inkt-zacht);
@@ -958,7 +957,7 @@ nav.tabs {
 }
 
 nav.tabs a {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 14.5px;
   font-weight: 600;
   color: var(--inkt-zacht);
@@ -1002,7 +1001,7 @@ nav.tabs a[aria-current="page"] {
 .dag > h2 { font-size: 17px; font-weight: 700; margin: 0 0 10px; }
 
 .dag > h2 small {
-  font-family: "Inter", sans-serif;
+  font-family: inherit;
   font-weight: 600;
   font-size: 11.5px;
   letter-spacing: 0.08em;
@@ -1112,7 +1111,7 @@ nav.tabs a[aria-current="page"] {
 }
 
 .aftelkaart-blok span {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 36px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -1155,7 +1154,7 @@ nav.tabs a[aria-current="page"] {
 }
 
 .segment .code {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-weight: 700;
   font-size: 14.5px;
   color: var(--blackhills);
@@ -1229,7 +1228,7 @@ nav.tabs a[aria-current="page"] {
   display: inline-block;
   background: var(--inkt);
   color: #f2f3ee;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-weight: 600;
   font-size: 14px;
   border: none;
@@ -1269,7 +1268,7 @@ nav.tabs a[aria-current="page"] {
 }
 
 .filter-knop {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 12px;
   font-weight: 600;
   text-transform: capitalize;
@@ -1380,7 +1379,7 @@ nav.tabs a[aria-current="page"] {
 .kandidaat-initialen {
   width: 100%;
   height: 100%;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 24px;
   font-weight: 700;
   display: flex;
@@ -1582,7 +1581,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .weer-temp {
-  font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.1;
@@ -1622,7 +1621,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .afl-tijd {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.1;
@@ -1787,7 +1786,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .rtd-naam {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 27px;
   font-weight: 700;
   line-height: 1.2;
@@ -1857,7 +1856,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .rtd-rotterdam-titel {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 12px;
@@ -1956,7 +1955,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .turflijst-titel {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -1965,7 +1964,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .turflijst-teller {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 700;
   color: var(--blackhills);
@@ -1985,7 +1984,7 @@ body.lb-actief { overflow: hidden; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 600;
   color: var(--inkt-zacht);
@@ -2041,7 +2040,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .vertrek-blok span {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 36px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -2106,7 +2105,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .hereniging-blok span {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 36px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -2223,7 +2222,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .so-tijd {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-weight: 700;
   font-size: 14px;
   min-width: 42px;
@@ -2320,7 +2319,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .reactie-tel {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 11px;
   font-weight: 700;
   color: var(--inkt);
@@ -2446,7 +2445,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .mis-je-getal {
-  font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 32px;
   font-weight: 700;
   color: #c0466a;
@@ -2528,7 +2527,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .mijlpaal-tekst-groot {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 6px;
@@ -2568,7 +2567,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 .mijlpaal-volgende-tekst {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: inherit;
   font-size: 15px;
   font-weight: 700;
   color: var(--inkt);
