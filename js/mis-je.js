@@ -23,12 +23,20 @@ function renderMisJe(data) {
 
   if (getal) getal.textContent = data.length;
 
-  const uniek = [...new Set(data.map(d => d.naam.replace(/_/g, " ")))];
+  const telling = {};
+  data.forEach(d => {
+    const naam = d.naam.replace(/_/g, " ");
+    telling[naam] = (telling[naam] || 0) + 1;
+  });
+  const uniek = Object.keys(telling);
+
   if (namen) {
     if (!uniek.length) {
       namen.innerHTML = '<span class="mis-je-leeg">Wees de eerste die haar mist!</span>';
     } else {
-      namen.innerHTML = uniek.map(n => `<span class="mis-je-pill">${n}</span>`).join("");
+      namen.innerHTML = uniek.map(n =>
+        `<span class="mis-je-pill">${n}<span class="mis-je-pill-tel">${telling[n]}</span></span>`
+      ).join("");
     }
   }
 

@@ -2507,26 +2507,37 @@ body.lb-actief { overflow: hidden; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 6px;
-  padding: 22px 18px 20px;
-  background: linear-gradient(135deg, #fceef3 0%, #fff8fa 100%);
-  border-color: rgba(216, 100, 130, 0.2);
+  gap: 8px;
+  padding: 28px 20px 24px;
+  background-color: #fdf0f4;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><text x='5'  y='28' font-size='22' fill='%23f4a8be' opacity='0.35'>♥</text><text x='48' y='62' font-size='14' fill='%23f4a8be' opacity='0.25'>♥</text><text x='2'  y='72' font-size='9'  fill='%23f0b8cc' opacity='0.22'>♥</text><text x='60' y='14' font-size='9'  fill='%23f0b8cc' opacity='0.22'>♥</text><text x='34' y='10' font-size='7'  fill='%23f4a8be' opacity='0.18'>♥</text><text x='68' y='42' font-size='7'  fill='%23f4a8be' opacity='0.18'>♥</text></svg>");
+  background-repeat: repeat;
+  border-color: rgba(216, 100, 130, 0.18);
   margin-bottom: 10px;
+}
+
+.mis-je-titel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c0466a;
+  opacity: 0.6;
 }
 
 .mis-je-teller-wrap {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 7px;
+  gap: 6px;
 }
 
 .mis-je-getal {
-  font-family: inherit;
-  font-size: 32px;
+  font-size: 42px;
   font-weight: 700;
   color: #c0466a;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .mis-je-sublabel {
@@ -2536,24 +2547,24 @@ body.lb-actief { overflow: hidden; }
 }
 
 .mis-je-knop {
-  font-size: 64px;
+  font-size: 72px;
   background: none;
   border: none;
   cursor: pointer;
   line-height: 1;
-  padding: 6px 4px 2px;
+  padding: 4px;
   display: block;
   transition: transform 0.18s ease;
-  filter: drop-shadow(0 4px 12px rgba(200, 70, 100, 0.28));
+  filter: drop-shadow(0 6px 18px rgba(200, 70, 100, 0.32));
 }
 
-.mis-je-knop:hover { transform: scale(1.1); }
-.mis-je-knop:active { transform: scale(0.9); }
+.mis-je-knop:hover { transform: scale(1.08); }
+.mis-je-knop:active { transform: scale(0.88); }
 
 .mis-je-knop--gedaan {
   cursor: default;
   filter: none;
-  opacity: 0.65;
+  opacity: 0.6;
 }
 
 @keyframes mis-je-klop {
@@ -2570,22 +2581,36 @@ body.lb-actief { overflow: hidden; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
-  margin-top: 2px;
+  gap: 7px;
+  margin-top: 4px;
 }
 
 .mis-je-pill {
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
   font-weight: 600;
-  background: rgba(192, 70, 106, 0.1);
-  color: #c0466a;
+  background: rgba(192, 70, 106, 0.12);
+  color: #b03060;
   border-radius: 99px;
-  padding: 3px 10px;
+  padding: 4px 12px 4px 12px;
+  border: 1px solid rgba(192, 70, 106, 0.15);
+}
+
+.mis-je-pill-tel {
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(192, 70, 106, 0.15);
+  border-radius: 99px;
+  padding: 0px 6px;
+  color: #c0466a;
 }
 
 .mis-je-leeg {
   font-size: 12px;
   color: #9a5060;
+  font-style: italic;
 }
 
 /* ---------- Mijlpalen ---------- */
