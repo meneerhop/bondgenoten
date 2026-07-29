@@ -229,6 +229,15 @@
       color: #a06070;
       font-weight: 500;
     }
+
+    .bericht-reacties {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--lijn);
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
@@ -277,13 +286,84 @@
         .replace(/"/g, "&quot;");
     }
 
+    const EMOJIS = ["❤️", "😂", "🥺", "😍", "🔥"];
+    const NAAM_KEY = "berichten-naam";
+    let alleReacties = [];
+
+    function mijnNaam() { return localStorage.getItem(NAAM_KEY); }
+    function veiligNaam(s) { return String(s).slice(0, 40).replace(/[<>"&]/g, ""); }
+
+    async function laadReacties() {
+      try {
+        const res = await fetch(
+          SUPABASE_URL + "posts?kind=eq.reactie&select=id,naam,note,photo_url",
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+        );
+        alleReacties = res.ok ? await res.json() : [];
+      } catch { alleReacties = []; }
+    }
+
+    function renderReacties(berichtId) {
+      const el = document.querySelector(`.bericht-reacties[data-id="${berichtId}"]`);
+      if (!el) return;
+      const mijn = mijnNaam();
+      const rijen = alleReacties.filter(r => r.photo_url === String(berichtId));
+      el.innerHTML = EMOJIS.map(emoji => {
+        const groep = rijen.filter(r => r.note === emoji);
+        const actief = mijn && groep.some(r => r.naam === mijn);
+        return `<button class="reactie-knop${actief ? " reactie-knop--actief" : ""}" data-emoji="${emoji}" data-id="${berichtId}">
+          ${emoji}${groep.length ? ` <span class="reactie-tel">${groep.length}</span>` : ""}
+        </button>`;
+      }).join("");
+      el.querySelectorAll(".reactie-knop").forEach(k => {
+        k.addEventListener("click", () => toggleReactie(berichtId, k.dataset.emoji));
+      });
+    }
+
+    async function toggleReactie(berichtId, emoji) {
+      let naam = mijnNaam();
+      if (!naam) {
+        naam = prompt("Wie ben jij? (jouw naam voor de reactie)");
+        if (!naam || !naam.trim()) return;
+        naam = veiligNaam(naam.trim());
+        localStorage.setItem(NAAM_KEY, naam);
+      }
+      const bestaand = alleReacties.find(r =>
+        r.photo_url === String(berichtId) && r.note === emoji && r.naam === naam
+      );
+      if (bestaand) {
+        await fetch(SUPABASE_URL + "posts?id=eq." + bestaand.id, {
+          method: "DELETE",
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY },
+        });
+        alleReacties = alleReacties.filter(r => r.id !== bestaand.id);
+      } else {
+        const res = await fetch(SUPABASE_URL + "posts", {
+          method: "POST",
+          headers: {
+            apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY,
+            "Content-Type": "application/json", Prefer: "return=representation",
+          },
+          body: JSON.stringify({ naam, note: emoji, kind: "reactie", photo_url: String(berichtId) }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.[0]) alleReacties.push(data[0]);
+        }
+      }
+      renderReacties(berichtId);
+    }
+
     async function laadBerichten() {
       const lijst = document.getElementById("berichten-lijst");
       try {
-        const res = await fetch(
-          SUPABASE_URL + "posts?order=created_at.desc&select=*&kind=in.(thuis,reis)",
-          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
-        );
+        const [res] = await Promise.all([
+          fetch(
+            SUPABASE_URL + "posts?order=created_at.desc&select=*&kind=in.(thuis,reis)",
+            { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+          ),
+          laadReacties(),
+        ]);
         const berichten = await res.json();
 
         if (!berichten.length) {
@@ -312,11 +392,13 @@
           if (b.photo_url) html += `<img class="bericht-foto" src="${escHtml(b.photo_url)}" alt="${escHtml(b.photo_caption || "")}" loading="lazy">`;
           if (b.photo_caption) html += `<div class="bericht-caption">${escHtml(b.photo_caption)}</div>`;
 
-          kaart.innerHTML = html;
+          html += `<div class="bericht-reacties" data-id="${b.id}"></div>`;
 
+          kaart.innerHTML = html;
           kaart.querySelector(".bericht-verwijder").addEventListener("click", () => verwijder(b.id, kaart));
 
           lijst.appendChild(kaart);
+          renderReacties(b.id);
         }
       } catch (e) {
         lijst.innerHTML = `<div class="leeg">Kon berichten niet laden. Probeer het later opnieuw.</div>`;
@@ -355,6 +437,7 @@
       try {
         const naam = document.getElementById("pl-naam").value.trim();
         const noot = document.getElementById("pl-noot").value.trim();
+        if (naam) localStorage.setItem(NAAM_KEY, veiligNaam(naam));
 
         const res = await fetch(SUPABASE_URL + "posts", {
           method: "POST",
