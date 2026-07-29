@@ -26,13 +26,9 @@ function renderMisJe(data) {
   const uniek = [...new Set(data.map(d => d.naam.replace(/_/g, " ")))];
   if (namen) {
     if (!uniek.length) {
-      namen.textContent = "Wees de eerste die haar mist!";
-    } else if (uniek.length === 1) {
-      namen.textContent = `${uniek[0]} mist elkaar ❤️`;
-    } else if (uniek.length === 2) {
-      namen.textContent = `${uniek[0]} en ${uniek[1]} missen elkaar ❤️`;
+      namen.innerHTML = '<span class="mis-je-leeg">Wees de eerste die haar mist!</span>';
     } else {
-      namen.textContent = `${uniek[0]}, ${uniek[1]} en ${uniek.length - 2} anderen missen elkaar ❤️`;
+      namen.innerHTML = uniek.map(n => `<span class="mis-je-pill">${n}</span>`).join("");
     }
   }
 

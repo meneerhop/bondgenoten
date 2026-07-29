@@ -18,6 +18,12 @@ function dagKey(d) {
   const teller = document.getElementById("dagteller");
   const aftel  = document.getElementById("aftel");
   const balk   = document.getElementById("voortgang");
+  const pctEl  = document.getElementById("voortgang-pct");
+
+  function setBalk(pct) {
+    if (balk) balk.style.background = `conic-gradient(var(--moonstone) ${pct}%, rgba(44,51,47,0.1) ${pct}%)`;
+    if (pctEl) pctEl.textContent = pct + "%";
+  }
 
   const isLastedag = dagKey(nu) === dagKey(eind);
   const isThuis    = dag > totaal;
@@ -28,17 +34,17 @@ function dagKey(d) {
   } else if (isThuis) {
     teller.textContent = "Welkom thuis! 🎉";
     aftel.textContent  = "";
-    if (balk) balk.style.width = "100%";
+    setBalk(100);
     startConfetti();
   } else if (isLastedag) {
     teller.textContent = `Dag ${dag} van ${totaal}`;
     aftel.textContent  = "laatste dag — vanavond thuis! 🎉";
-    if (balk) balk.style.width = "100%";
+    setBalk(100);
     startConfetti();
   } else {
     teller.textContent = `Dag ${dag} van ${totaal}`;
     aftel.textContent  = rest === 1 ? "morgen weer thuis!" : `nog ${rest} dagen`;
-    if (balk) balk.style.width = `${Math.min(100, Math.round((dag / totaal) * 100))}%`;
+    setBalk(Math.min(100, Math.round((dag / totaal) * 100)));
   }
 
   const loc = huidigeLocatie();

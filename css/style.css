@@ -86,7 +86,9 @@ header.site h1 {
 }
 
 .klok {
-  background: var(--blackhills);
+  background: rgba(73, 83, 78, 0.82);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   color: #f2f3ee;
   border-radius: var(--radius);
   padding: 14px 18px;
@@ -105,11 +107,12 @@ header.site h1 {
 
 .klok time {
   display: block;
-  font-size: 27px;
-  font-weight: 600;
+  font-size: 34px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  line-height: 1.15;
-  margin-top: 3px;
+  line-height: 1.1;
+  margin-top: 4px;
+  letter-spacing: -0.02em;
 }
 
 .klok .datum {
@@ -118,33 +121,51 @@ header.site h1 {
   margin-top: 1px;
 }
 
-/* ---------- Dagteller ---------- */
+/* ---------- Dagteller + voortgang ---------- */
+.voortgang-rij {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.voortgang-cirkel {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: conic-gradient(var(--moonstone) 0%, rgba(44,51,47,0.1) 0%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.8s ease;
+}
+
+.voortgang-cirkel-kern {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f3f3ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voortgang-pct {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--moonstone);
+}
+
 .dagteller {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 2px;
-  margin-bottom: 12px;
 }
 
 .dagteller strong { font-size: 19px; font-weight: 700; color: var(--blackhills); }
 .dagteller span { color: var(--inkt-zacht); font-size: 13px; }
-
-.voortgang {
-  height: 5px;
-  background: rgba(44, 51, 47, 0.08);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.voortgang i {
-  display: block;
-  height: 100%;
-  background: linear-gradient(90deg, var(--moonstone), var(--landscape));
-  border-radius: 99px;
-  transition: width 0.6s ease;
-}
 
 /* ---------- Hamburger menu ---------- */
 header.site { position: relative; }
@@ -393,6 +414,17 @@ body.nav-open { overflow: hidden; }
   line-height: 1;
 }
 
+.ios-lijst-item:nth-child(1) .ios-lijst-icon { background: #deeafd; } /* 💌 blauw */
+.ios-lijst-item:nth-child(2) .ios-lijst-icon { background: #d9f2e3; } /* 📷 groen */
+.ios-lijst-item:nth-child(3) .ios-lijst-icon { background: #fde8d4; } /* 📅 oranje */
+.ios-lijst-item:nth-child(4) .ios-lijst-icon { background: #ecddf7; } /* 📺 paars */
+.ios-lijst-item:nth-child(5) .ios-lijst-icon { background: #fdf4cc; } /* 🏆 goud */
+.ios-lijst-item:nth-child(6) .ios-lijst-icon { background: #d4eefb; } /* ✈️ lichtblauw */
+.ios-lijst-item:nth-child(7) .ios-lijst-icon { background: #d6f0ec; } /* 🌉 teal */
+.ios-lijst-item:nth-child(8) .ios-lijst-icon { background: #fdd9d9; } /* 🇹🇭 rood */
+.ios-lijst-item:nth-child(9) .ios-lijst-icon { background: #fde8d4; } /* 🐾 oranje */
+.ios-lijst-item:nth-child(10) .ios-lijst-icon { background: #ecddf7; } /* 📺 paars */
+
 .ios-lijst-label {
   flex: 1;
   font-size: 15px;
@@ -408,12 +440,26 @@ body.nav-open { overflow: hidden; }
 
 .dashboard-liefde {
   text-align: center;
-  font-family: inherit;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  padding: 28px 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.dashboard-liefde-hart {
+  font-size: 18px;
+  color: #c0466a;
+  opacity: 0.5;
+}
+
+.dashboard-liefde-tekst {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   color: var(--landscape);
-  padding: 20px 0 4px;
+  opacity: 0.7;
 }
 
 .dash-kaart {
@@ -2531,9 +2577,25 @@ body.lb-actief { overflow: hidden; }
 .mis-je-knop--animeer { animation: mis-je-klop 0.55s ease; }
 
 .mis-je-namen {
-  font-size: 12.5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.mis-je-pill {
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(192, 70, 106, 0.1);
+  color: #c0466a;
+  border-radius: 99px;
+  padding: 3px 10px;
+}
+
+.mis-je-leeg {
+  font-size: 12px;
   color: #9a5060;
-  line-height: 1.5;
 }
 
 /* ---------- Mijlpalen ---------- */
