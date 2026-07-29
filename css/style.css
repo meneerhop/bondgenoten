@@ -414,16 +414,6 @@ body.nav-open { overflow: hidden; }
   line-height: 1;
 }
 
-.ios-lijst-item:nth-child(1) .ios-lijst-icon { background: #deeafd; } /* 💌 blauw */
-.ios-lijst-item:nth-child(2) .ios-lijst-icon { background: #d9f2e3; } /* 📷 groen */
-.ios-lijst-item:nth-child(3) .ios-lijst-icon { background: #fde8d4; } /* 📅 oranje */
-.ios-lijst-item:nth-child(4) .ios-lijst-icon { background: #ecddf7; } /* 📺 paars */
-.ios-lijst-item:nth-child(5) .ios-lijst-icon { background: #fdf4cc; } /* 🏆 goud */
-.ios-lijst-item:nth-child(6) .ios-lijst-icon { background: #d4eefb; } /* ✈️ lichtblauw */
-.ios-lijst-item:nth-child(7) .ios-lijst-icon { background: #d6f0ec; } /* 🌉 teal */
-.ios-lijst-item:nth-child(8) .ios-lijst-icon { background: #fdd9d9; } /* 🇹🇭 rood */
-.ios-lijst-item:nth-child(9) .ios-lijst-icon { background: #fde8d4; } /* 🐾 oranje */
-.ios-lijst-item:nth-child(10) .ios-lijst-icon { background: #ecddf7; } /* 📺 paars */
 
 .ios-lijst-label {
   flex: 1;
