@@ -137,23 +137,28 @@ header.site h1 {
   flex-shrink: 0;
 }
 
+.header-weer-rij {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
 .header-weer-icon {
-  font-size: 26px;
+  font-size: 16px;
   line-height: 1;
 }
 
 .header-weer-temp {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
-  color: var(--inkt);
+  color: var(--blackhills);
   line-height: 1.1;
-  letter-spacing: -0.02em;
 }
 
 .header-weer-sub {
-  font-size: 10px;
+  font-size: 13px;
   color: var(--inkt-zacht);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .voortgang-cirkel {

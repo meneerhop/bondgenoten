@@ -118,7 +118,6 @@
       border: 1.5px dashed var(--lijn);
       border-radius: var(--radius);
       padding: 13px 16px;
-      font-family: "Space Grotesk", sans-serif;
       font-size: 14px;
       font-weight: 600;
       color: var(--inkt-zacht);
@@ -179,36 +178,42 @@
     .plaatsen-rij .knop { flex: 1; text-align: center; }
 
     .dagbericht {
-      background: linear-gradient(135deg, #7c4a5c 0%, var(--blackhills) 100%);
-      color: #fff;
+      background-color: #fdf0f4;
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><text x='5'  y='28' font-size='22' fill='%23f4a8be' opacity='0.35'>♥</text><text x='48' y='62' font-size='14' fill='%23f4a8be' opacity='0.25'>♥</text><text x='2'  y='72' font-size='9'  fill='%23f0b8cc' opacity='0.22'>♥</text><text x='60' y='14' font-size='9'  fill='%23f0b8cc' opacity='0.22'>♥</text><text x='34' y='10' font-size='7'  fill='%23f4a8be' opacity='0.18'>♥</text><text x='68' y='42' font-size='7'  fill='%23f4a8be' opacity='0.18'>♥</text></svg>");
+      background-repeat: repeat;
+      border: 1px solid rgba(216, 100, 130, 0.18);
       border-radius: var(--radius);
       padding: 28px 22px 24px;
       margin-top: 18px;
       text-align: center;
       box-shadow: var(--schaduw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
 
     .dagbericht-label {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      opacity: 0.75;
-      margin-bottom: 14px;
+      color: #c0466a;
+      opacity: 0.6;
     }
 
     .dagbericht-tekst {
-      font-family: "Space Grotesk", sans-serif;
       font-size: 30px;
       font-weight: 700;
       line-height: 1.2;
-      margin: 0 0 14px;
+      color: #c0466a;
+      margin: 0;
     }
 
     .dagbericht-van {
       font-size: 12px;
-      opacity: 0.65;
-      font-style: italic;
+      color: #a06070;
+      font-weight: 500;
     }
   </style>
 </head>

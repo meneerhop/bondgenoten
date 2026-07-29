@@ -20,8 +20,7 @@ async function laadWeer() {
     const c = data.current;
     const icon = WEER_CODES[c.weather_code] || "🌡️";
     el.innerHTML = `
-      <span class="header-weer-icon">${icon}</span>
-      <span class="header-weer-temp">${Math.round(c.temperature_2m)}°</span>
+      <span class="header-weer-rij"><span class="header-weer-icon">${icon}</span><span class="header-weer-temp">${Math.round(c.temperature_2m)}°</span></span>
       <span class="header-weer-sub">voelt als ${Math.round(c.apparent_temperature)}°</span>`;
   } catch {
     el.innerHTML = "";

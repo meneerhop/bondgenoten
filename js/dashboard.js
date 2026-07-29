@@ -44,7 +44,7 @@ function dagKey(d) {
   } else {
     teller.textContent = `Dag ${dag} van ${totaal}`;
     aftel.textContent  = rest === 1 ? "morgen weer thuis!" : `nog ${rest} dagen`;
-    setBalk(Math.min(100, Math.round((dag / totaal) * 100)));
+    setBalk(Math.min(100, Math.floor((dag / totaal) * 100)));
   }
 
   const loc = huidigeLocatie();
