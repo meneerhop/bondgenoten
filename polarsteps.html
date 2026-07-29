@@ -95,11 +95,23 @@
       .addTo(kaart)
       .bindPopup("<strong>Krabi</strong><br><span style='font-size:12px;color:var(--inkt-zacht)'>Zondag 27 juli</span>");
 
-    L.polyline([[13.7563, 100.5018], [8.0863, 98.9063]], {
-      color: getComputedStyle(document.documentElement).getPropertyValue("--moonstone").trim() || "#6f7b6b",
-      weight: 2, dashArray: "6 5", opacity: 0.6
+    const kleur = getComputedStyle(document.documentElement).getPropertyValue("--moonstone").trim() || "#6f7b6b";
+
+    // Vluchtroutes (BRU → BEJ → BKK) — licht en dun
+    L.polyline([[50.8503, 4.3517], [39.9042, 116.4074]], {
+      color: kleur, weight: 1.5, dashArray: "3 7", opacity: 0.28
     }).addTo(kaart);
 
+    L.polyline([[39.9042, 116.4074], [13.7563, 100.5018]], {
+      color: kleur, weight: 1.5, dashArray: "3 7", opacity: 0.28
+    }).addTo(kaart);
+
+    // Lokale route (BKK → Krabi)
+    L.polyline([[13.7563, 100.5018], [8.0863, 98.9063]], {
+      color: kleur, weight: 2, dashArray: "6 5", opacity: 0.6
+    }).addTo(kaart);
+
+    // Zoom alleen op Thailand-gebied, vluchten lopen buiten beeld door
     kaart.fitBounds([[8.0863, 98.9063], [13.7563, 100.5018]], { padding: [30, 30] });
 
     const nu = new Date();
