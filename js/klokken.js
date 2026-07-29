@@ -9,7 +9,7 @@
   const fmts = zones.map((z) => ({
     ...z,
     tijdFmt: new Intl.DateTimeFormat("nl-NL", {
-      timeZone: z.tz, hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false,
+      timeZone: z.tz, hour: "2-digit", minute: "2-digit", hour12: false,
     }),
     datumFmt: new Intl.DateTimeFormat("nl-NL", {
       timeZone: z.tz, weekday: "short", day: "numeric", month: "short",
@@ -27,5 +27,5 @@
   }
 
   tik();
-  setInterval(tik, 1000);
+  setInterval(tik, 30000);
 })();
