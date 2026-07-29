@@ -4,7 +4,6 @@
    Stijl: modern en strak, leesbaar in fel (Thais) zonlicht.
 --------------------------------------------------------- */
 
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 :root {
   /* Pure & Original-palet */
@@ -37,7 +36,7 @@ body {
   margin: 0;
   background-color: #f3f3ef;
   color: var(--inkt);
-  font-family: "Space Grotesk", -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   overflow-x: hidden;
@@ -46,7 +45,7 @@ body {
 }
 
 h1, h2, h3, .dagteller strong, .klok time {
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .wrap {
@@ -73,7 +72,7 @@ header.site h1 {
   line-height: 1.05;
   margin: 6px 0 20px;
   color: var(--inkt);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 /* ---------- Twee klokken ---------- */
