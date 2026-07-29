@@ -1,24 +1,70 @@
 (function () {
   const huidig = location.pathname.split("/").pop() || "index.html";
-  const bondgenotenPaginas = ["bondgenoten.html", "tijdlijn.html"];
 
-  const PAGINAS = [
-    { label: "Dashboard",       href: "index.html",        icon: "🏠" },
-    { label: "de Bondgenoten", href: "bondgenoten.html",  icon: "📺", match: bondgenotenPaginas },
-    { label: "Berichten",      href: "berichten.html",    icon: "💌" },
-    { label: "Foto's",         href: "fotos.html",        icon: "📷" },
-    { label: "Voorspelling",   href: "voorspelling.html", icon: "🏆" },
-    { label: "Vluchten",       href: "vluchten.html",     icon: "✈" },
-    { label: "Polarsteps",     href: "polarsteps.html",   icon: "🗺" },
-    { label: "Rotterdam",      href: "rotterdam.html",    icon: "🌉" },
-    { label: "Thailand",       href: "thailand.html",     icon: "🇹🇭" },
-    { label: "Huisdiertjes",  href: "huisdiertjes.html", icon: "🐾" },
+  const bondgenotenPaginas = ["bondgenoten.html", "tijdlijn.html", "voorspelling.html"];
+  const reisPaginas        = ["vluchten.html", "polarsteps.html", "thailand.html"];
+
+  const NAV = [
+    { label: "Dashboard",      href: "index.html",        icon: "🏠" },
+    {
+      label: "de Bondgenoten", icon: "📺",
+      match: bondgenotenPaginas,
+      sub: [
+        { label: "de Bondgenoten", href: "bondgenoten.html",  icon: "📺" },
+        { label: "Tijdlijn",       href: "tijdlijn.html",     icon: "📅" },
+        { label: "Voorspelling",   href: "voorspelling.html", icon: "🏆" },
+      ],
+    },
+    { label: "Berichten", href: "berichten.html", icon: "💌" },
+    { label: "Foto's",    href: "fotos.html",     icon: "📷" },
+    {
+      label: "Reis", icon: "✈️",
+      match: reisPaginas,
+      sub: [
+        { label: "Vluchten",   href: "vluchten.html",   icon: "✈️" },
+        { label: "Polarsteps", href: "polarsteps.html", icon: "🗺"  },
+        { label: "Thailand",   href: "thailand.html",   icon: "🇹🇭" },
+      ],
+    },
+    { label: "Rotterdam",    href: "rotterdam.html",    icon: "🌉" },
+    { label: "Huisdiertjes", href: "huisdiertjes.html", icon: "🐾" },
   ];
 
   const btn = document.createElement("button");
   btn.className = "hamburger";
   btn.setAttribute("aria-label", "Menu openen");
   btn.innerHTML = `<span></span><span></span><span></span>`;
+
+  function renderItem(p) {
+    if (p.sub) {
+      const inGroup = p.match ? p.match.includes(huidig) : false;
+      const subHTML = p.sub.map(s => {
+        const actief = s.href === huidig;
+        return `<a href="${s.href}" class="nav-sub${actief ? " nav-sub--actief" : ""}">
+          <span class="nav-icon nav-icon--sm">${s.icon}</span>
+          <span class="nav-label">${s.label}</span>
+          ${actief ? '<span class="nav-pijl">›</span>' : ""}
+        </a>`;
+      }).join("");
+
+      return `
+        <div class="nav-accordion-trigger${inGroup ? " nav-accordion-trigger--open" : ""}" data-accordion>
+          <span class="nav-icon">${p.icon}</span>
+          <span class="nav-label">${p.label}</span>
+          <span class="nav-pijl nav-pijl--chevron">›</span>
+        </div>
+        <div class="nav-accordion${inGroup ? " nav-accordion--open" : ""}">
+          ${subHTML}
+        </div>`;
+    }
+
+    const actief = p.href === huidig;
+    return `<a href="${p.href}" class="nav-item${actief ? " nav-item--actief" : ""}">
+      <span class="nav-icon">${p.icon}</span>
+      <span class="nav-label">${p.label}</span>
+      <span class="nav-pijl">›</span>
+    </a>`;
+  }
 
   const overlay = document.createElement("div");
   overlay.className = "nav-overlay";
@@ -32,19 +78,12 @@
         <button class="nav-sluit" aria-label="Menu sluiten">Klaar</button>
       </div>
       <nav class="nav-menu">
-        ${PAGINAS.map(p => {
-          const actief = p.match ? p.match.includes(huidig) : p.href === huidig;
-          return `<a href="${p.href}" class="nav-item${actief ? " nav-item--actief" : ""}">
-            <span class="nav-icon">${p.icon}</span>
-            <span class="nav-label">${p.label}</span>
-            <span class="nav-pijl">›</span>
-          </a>`;
-        }).join("")}
+        ${NAV.map(renderItem).join("")}
       </nav>
       <p class="nav-easter-egg"><em>je bent mijn prinsesje</em></p>
     </div>`;
 
-  function open() {
+  function open()  {
     overlay.classList.add("nav-overlay--open");
     document.body.classList.add("nav-open");
   }
@@ -57,6 +96,13 @@
   overlay.querySelector(".nav-sluit").addEventListener("click", sluit);
   overlay.addEventListener("click", e => { if (e.target === overlay) sluit(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape") sluit(); });
+
+  overlay.querySelectorAll("[data-accordion]").forEach(trigger => {
+    trigger.addEventListener("click", () => {
+      trigger.classList.toggle("nav-accordion-trigger--open");
+      trigger.nextElementSibling.classList.toggle("nav-accordion--open");
+    });
+  });
 
   const header = document.querySelector("header.site");
   if (header) header.appendChild(btn);

@@ -354,45 +354,69 @@ header.site { position: relative; }
   flex-shrink: 0;
 }
 
-.nav-chevron {
-  margin-left: auto;
-  font-size: 18px;
-  transition: transform 0.2s;
-  opacity: 0.4;
+.nav-accordion-trigger {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 16px 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--inkt);
+  border-bottom: 1px solid var(--lijn);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
 }
 
-.nav-accordion-trigger { cursor: pointer; user-select: none; }
-.nav-accordion-trigger--open .nav-chevron { transform: rotate(90deg); }
+.nav-accordion-trigger:hover { background: var(--accent-zacht); }
+
+.nav-pijl--chevron {
+  transition: transform 0.28s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.nav-accordion-trigger--open .nav-pijl--chevron { transform: rotate(90deg); }
 
 .nav-accordion {
   display: none;
   flex-direction: column;
   background: var(--accent-zacht);
-  border-top: 1px solid var(--lijn);
   border-bottom: 1px solid var(--lijn);
-  padding: 6px 0;
 }
 
 .nav-accordion--open { display: flex; }
 
+.nav-icon--sm {
+  width: 28px;
+  height: 28px;
+  background: rgba(111, 123, 107, 0.14);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
 .nav-sub {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 24px 10px 36px;
+  gap: 13px;
+  padding: 10px 16px 10px 20px;
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
-  color: var(--inkt-zacht);
+  color: var(--inkt);
   text-decoration: none;
+  border-bottom: 1px solid rgba(111, 123, 107, 0.1);
   transition: background 0.1s;
 }
 
-.nav-sub:hover { background: var(--lijn); color: var(--inkt); }
-.nav-sub--actief { color: var(--blackhills); }
+.nav-sub:last-child { border-bottom: none; }
+.nav-sub:hover { background: rgba(111, 123, 107, 0.08); }
+.nav-sub--actief { color: var(--moonstone); }
+.nav-sub--actief .nav-icon--sm { background: var(--moonstone); }
 
 .nav-bondjes-lijst { padding: 6px 16px 4px; }
-
 .nav-bondje { margin-bottom: 10px; }
 
 .nav-bondje-header {
@@ -1713,7 +1737,8 @@ body.lb-actief { overflow: hidden; }
 
 /* ---------- Easter egg ---------- */
 .nav-easter-egg {
-  margin: auto 0 18px;
+  margin: auto 0 0;
+  padding: 24px 0 28px;
   text-align: center;
   font-size: 12px;
   color: var(--landscape);
