@@ -6,9 +6,7 @@ function dagKey(d) {
 }
 
 (function initDashboard() {
-  document.getElementById("kijklink").href = KIJK_URL;
-
-  const nu     = new Date();
+const nu     = new Date();
   const start  = new Date(TRIP.vertrek + "T00:00:00");
   const eind   = new Date(TRIP.thuiskomst + "T00:00:00");
   const totaal = Math.round((eind - start) / DAG_MS);
