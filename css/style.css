@@ -2192,15 +2192,19 @@ body.lb-actief { overflow: hidden; }
   text-align: center;
   gap: 4px;
   padding: 22px 18px 20px;
-  background: linear-gradient(135deg, #fef5e8 0%, #fffbf4 100%);
-  border-color: rgba(196, 140, 60, 0.22);
+  background: rgba(73, 83, 78, 0.82);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-color: rgba(73, 83, 78, 0.15);
+  color: #f2f3ee;
   margin-bottom: 10px;
 }
 
 .hereniging-label {
   font-size: 13px;
   font-weight: 600;
-  color: #9a6c20;
+  color: #f2f3ee;
+  opacity: 0.8;
   margin-bottom: 14px;
   line-height: 1.4;
 }
@@ -2217,9 +2221,7 @@ body.lb-actief { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(73, 83, 78, 0.82);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   padding: 10px 14px 8px;
   min-width: 62px;
@@ -2245,7 +2247,8 @@ body.lb-actief { overflow: hidden; }
 
 .hereniging-sub {
   font-size: 12px;
-  color: #9a8050;
+  color: #f2f3ee;
+  opacity: 0.65;
 }
 
 .hereniging-thuis {
