@@ -106,4 +106,16 @@
   const header = document.querySelector("header.site");
   if (header) header.appendChild(btn);
   document.body.appendChild(overlay);
+
+  if ("IntersectionObserver" in window) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add("zichtbaar"); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.06 });
+
+    document.querySelectorAll(
+      ".dash-kaart, .ios-lijst, .turflijst-kaart, .klokken, .voortgang-rij, .bericht-kaart, .vsp-kaart, .vsp-scorebord"
+    ).forEach(el => { el.classList.add("fade-in"); obs.observe(el); });
+  }
 })();

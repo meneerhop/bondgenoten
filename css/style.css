@@ -26,6 +26,50 @@
 
 * { box-sizing: border-box; }
 
+@keyframes pagina-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.wrap { animation: pagina-in 0.32s ease both; }
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.42s ease, transform 0.42s ease;
+}
+
+.fade-in.zichtbaar {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes skel-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.9; }
+}
+
+.skel-kaart {
+  background: var(--kaart);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skel-rij {
+  height: 13px;
+  background: var(--lijn);
+  border-radius: 7px;
+  animation: skel-pulse 1.5s ease-in-out infinite;
+}
+
+.skel-rij--kort  { width: 55%; animation-delay: 0.15s; }
+.skel-rij--midden { width: 75%; animation-delay: 0.3s; }
+
 html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
@@ -794,10 +838,11 @@ body.nav-open { overflow: hidden; }
 }
 
 .vsp-kaart {
-  background: var(--papier);
-  border: 1px solid var(--lijn);
-  border-radius: 10px;
-  padding: 12px;
+  background: var(--kaart);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: var(--radius);
+  box-shadow: var(--schaduw);
+  padding: 16px;
   text-align: center;
 }
 
@@ -1517,6 +1562,17 @@ nav.tabs a[aria-current="page"] {
   margin: 26px 0 0;
 }
 
+.sectie-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--inkt-zacht);
+  opacity: 0.6;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
 .sectie-titel--kandidaten { margin-top: 20px; }
 
 .kandidaten-grid {
@@ -2144,7 +2200,7 @@ body.lb-actief { overflow: hidden; }
   flex-direction: column;
   align-items: stretch;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 28px;
   padding: 16px 18px;
 }
 
