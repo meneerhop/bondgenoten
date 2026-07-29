@@ -72,7 +72,7 @@
       <div class="nav-header">
         <div class="nav-header-info">
           <div class="nav-header-titel">Dieuw in Thailand 🇹🇭</div>
-          <div class="nav-header-sub">Backpack trip met Dagmar</div>
+          <div class="nav-header-sub">คุณเป็นของฉัน</div>
         </div>
         <button class="nav-sluit" aria-label="Menu sluiten">Klaar</button>
       </div>
