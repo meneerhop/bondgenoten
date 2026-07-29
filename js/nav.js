@@ -24,12 +24,20 @@
   overlay.className = "nav-overlay";
   overlay.innerHTML = `
     <div class="nav-lade">
-      <button class="nav-sluit" aria-label="Menu sluiten">✕</button>
+      <div class="nav-header">
+        <div class="nav-header-info">
+          <div class="nav-header-titel">Dieuw in Thailand 🇹🇭</div>
+          <div class="nav-header-sub">Backpack trip met Dagmar</div>
+        </div>
+        <button class="nav-sluit" aria-label="Menu sluiten">Klaar</button>
+      </div>
       <nav class="nav-menu">
         ${PAGINAS.map(p => {
           const actief = p.match ? p.match.includes(huidig) : p.href === huidig;
           return `<a href="${p.href}" class="nav-item${actief ? " nav-item--actief" : ""}">
-            <span class="nav-icon">${p.icon}</span><span>${p.label}</span>
+            <span class="nav-icon">${p.icon}</span>
+            <span class="nav-label">${p.label}</span>
+            <span class="nav-pijl">›</span>
           </a>`;
         }).join("")}
       </nav>
