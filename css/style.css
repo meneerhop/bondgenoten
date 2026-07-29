@@ -2064,13 +2064,14 @@ body.lb-actief { overflow: hidden; }
 
 /* ---------- Hereniging afteltimer ---------- */
 .dash-kaart--hereniging {
-  background: linear-gradient(135deg, #7c4a5c 0%, var(--blackhills) 100%);
-  color: #fff;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 22px 18px 18px;
+  gap: 4px;
+  padding: 22px 18px 20px;
+  background: linear-gradient(135deg, #fef5e8 0%, #fffbf4 100%);
+  border-color: rgba(196, 140, 60, 0.22);
   margin-bottom: 10px;
-  border-radius: var(--radius);
-  box-shadow: var(--schaduw);
 }
 
 .hereniging-label {
@@ -2078,7 +2079,7 @@ body.lb-actief { overflow: hidden; }
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  opacity: 0.85;
+  color: #9a6c20;
   margin-bottom: 14px;
 }
 
@@ -2087,7 +2088,7 @@ body.lb-actief { overflow: hidden; }
   align-items: flex-start;
   justify-content: center;
   gap: 2px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .hereniging-blok {
@@ -2103,6 +2104,7 @@ body.lb-actief { overflow: hidden; }
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1;
+  color: #b07022;
 }
 
 .hereniging-blok small {
@@ -2110,21 +2112,22 @@ body.lb-actief { overflow: hidden; }
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.75;
+  color: #c09a58;
   margin-top: 5px;
 }
 
 .hereniging-sep {
   font-size: 28px;
   font-weight: 700;
-  opacity: 0.4;
+  color: #d4b070;
+  opacity: 0.5;
   padding: 0 1px;
   line-height: 1.15;
 }
 
 .hereniging-sub {
   font-size: 12px;
-  opacity: 0.7;
+  color: #9a8050;
 }
 
 .hereniging-thuis {
@@ -2135,6 +2138,7 @@ body.lb-actief { overflow: hidden; }
 .hereniging-thuis-tekst {
   font-size: 16px;
   font-weight: 700;
+  color: #b07022;
   margin-bottom: 4px;
 }
 
