@@ -1959,9 +1959,8 @@ body.lb-actief { overflow: hidden; }
 }
 
 .fotos-dag-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  columns: 2;
+  column-gap: 8px;
 }
 
 .fotos-item-wrap {
@@ -1969,20 +1968,21 @@ body.lb-actief { overflow: hidden; }
   display: flex;
   flex-direction: column;
   gap: 4px;
+  break-inside: avoid;
+  margin-bottom: 8px;
 }
 
 .fotos-item {
   display: block;
   border-radius: var(--radius);
   overflow: hidden;
-  aspect-ratio: 1;
   background: var(--accent-zacht);
+  width: 100%;
 }
 
 .fotos-item img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
   transition: transform 0.25s ease;
 }
@@ -2026,7 +2026,7 @@ body.lb-actief { overflow: hidden; }
 }
 
 @media (min-width: 400px) {
-  .fotos-dag-grid { grid-template-columns: repeat(3, 1fr); }
+  .fotos-dag-grid { columns: 3; }
 }
 
 /* ---------- Rotterdam pagina ---------- */
