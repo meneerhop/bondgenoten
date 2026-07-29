@@ -83,6 +83,7 @@
     </div>`;
 
   function open()  {
+    navigator.vibrate?.(6);
     overlay.classList.add("nav-overlay--open");
     document.body.classList.add("nav-open");
   }

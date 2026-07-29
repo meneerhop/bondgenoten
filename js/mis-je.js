@@ -50,6 +50,7 @@ async function verstuurMisJe() {
     localStorage.setItem("fotos-naam", naam);
   }
 
+  navigator.vibrate?.(12);
   const knop = document.getElementById("mis-je-knop");
   knop.classList.add("mis-je-knop--animeer");
   setTimeout(() => knop.classList.remove("mis-je-knop--animeer"), 600);

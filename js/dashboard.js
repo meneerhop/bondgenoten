@@ -185,6 +185,12 @@ async function laadBerichtje() {
       cap.textContent = post.photo_caption;
       el.appendChild(cap);
     }
+
+    const link = document.createElement("a");
+    link.href = "berichten.html";
+    link.className = "berichtje-link";
+    link.textContent = "Alle berichten →";
+    el.appendChild(link);
   } catch (e) {
     el.style.display = "none";
   }

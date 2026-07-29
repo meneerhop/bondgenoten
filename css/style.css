@@ -2219,6 +2219,16 @@ body.lb-actief { overflow: hidden; }
   font-style: italic;
 }
 
+.berichtje-link {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--moonstone);
+  text-decoration: none;
+  text-align: right;
+}
+
 /* ---------- Turflijst ---------- */
 .turflijst-kaart {
   flex-direction: column;

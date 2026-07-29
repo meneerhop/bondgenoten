@@ -161,6 +161,7 @@ function renderReacties(bestandsnaam) {
 }
 
 async function toggleReactie(bestandsnaam, emoji) {
+  navigator.vibrate?.(8);
   const naam = getNaam();
   if (!naam) { alert("Kies eerst een naam om te reageren."); return; }
   const myNaam = veiligNaamVan(naam);
@@ -321,6 +322,13 @@ function openLightbox(urls, index) {
     lb.querySelector(".lb-pijl--links").addEventListener("click", () => navigeerLb(-1));
     lb.querySelector(".lb-pijl--rechts").addEventListener("click", () => navigeerLb(1));
     document.addEventListener("keydown", lbKeydown);
+
+    let swipeStartX = 0;
+    lb.addEventListener("touchstart", e => { swipeStartX = e.touches[0].clientX; }, { passive: true });
+    lb.addEventListener("touchend", e => {
+      const dx = e.changedTouches[0].clientX - swipeStartX;
+      if (Math.abs(dx) > 48) { navigator.vibrate?.(6); navigeerLb(dx < 0 ? 1 : -1); }
+    }, { passive: true });
   }
 
   updateLightbox();

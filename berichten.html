@@ -311,7 +311,8 @@
       el.innerHTML = EMOJIS.map(emoji => {
         const groep = rijen.filter(r => r.note === emoji);
         const actief = mijn && groep.some(r => r.naam === mijn);
-        return `<button class="reactie-knop${actief ? " reactie-knop--actief" : ""}" data-emoji="${emoji}" data-id="${berichtId}">
+        const namen = groep.map(r => r.naam).join(", ");
+        return `<button class="reactie-knop${actief ? " reactie-knop--actief" : ""}" data-emoji="${emoji}" data-id="${berichtId}"${namen ? ` title="${namen}"` : ""}>
           ${emoji}${groep.length ? ` <span class="reactie-tel">${groep.length}</span>` : ""}
         </button>`;
       }).join("");
@@ -321,6 +322,7 @@
     }
 
     async function toggleReactie(berichtId, emoji) {
+      navigator.vibrate?.(8);
       let naam = mijnNaam();
       if (!naam) {
         naam = prompt("Wie ben jij? (jouw naam voor de reactie)");
@@ -498,6 +500,9 @@
         <p class="dagbericht-tekst">${bericht}</p>
         <div class="dagbericht-van">Mitch ❤️</div>`;
     }
+
+    const opgeslagenNaam = mijnNaam();
+    if (opgeslagenNaam) document.getElementById("pl-naam").value = opgeslagenNaam;
 
     toonDagbericht();
     laadBerichten();
