@@ -3008,8 +3008,25 @@ body.lb-actief { overflow: hidden; }
   min-width: 32px;
   text-align: right;
 }
+.poll-hint {
+  font-size: 12px;
+  color: var(--inkt-zacht);
+  text-align: center;
+  margin-top: -4px;
+}
 .poll-totaal {
   font-size: 11px;
   color: var(--inkt-zacht);
   text-align: center;
+}
+.poll-balk-wrap,
+.poll-pct {
+  visibility: hidden;
+}
+.poll--gestemd .poll-balk-wrap,
+.poll--gestemd .poll-pct {
+  visibility: visible;
+}
+.poll--gestemd .poll-optie {
+  cursor: default;
 }

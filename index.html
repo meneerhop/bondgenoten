@@ -77,16 +77,17 @@
 
       <div class="dash-kaart dash-kaart--poll" id="poll-kaart">
         <div class="poll-vraag">Wie is de allerleukste ter wereld?</div>
+        <div class="poll-hint" id="poll-hint">Tik op een optie om te stemmen 👇</div>
         <div class="poll-opties" id="poll-opties">
           <button class="poll-optie" id="poll-optie-a" onclick="stemPoll('a')">
             <span class="poll-optie-naam">Dieuwertje</span>
             <span class="poll-balk-wrap"><span class="poll-balk" id="poll-balk-a" style="width:0%"></span></span>
-            <span class="poll-pct" id="poll-pct-a">–</span>
+            <span class="poll-pct" id="poll-pct-a"></span>
           </button>
           <button class="poll-optie" id="poll-optie-b" onclick="stemPoll('b')">
             <span class="poll-optie-naam">Dieuwertje</span>
             <span class="poll-balk-wrap"><span class="poll-balk" id="poll-balk-b" style="width:0%"></span></span>
-            <span class="poll-pct" id="poll-pct-b">–</span>
+            <span class="poll-pct" id="poll-pct-b"></span>
           </button>
         </div>
         <div class="poll-totaal" id="poll-totaal"></div>
@@ -199,22 +200,34 @@
     function toonPollResultaten(a, b) {
       const gestemd = localStorage.getItem(POLL_KEY);
       if (!gestemd) return;
+      const kaart = document.getElementById("poll-kaart");
+      kaart.classList.add("poll--gestemd");
+      document.getElementById("poll-hint").style.display = "none";
       const totaal = a + b;
       const pctA = totaal ? Math.round((a / totaal) * 100) : 50;
-      const pctB = totaal ? Math.round((b / totaal) * 100) : 50;
+      const pctB = 100 - pctA;
       document.getElementById("poll-pct-a").textContent = pctA + "%";
       document.getElementById("poll-pct-b").textContent = pctB + "%";
       document.getElementById("poll-balk-a").style.width = pctA + "%";
       document.getElementById("poll-balk-b").style.width = pctB + "%";
       document.getElementById("poll-optie-" + gestemd).classList.add("poll-optie--gekozen");
-      document.getElementById("poll-totaal").textContent = totaal + " stemmen";
+      document.getElementById("poll-totaal").textContent = totaal === 1 ? "1 stem" : totaal + " stemmen";
     }
 
     async function stemPoll(optie) {
       if (localStorage.getItem(POLL_KEY)) return;
       localStorage.setItem(POLL_KEY, optie);
-      document.getElementById("poll-optie-" + optie).classList.add("poll-optie--gekozen");
       navigator.vibrate?.(12);
+      if (window.confetti) {
+        const hart = confetti.shapeFromText({ text: "❤️", scalar: 2 });
+        confetti({
+          shapes: [hart],
+          scalar: 2,
+          particleCount: 60,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      }
       try {
         await fetch(SUPABASE_URL + "posts", {
           method: "POST",
