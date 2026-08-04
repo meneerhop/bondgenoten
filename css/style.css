@@ -2947,3 +2947,69 @@ body.lb-actief { overflow: hidden; }
 }
 
 .mijlpaal-kaart--viering .mijlpaal-feed-dag { color: rgba(255, 255, 255, 0.5); }
+
+/* Poll */
+.dash-kaart--poll {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+.poll-vraag {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--inkt);
+  text-align: center;
+}
+.poll-opties {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.poll-optie {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--wit);
+  border: 1.5px solid rgba(44,51,47,0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.poll-optie:hover { border-color: var(--moonstone); }
+.poll-optie--gekozen { border-color: var(--moonstone); background: rgba(111,123,107,0.08); }
+.poll-optie-naam {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--inkt);
+  min-width: 80px;
+}
+.poll-balk-wrap {
+  flex: 1;
+  height: 6px;
+  background: rgba(44,51,47,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.poll-balk {
+  display: block;
+  height: 100%;
+  background: var(--moonstone);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.poll-pct {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--inkt-zacht);
+  min-width: 32px;
+  text-align: right;
+}
+.poll-totaal {
+  font-size: 11px;
+  color: var(--inkt-zacht);
+  text-align: center;
+}

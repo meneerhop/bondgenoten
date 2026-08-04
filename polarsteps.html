@@ -44,7 +44,7 @@
       </div>
 
       <h2 class="sectie-titel" style="margin-top:24px;">Route op de kaart</h2>
-      <p class="vpn-tip" style="margin-bottom:6px;">Nu in: Krabi 🏝 · Vorige stop: Bangkok 🏙</p>
+      <p class="vpn-tip" style="margin-bottom:6px;">Nu in: Koh Tao 🏝 · Vorige stops: Ko Pha Ngan → Krabi → Bangkok 🏙</p>
       <div id="kaart" class="ps-kaart"></div>
 
       <h2 class="sectie-titel" style="margin-top:24px;">Bevestigde stops</h2>
@@ -54,8 +54,16 @@
           <div class="ps-stad-sub">Aankomst · 2 nachten</div>
         </div>
         <div class="ps-stad ps-stad--bevestigd">
-          <div class="ps-stad-naam">🏝 Krabi · 📍 nu hier</div>
-          <div class="ps-stad-sub">Aankomst · 27 juli</div>
+          <div class="ps-stad-naam">🏝 Krabi</div>
+          <div class="ps-stad-sub">27 juli</div>
+        </div>
+        <div class="ps-stad ps-stad--bevestigd">
+          <div class="ps-stad-naam">🌴 Ko Pha Ngan</div>
+          <div class="ps-stad-sub">2 – 3 augustus · 2 nachten</div>
+        </div>
+        <div class="ps-stad ps-stad--bevestigd">
+          <div class="ps-stad-naam">🤿 Koh Tao · 📍 nu hier</div>
+          <div class="ps-stad-sub">Aankomst · 4 augustus</div>
         </div>
       </div>
 
@@ -93,7 +101,15 @@
 
     L.marker([8.0863, 98.9063], { icon: markerStijl })
       .addTo(kaart)
-      .bindPopup("<strong>Krabi</strong><br><span style='font-size:12px;color:var(--inkt-zacht)'>Zondag 27 juli</span>");
+      .bindPopup("<strong>Krabi</strong><br><span style='font-size:12px;color:var(--inkt-zacht)'>27 juli</span>");
+
+    L.marker([9.7379, 100.0009], { icon: markerStijl })
+      .addTo(kaart)
+      .bindPopup("<strong>Ko Pha Ngan</strong><br><span style='font-size:12px;color:var(--inkt-zacht)'>2 – 3 augustus · 2 nachten</span>");
+
+    L.marker([10.0956, 99.8404], { icon: markerStijl })
+      .addTo(kaart)
+      .bindPopup("<strong>Koh Tao 📍</strong><br><span style='font-size:12px;color:var(--inkt-zacht)'>Aankomst 4 augustus</span>");
 
     const kleur = getComputedStyle(document.documentElement).getPropertyValue("--moonstone").trim() || "#6f7b6b";
 
@@ -106,13 +122,13 @@
       color: kleur, weight: 1.5, dashArray: "3 7", opacity: 0.28
     }).addTo(kaart);
 
-    // Lokale route (BKK → Krabi)
-    L.polyline([[13.7563, 100.5018], [8.0863, 98.9063]], {
+    // Lokale route (BKK → Krabi → Ko Pha Ngan → Koh Tao)
+    L.polyline([[13.7563, 100.5018], [8.0863, 98.9063], [9.7379, 100.0009], [10.0956, 99.8404]], {
       color: kleur, weight: 2, dashArray: "6 5", opacity: 0.6
     }).addTo(kaart);
 
-    // Zoom alleen op Thailand-gebied, vluchten lopen buiten beeld door
-    kaart.fitBounds([[8.0863, 98.9063], [13.7563, 100.5018]], { padding: [30, 30] });
+    // Zoom op Thailand-gebied met alle stops
+    kaart.fitBounds([[8.0863, 98.9063], [13.7563, 100.5018], [10.0956, 99.8404]], { padding: [30, 30] });
 
     const nu = new Date();
     const start = new Date(TRIP.vertrek + "T00:00:00");

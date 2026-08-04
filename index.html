@@ -75,6 +75,22 @@
         </div>
       </div>
 
+      <div class="dash-kaart dash-kaart--poll" id="poll-kaart">
+        <div class="poll-vraag">Wie is de allerleukste ter wereld?</div>
+        <div class="poll-opties" id="poll-opties">
+          <button class="poll-optie" id="poll-optie-a" onclick="stemPoll('a')">
+            <span class="poll-optie-naam">Dieuwertje</span>
+            <span class="poll-balk-wrap"><span class="poll-balk" id="poll-balk-a" style="width:0%"></span></span>
+            <span class="poll-pct" id="poll-pct-a">–</span>
+          </button>
+          <button class="poll-optie" id="poll-optie-b" onclick="stemPoll('b')">
+            <span class="poll-optie-naam">Dieuwertje</span>
+            <span class="poll-balk-wrap"><span class="poll-balk" id="poll-balk-b" style="width:0%"></span></span>
+            <span class="poll-pct" id="poll-pct-b">–</span>
+          </button>
+        </div>
+        <div class="poll-totaal" id="poll-totaal"></div>
+      </div>
 
 <div id="berichtje-kaart" class="dash-kaart dash-kaart--berichtje"></div>
 
@@ -164,5 +180,58 @@
   <script src="js/mijlpalen.js"></script>
   <script src="js/mis-je.js"></script>
   <script src="js/nav.js"></script>
+  <script>
+    const POLL_KEY = "poll-allerleukste-stem";
+
+    async function laadPoll() {
+      try {
+        const res = await fetch(
+          SUPABASE_URL + "posts?kind=eq.poll-allerleukste&select=naam",
+          { headers: { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY } }
+        );
+        const data = await res.json();
+        const a = data.filter(d => d.naam === "optie_a").length;
+        const b = data.filter(d => d.naam === "optie_b").length;
+        toonPollResultaten(a, b);
+      } catch { toonPollResultaten(0, 0); }
+    }
+
+    function toonPollResultaten(a, b) {
+      const totaal = a + b;
+      const pctA = totaal ? Math.round((a / totaal) * 100) : 50;
+      const pctB = totaal ? Math.round((b / totaal) * 100) : 50;
+      document.getElementById("poll-pct-a").textContent = pctA + "%";
+      document.getElementById("poll-pct-b").textContent = pctB + "%";
+      document.getElementById("poll-balk-a").style.width = pctA + "%";
+      document.getElementById("poll-balk-b").style.width = pctB + "%";
+      const gestemd = localStorage.getItem(POLL_KEY);
+      if (gestemd) {
+        document.getElementById("poll-optie-" + gestemd).classList.add("poll-optie--gekozen");
+        document.getElementById("poll-totaal").textContent = totaal + " stemmen";
+      }
+    }
+
+    async function stemPoll(optie) {
+      if (localStorage.getItem(POLL_KEY)) return;
+      localStorage.setItem(POLL_KEY, optie);
+      document.getElementById("poll-optie-" + optie).classList.add("poll-optie--gekozen");
+      navigator.vibrate?.(12);
+      try {
+        await fetch(SUPABASE_URL + "posts", {
+          method: "POST",
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: "Bearer " + SUPABASE_ANON_KEY,
+            "Content-Type": "application/json",
+            Prefer: "return=minimal",
+          },
+          body: JSON.stringify({ kind: "poll-allerleukste", naam: "optie_" + optie }),
+        });
+      } catch {}
+      await laadPoll();
+    }
+
+    laadPoll();
+  </script>
 </body>
 </html>

@@ -11,8 +11,8 @@ const BASE = "https://hprhawqzksknaaaxnzqx.supabase.co/storage/v1/object/public/
 const KANDIDATEN = [
   // Bloedzuigers
   { naam: "Can",        foto: BASE + "can.jpg",        groep: "bloedzuigers", actief: true },
-  { naam: "Fabiënne",  foto: BASE + "fabienne.jpg",   groep: "bloedzuigers", actief: true },
-  { naam: "Milan",      foto: BASE + "milan.jpg",      groep: "slangen",      actief: true },
+  { naam: "Fabiënne",  foto: BASE + "fabienne.jpg",   groep: "slangen",      actief: true },
+  { naam: "Milan",      foto: BASE + "milan.jpg",      groep: "bloedzuigers", actief: true },
   { naam: "Wesley",     foto: BASE + "wesley.jpg",     groep: "bloedzuigers", actief: true },
   // Gieren
   { naam: "Anouk",      foto: BASE + "anouk.jpg",      groep: "gieren",       actief: true },
