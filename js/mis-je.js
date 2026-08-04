@@ -21,7 +21,7 @@ function renderMisJe(data) {
   const namen = document.getElementById("mis-je-namen");
   const knop  = document.getElementById("mis-je-knop");
 
-  if (getal) getal.textContent = data.length + 999;
+  if (getal) getal.textContent = data.length + 217;
 
   const telling = {};
   data.forEach(d => {

@@ -197,6 +197,8 @@
     }
 
     function toonPollResultaten(a, b) {
+      const gestemd = localStorage.getItem(POLL_KEY);
+      if (!gestemd) return;
       const totaal = a + b;
       const pctA = totaal ? Math.round((a / totaal) * 100) : 50;
       const pctB = totaal ? Math.round((b / totaal) * 100) : 50;
@@ -204,11 +206,8 @@
       document.getElementById("poll-pct-b").textContent = pctB + "%";
       document.getElementById("poll-balk-a").style.width = pctA + "%";
       document.getElementById("poll-balk-b").style.width = pctB + "%";
-      const gestemd = localStorage.getItem(POLL_KEY);
-      if (gestemd) {
-        document.getElementById("poll-optie-" + gestemd).classList.add("poll-optie--gekozen");
-        document.getElementById("poll-totaal").textContent = totaal + " stemmen";
-      }
+      document.getElementById("poll-optie-" + gestemd).classList.add("poll-optie--gekozen");
+      document.getElementById("poll-totaal").textContent = totaal + " stemmen";
     }
 
     async function stemPoll(optie) {
