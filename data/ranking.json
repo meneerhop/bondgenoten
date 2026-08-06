@@ -1,7 +1,7 @@
 [
-  { "groep": "slangen",      "punten": 326 },
-  { "groep": "bloedzuigers", "punten": 591 },
-  { "groep": "haaien",       "punten": 8 },
-  { "groep": "gieren",       "punten": 143 },
-  { "groep": "vossen",       "punten": -27 }
+  { "groep": "slangen",      "punten": 532 },
+  { "groep": "bloedzuigers", "punten": 746 },
+  { "groep": "haaien",       "punten": 288 },
+  { "groep": "gieren",       "punten": 300 },
+  { "groep": "vossen",       "punten": 108 }
 ]
