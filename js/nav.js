@@ -27,7 +27,6 @@
     },
     { label: "Rotterdam",    href: "rotterdam.html",    icon: "🌉" },
     { label: "Huisdiertjes", href: "huisdiertjes.html", icon: "🐾" },
-    { label: "Woordzoeker",  href: "woordzoeker.html",  icon: "🔍" },
   ];
 
   const btn = document.createElement("button");
@@ -106,8 +105,8 @@
   });
 
   const header = document.querySelector("header.site");
-  if (header) header.appendChild(btn);
-  document.body.appendChild(overlay);
+  if (header && huidig !== "woordzoeker.html") header.appendChild(btn);
+  if (huidig !== "woordzoeker.html") document.body.appendChild(overlay);
 
   if ("IntersectionObserver" in window) {
     const obs = new IntersectionObserver((entries) => {
