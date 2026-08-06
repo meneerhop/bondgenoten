@@ -34,15 +34,6 @@
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-}
-
-.mis-jou-spacer {
-  height: 44px;
 }
 
 @keyframes pagina-in {
