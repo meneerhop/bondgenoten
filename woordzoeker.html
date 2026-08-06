@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Woordzoeker · Dieuw in Thailand</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .wz-wrap {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 0 16px 40px;
+    }
+
+    .wz-header {
+      padding: 24px 0 16px;
+    }
+
+    .wz-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--inkt-zacht);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .wz-niveau {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--inkt);
+      margin: 0 0 4px;
+    }
+
+    .wz-voortgang {
+      font-size: 0.8rem;
+      color: var(--inkt-zacht);
+      margin-bottom: 16px;
+    }
+
+    /* Woordenlijst */
+    .wz-woordlijst {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .wz-woord {
+      background: var(--accent-zacht);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--inkt);
+      letter-spacing: 0.06em;
+      transition: background 0.25s, color 0.25s, opacity 0.25s;
+    }
+
+    .wz-woord--gevonden {
+      background: var(--blackhills);
+      color: var(--papier);
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    /* Grid */
+    .wz-grid-wrap {
+      background: var(--kaart);
+      border-radius: var(--radius);
+      box-shadow: var(--schaduw);
+      padding: 12px;
+      margin-bottom: 16px;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .wz-grid {
+      display: grid;
+      gap: 5px;
+    }
+
+    .wz-cel {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+      border-radius: 9px;
+      background: var(--accent-zacht);
+      color: var(--inkt);
+      border: 2px solid transparent;
+      transition: background 0.12s, color 0.12s, border-color 0.12s, transform 0.1s;
+      cursor: default;
+    }
+
+    .wz-cel--select {
+      background: var(--moonstone);
+      color: #fff;
+      border-color: var(--moonstone);
+      transform: scale(1.07);
+      z-index: 1;
+      position: relative;
+    }
+
+    .wz-cel--gevonden {
+      background: var(--blackhills);
+      color: var(--papier);
+      border-color: var(--blackhills);
+    }
+
+    .wz-cel--geheim {
+      background: #d4a843;
+      color: #fff;
+      border-color: #c49a33;
+      animation: wz-pulse 1.2s ease-in-out infinite;
+    }
+
+    .wz-cel--fout {
+      animation: wz-schud 0.28s ease;
+    }
+
+    @keyframes wz-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    @keyframes wz-schud {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    /* Geheim woord sectie */
+    .wz-geheim {
+      background: var(--kaart);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--schaduw);
+      padding: 16px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .wz-geheim--zichtbaar {
+      display: block;
+      animation: pagina-in 0.3s ease both;
+    }
+
+    .wz-geheim-label {
+      font-size: 0.85rem;
+      color: var(--inkt-zacht);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .wz-geheim-invoer-rij {
+      display: flex;
+      gap: 8px;
+    }
+
+    .wz-geheim-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--lijn);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--papier);
+      color: var(--inkt);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .wz-geheim-input:focus {
+      border-color: var(--moonstone);
+    }
+
+    .wz-geheim-input:disabled {
+      opacity: 0.6;
+    }
+
+    .wz-geheim-knop {
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      background: var(--blackhills);
+      color: var(--papier);
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .wz-feedback {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .wz-feedback--goed {
+      display: block;
+      background: #d4edda;
+      color: #1a5c2a;
+    }
+
+    .wz-feedback--fout {
+      display: block;
+      background: #fde8e8;
+      color: #8b1a1a;
+    }
+
+    /* Volgende level knop */
+    .wz-volgende {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      background: var(--blackhills);
+      color: var(--papier);
+      border: none;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: none;
+      margin-top: 4px;
+    }
+
+    /* Klaar scherm */
+    .wz-klaar {
+      text-align: center;
+      padding: 48px 24px;
+      display: none;
+    }
+
+    .wz-klaar-emoji {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .wz-klaar-kop {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--inkt);
+      margin-bottom: 8px;
+    }
+
+    .wz-klaar-sub {
+      font-size: 0.95rem;
+      color: var(--inkt-zacht);
+    }
+  </style>
+</head>
+<body>
+  <div class="mis-jou-banner">lieve dieuw&hellip; IK MIS JOU ❤️</div>
+
+  <div class="wrap">
+    <div class="wz-wrap">
+      <div class="wz-header">
+        <div class="wz-eyebrow">Puzzel</div>
+        <h1 class="wz-niveau" id="wz-niveau">Woordzoeker</h1>
+        <div class="wz-voortgang" id="wz-voortgang"></div>
+      </div>
+
+      <div id="wz-spel"></div>
+
+      <div class="wz-klaar" id="wz-klaar">
+        <span class="wz-klaar-emoji">🎉</span>
+        <div class="wz-klaar-kop">Je hebt alle levels gehaald!</div>
+        <div class="wz-klaar-sub">Je bent geweldig ❤️</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/nav.js"></script>
+  <script>
+  (() => {
+    /*
+      Grids: alle woorden gaan van links naar rechts.
+      De overgebleven cellen (niet deel van een woord) spellen,
+      gelezen van links naar rechts / boven naar beneden, het geheime woord.
+
+      Level 1 (4×5) — Dieren — geheim: DIEUW
+        L I E F [D]
+        M U I S [I]
+        H O N D [E]
+        K A T [U][W]
+
+      Level 2 (5×5) — Natuur — geheim: SCHAT
+        S T E R [S]
+        M A A N [C]
+        V U U R [H]
+        B O O M [A]
+        R O O S [T]
+
+      Level 3 (5×5) — Gevoel — geheim: MITCH
+        H A R T [M]
+        R U S T [I]
+        L A C H [T]
+        D A N S [C]
+        M O O I [H]
+    */
+    const LEVELS = [
+      {
+        naam: 'Dieren',
+        kols: 5,
+        grid: ['L','I','E','F','D','M','U','I','S','I','H','O','N','D','E','K','A','T','U','W'],
+        woorden: ['LIEF','MUIS','HOND','KAT'],
+        woordCellen: {
+          'LIEF': [[0,0],[0,1],[0,2],[0,3]],
+          'MUIS': [[1,0],[1,1],[1,2],[1,3]],
+          'HOND': [[2,0],[2,1],[2,2],[2,3]],
+          'KAT':  [[3,0],[3,1],[3,2]],
+        },
+        geheim: 'DIEUW',
+        hint: 'Lees de goudgele letters van links naar rechts, van boven naar beneden.',
+      },
+      {
+        naam: 'Natuur',
+        kols: 5,
+        grid: ['S','T','E','R','S','M','A','A','N','C','V','U','U','R','H','B','O','O','M','A','R','O','O','S','T'],
+        woorden: ['STER','MAAN','VUUR','BOOM','ROOS'],
+        woordCellen: {
+          'STER': [[0,0],[0,1],[0,2],[0,3]],
+          'MAAN': [[1,0],[1,1],[1,2],[1,3]],
+          'VUUR': [[2,0],[2,1],[2,2],[2,3]],
+          'BOOM': [[3,0],[3,1],[3,2],[3,3]],
+          'ROOS': [[4,0],[4,1],[4,2],[4,3]],
+        },
+        geheim: 'SCHAT',
+        hint: 'Lees de goudgele letters van links naar rechts, van boven naar beneden.',
+      },
+      {
+        naam: 'Gevoel',
+        kols: 5,
+        grid: ['H','A','R','T','M','R','U','S','T','I','L','A','C','H','T','D','A','N','S','C','M','O','O','I','H'],
+        woorden: ['HART','RUST','LACH','DANS','MOOI'],
+        woordCellen: {
+          'HART': [[0,0],[0,1],[0,2],[0,3]],
+          'RUST': [[1,0],[1,1],[1,2],[1,3]],
+          'LACH': [[2,0],[2,1],[2,2],[2,3]],
+          'DANS': [[3,0],[3,1],[3,2],[3,3]],
+          'MOOI': [[4,0],[4,1],[4,2],[4,3]],
+        },
+        geheim: 'MITCH',
+        hint: 'Lees de goudgele letters van links naar rechts, van boven naar beneden.',
+      },
+    ];
+
+    let huidigLevel = 0;
+    let gevonden = new Set();
+    let selectie = [];
+    let bezig = false;
+
+    function idx(r, k, kols) { return r * kols + k; }
+
+    function render() {
+      const lv = LEVELS[huidigLevel];
+      const rijen = lv.grid.length / lv.kols;
+
+      gevonden = new Set();
+      selectie = [];
+      bezig = false;
+
+      document.getElementById('wz-niveau').textContent = lv.naam;
+      document.getElementById('wz-voortgang').textContent =
+        `Level ${huidigLevel + 1} van ${LEVELS.length} · Swipen om woorden te vinden`;
+
+      const spelEl = document.getElementById('wz-spel');
+      spelEl.innerHTML = `
+        <div class="wz-woordlijst" id="wz-lijst">
+          ${lv.woorden.map(w => `<span class="wz-woord" id="wwrd-${w}">${w}</span>`).join('')}
+        </div>
+
+        <div class="wz-grid-wrap" id="wz-grid-wrap">
+          <div class="wz-grid" id="wz-grid" style="grid-template-columns:repeat(${lv.kols},1fr)">
+            ${lv.grid.map((letter, i) => {
+              const r = Math.floor(i / lv.kols);
+              const k = i % lv.kols;
+              return `<div class="wz-cel" data-i="${i}" data-r="${r}" data-k="${k}">${letter}</div>`;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="wz-geheim" id="wz-geheim">
+          <div class="wz-geheim-label" id="wz-hint">${lv.hint}</div>
+          <div class="wz-geheim-invoer-rij">
+            <input class="wz-geheim-input" id="wz-input" type="text"
+              maxlength="${lv.geheim.length}"
+              placeholder="${'_'.repeat(lv.geheim.length)}"
+              autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" />
+            <button class="wz-geheim-knop" id="wz-knop">OK</button>
+          </div>
+          <div class="wz-feedback" id="wz-feedback"></div>
+        </div>
+
+        <button class="wz-volgende" id="wz-volgende">
+          ${huidigLevel + 1 < LEVELS.length ? 'Volgend level →' : 'Klaar! 🎉'}
+        </button>
+      `;
+
+      koppelEvents(lv);
+    }
+
+    function koppelEvents(lv) {
+      const wrap = document.getElementById('wz-grid-wrap');
+
+      function celBijPunt(x, y) {
+        const el = document.elementFromPoint(x, y);
+        return el && el.classList.contains('wz-cel') ? el : null;
+      }
+
+      function start(cel) {
+        if (!cel) return;
+        bezig = true;
+        selectie = [cel];
+        cel.classList.add('wz-cel--select');
+        navigator.vibrate?.(6);
+      }
+
+      function verleng(cel) {
+        if (!bezig || !cel) return;
+
+        // Terug naar vorige cel = selectie inkorten
+        if (selectie.length >= 2 && cel === selectie[selectie.length - 2]) {
+          selectie[selectie.length - 1].classList.remove('wz-cel--select');
+          selectie.pop();
+          return;
+        }
+
+        if (selectie.includes(cel)) return;
+
+        const nr = parseInt(cel.dataset.r);
+        const nk = parseInt(cel.dataset.k);
+
+        if (selectie.length === 1) {
+          const dr = nr - parseInt(selectie[0].dataset.r);
+          const dk = nk - parseInt(selectie[0].dataset.k);
+          if (Math.abs(dr) > 1 || Math.abs(dk) > 1) return;
+          selectie.push(cel);
+          cel.classList.add('wz-cel--select');
+        } else {
+          const dr = parseInt(selectie[1].dataset.r) - parseInt(selectie[0].dataset.r);
+          const dk = parseInt(selectie[1].dataset.k) - parseInt(selectie[0].dataset.k);
+          const verwR = parseInt(selectie[selectie.length - 1].dataset.r) + dr;
+          const verwK = parseInt(selectie[selectie.length - 1].dataset.k) + dk;
+          if (nr !== verwR || nk !== verwK) return;
+          selectie.push(cel);
+          cel.classList.add('wz-cel--select');
+        }
+      }
+
+      function einde() {
+        if (!bezig) return;
+        bezig = false;
+        controleer(lv);
+        selectie.forEach(c => c.classList.remove('wz-cel--select'));
+        selectie = [];
+      }
+
+      // Touch
+      wrap.addEventListener('touchstart', e => {
+        e.preventDefault();
+        start(celBijPunt(e.touches[0].clientX, e.touches[0].clientY));
+      }, { passive: false });
+
+      wrap.addEventListener('touchmove', e => {
+        e.preventDefault();
+        verleng(celBijPunt(e.touches[0].clientX, e.touches[0].clientY));
+      }, { passive: false });
+
+      wrap.addEventListener('touchend', e => {
+        e.preventDefault();
+        einde();
+      }, { passive: false });
+
+      // Muis
+      wrap.addEventListener('mousedown', e => {
+        start(e.target.closest('.wz-cel'));
+      });
+      wrap.addEventListener('mousemove', e => {
+        verleng(e.target.closest('.wz-cel'));
+      });
+      document.addEventListener('mouseup', einde);
+
+      // Geheim woord
+      const input = document.getElementById('wz-input');
+      const knop  = document.getElementById('wz-knop');
+      input.addEventListener('input', () => { input.value = input.value.toUpperCase(); });
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') controleerGeheim(lv); });
+      knop.addEventListener('click', () => controleerGeheim(lv));
+
+      document.getElementById('wz-volgende').addEventListener('click', volgend);
+    }
+
+    function controleer(lv) {
+      if (selectie.length === 0) return;
+
+      const tekst = selectie.map(c => lv.grid[parseInt(c.dataset.i)]).join('');
+      const omgekeerd = [...tekst].reverse().join('');
+
+      const gevondenWoord = lv.woorden.find(
+        w => !gevonden.has(w) && (w === tekst || w === omgekeerd)
+      );
+
+      if (gevondenWoord) {
+        gevonden.add(gevondenWoord);
+        navigator.vibrate?.(40);
+
+        // Markeer de juiste cellen
+        lv.woordCellen[gevondenWoord].forEach(([r, k]) => {
+          const cel = document.querySelector(`.wz-cel[data-i="${idx(r, k, lv.kols)}"]`);
+          if (cel) {
+            cel.classList.remove('wz-cel--select');
+            cel.classList.add('wz-cel--gevonden');
+          }
+        });
+
+        const wwrdEl = document.getElementById(`wwrd-${gevondenWoord}`);
+        if (wwrdEl) wwrdEl.classList.add('wz-woord--gevonden');
+
+        if (gevonden.size === lv.woorden.length) alleGevonden(lv);
+      } else if (selectie.length > 1) {
+        navigator.vibrate?.([15, 40, 15]);
+        selectie.forEach(c => {
+          c.classList.add('wz-cel--fout');
+          setTimeout(() => c.classList.remove('wz-cel--fout'), 300);
+        });
+      }
+    }
+
+    function alleGevonden(lv) {
+      navigator.vibrate?.([30, 60, 30, 60, 60]);
+
+      // Bereken welke cellen niet bij een woord horen
+      const woordIndices = new Set(
+        Object.values(lv.woordCellen).flat().map(([r, k]) => idx(r, k, lv.kols))
+      );
+
+      document.querySelectorAll('.wz-cel').forEach(cel => {
+        if (!woordIndices.has(parseInt(cel.dataset.i))) {
+          cel.classList.add('wz-cel--geheim');
+        }
+      });
+
+      const geheimEl = document.getElementById('wz-geheim');
+      geheimEl.classList.add('wz-geheim--zichtbaar');
+      setTimeout(() => document.getElementById('wz-input')?.focus(), 100);
+    }
+
+    function controleerGeheim(lv) {
+      const input    = document.getElementById('wz-input');
+      const feedback = document.getElementById('wz-feedback');
+      const ingevoerd = input.value.trim().toUpperCase();
+
+      if (ingevoerd === lv.geheim) {
+        feedback.textContent = '✓ Correct! 🎉';
+        feedback.className = 'wz-feedback wz-feedback--goed';
+        input.disabled = true;
+        document.getElementById('wz-knop').disabled = true;
+        document.getElementById('wz-volgende').style.display = 'block';
+        navigator.vibrate?.([30, 50, 30, 50, 80]);
+      } else {
+        feedback.textContent = '✗ Probeer het nog eens…';
+        feedback.className = 'wz-feedback wz-feedback--fout';
+        input.value = '';
+        navigator.vibrate?.(80);
+      }
+    }
+
+    function volgend() {
+      document.removeEventListener('mouseup', () => {});
+      huidigLevel++;
+      if (huidigLevel >= LEVELS.length) {
+        document.getElementById('wz-spel').style.display = 'none';
+        document.getElementById('wz-klaar').style.display = 'block';
+        document.getElementById('wz-niveau').textContent = 'Klaar!';
+        document.getElementById('wz-voortgang').textContent = '';
+        navigator.vibrate?.([50, 80, 50, 80, 100]);
+      } else {
+        render();
+      }
+    }
+
+    render();
+  })();
+  </script>
+</body>
+</html>

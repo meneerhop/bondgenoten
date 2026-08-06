@@ -27,6 +27,7 @@
     },
     { label: "Rotterdam",    href: "rotterdam.html",    icon: "🌉" },
     { label: "Huisdiertjes", href: "huisdiertjes.html", icon: "🐾" },
+    { label: "Woordzoeker",  href: "woordzoeker.html",  icon: "🔍" },
   ];
 
   const btn = document.createElement("button");
