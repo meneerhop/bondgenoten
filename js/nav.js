@@ -105,8 +105,8 @@
   });
 
   const header = document.querySelector("header.site");
-  if (header && huidig !== "woordzoeker.html") header.appendChild(btn);
-  if (huidig !== "woordzoeker.html") document.body.appendChild(overlay);
+  if (header) header.appendChild(btn);
+  document.body.appendChild(overlay);
 
   if ("IntersectionObserver" in window) {
     const obs = new IntersectionObserver((entries) => {
