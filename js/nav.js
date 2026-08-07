@@ -106,7 +106,12 @@
   });
 
   const header = document.querySelector("header.site");
-  if (header) header.appendChild(btn);
+  if (header) {
+    header.appendChild(btn);
+  } else {
+    btn.classList.add("hamburger--fixed");
+    document.body.appendChild(btn);
+  }
   document.body.appendChild(overlay);
 
   if ("IntersectionObserver" in window) {

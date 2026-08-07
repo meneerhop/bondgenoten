@@ -27,8 +27,11 @@
 * { box-sizing: border-box; }
 
 .mis-jou-banner {
-  background: #f4a89a;
-  color: #5a1a13;
+  background-color: #fdf0f4;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80'><text x='5'  y='28' font-size='22' fill='%23f4a8be' opacity='0.35'>♥</text><text x='48' y='62' font-size='14' fill='%23f4a8be' opacity='0.25'>♥</text><text x='2'  y='72' font-size='9'  fill='%23f0b8cc' opacity='0.22'>♥</text><text x='60' y='14' font-size='9'  fill='%23f0b8cc' opacity='0.22'>♥</text><text x='34' y='10' font-size='7'  fill='%23f4a8be' opacity='0.18'>♥</text><text x='68' y='42' font-size='7'  fill='%23f4a8be' opacity='0.18'>♥</text></svg>");
+  background-repeat: repeat;
+  border-bottom: 1px solid rgba(216, 100, 130, 0.18);
+  color: #c0466a;
   text-align: center;
   padding: 10px 16px;
   font-size: 1rem;
@@ -269,6 +272,15 @@ header.site { position: relative; }
 }
 
 .hamburger:hover { background: var(--accent-zacht); }
+
+.hamburger--fixed {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 999;
+  background: var(--kaart);
+  box-shadow: 0 2px 8px rgba(44, 51, 47, 0.12);
+}
 
 .hamburger span {
   display: block;
