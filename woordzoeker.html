@@ -235,6 +235,50 @@
       margin-top: 4px;
     }
 
+    /* Level indicator */
+    .wz-levels {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .wz-level-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .wz-level-pill--klaar {
+      background: var(--blackhills);
+      color: var(--papier);
+    }
+
+    .wz-level-pill--actief {
+      background: var(--moonstone);
+      color: #fff;
+    }
+
+    .wz-level-pill--slot {
+      background: var(--accent-zacht);
+      color: var(--inkt-zacht);
+    }
+
+    /* Swipe tip */
+    .wz-tip {
+      font-size: 0.78rem;
+      color: var(--inkt-zacht);
+      margin: 0 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
     /* Klaar scherm */
     .wz-klaar {
       text-align: center;
@@ -268,6 +312,7 @@
         <div class="wz-eyebrow">Puzzel</div>
         <h1 class="wz-niveau" id="wz-niveau">Woordzoeker</h1>
         <div class="wz-voortgang" id="wz-voortgang"></div>
+        <div class="wz-levels" id="wz-levels"></div>
       </div>
 
       <div id="wz-spel"></div>
@@ -412,13 +457,23 @@
 
       document.getElementById('wz-niveau').textContent = lv.naam;
       document.getElementById('wz-voortgang').textContent =
-        `Level ${huidigLevel + 1} van ${LEVELS.length} · Woorden gaan alle kanten op!`;
+        `Level ${huidigLevel + 1} van ${LEVELS.length}`;
+
+      document.getElementById('wz-levels').innerHTML = LEVELS.map((l, i) => {
+        if (i < huidigLevel)
+          return `<span class="wz-level-pill wz-level-pill--klaar">✓ ${l.naam}</span>`;
+        if (i === huidigLevel)
+          return `<span class="wz-level-pill wz-level-pill--actief">${l.naam}</span>`;
+        return `<span class="wz-level-pill wz-level-pill--slot">🔒 ${l.naam}</span>`;
+      }).join('');
 
       const spelEl = document.getElementById('wz-spel');
       spelEl.innerHTML = `
         <div class="wz-woordlijst" id="wz-lijst">
           ${lv.woorden.map(w => `<span class="wz-woord" id="wwrd-${w}">${w}</span>`).join('')}
         </div>
+
+        <p class="wz-tip">👆 Swipe over de letters om een woord te selecteren · woorden gaan alle kanten op</p>
 
         <div class="wz-grid-wrap" id="wz-grid-wrap">
           <div class="wz-grid" id="wz-grid" style="grid-template-columns:repeat(${lv.kols},1fr)">
