@@ -285,81 +285,112 @@
   <script>
   (() => {
     /*
-      Grids: alle woorden gaan van links naar rechts.
-      De overgebleven cellen (niet deel van een woord) spellen,
-      gelezen van links naar rechts / boven naar beneden, het geheime woord.
+      Woorden gaan horizontaal (→ of ←) en verticaal (↓).
+      De overgebleven cellen, gelezen van links naar rechts / boven naar beneden,
+      spellen het geheime woord.
 
-      Level 1 (5×5) — Dieren — geheim: KUSJES
-        L I E F [K]
-        M U I S [U]
-        H O N D [S]
-        K A T [J][E]
-        W O L F [S]
+      Level 1 (5×7) — Dieren — geheim: DOEDJE
+             0  1  2  3  4  5  6
+        r0:  H  O  N  D  M [D] W   HOND→, MUIS↓(col4), WOLF↓(col6)
+        r1:  L  I  E  F  U [O] O   LIEF→
+        r2:  B  E  E  R  I [E] L   BEER→
+        r3:  K  A  T [D] S [J] F   KAT→
+        r4:  K  O  N  I  J  N [E]  KONIJN→
 
-      Level 2 (6×5) — Natuur — geheim: NATUUR
-        S T E R [N]
-        M A A N [A]
-        V U U R [T]
-        B O O M [U]
-        R O O S [U]
-        G O L F [R]
+      Level 2 (6×6) — Natuur — geheim: SCHAT
+             0  1  2  3  4  5
+        r0:  S  T  E  R [S][C]  STER→, SLANG↓(col0)
+        r1:  L [H][A] N  O  Z   ZON← (r-t-l)
+        r2:  A  R  O  O  S  G   ROOS→, GOLF↓(col5)
+        r3:  N  V  U  U  R  O   VUUR→
+        r4:  G  M  A  A  N  L   MAAN→
+        r5:  B  O  O  M [T] F   BOOM→
 
-      Level 3 (7×5) — Gevoel — geheim: SCHATJE
-        H A R T [S]
-        R U S T [C]
-        L A C H [H]
-        D A N S [A]
-        M O O I [T]
-        B L I J [J]
-        K N U S [E]
+      Level 3 (7×7) — Gevoel — geheim: VERLIEFD
+             0  1  2  3  4  5  6
+        r0:  H  A  R  T  T [V] F   HART→, TROTS↓(col4), FIJN↓(col6)
+        r1:  R  U  S  T  R [E] I   RUST→
+        r2:  L  A  C  H  O [R] J   LACH→
+        r3:  D  A  N  S  T  V  N   DANS→, VRIJ↓(col5)
+        r4:  M  O  O  I  S  R [L]  MOOI→
+        r5:  B  L  I  J [I] I [E]  BLIJ→
+        r6:  K  N  U  S [F] J [D]  KNUS→
     */
     const LEVELS = [
       {
         naam: 'Dieren',
-        kols: 5,
-        grid: ['L','I','E','F','K','M','U','I','S','U','H','O','N','D','S','K','A','T','J','E','W','O','L','F','S'],
-        woorden: ['LIEF','MUIS','HOND','KAT','WOLF'],
+        kols: 7,
+        grid: [
+          'H','O','N','D','M','D','W',
+          'L','I','E','F','U','O','O',
+          'B','E','E','R','I','E','L',
+          'K','A','T','D','S','J','F',
+          'K','O','N','I','J','N','E',
+        ],
+        woorden: ['HOND','LIEF','BEER','KAT','KONIJN','MUIS','WOLF'],
         woordCellen: {
-          'LIEF': [[0,0],[0,1],[0,2],[0,3]],
-          'MUIS': [[1,0],[1,1],[1,2],[1,3]],
-          'HOND': [[2,0],[2,1],[2,2],[2,3]],
-          'KAT':  [[3,0],[3,1],[3,2]],
-          'WOLF': [[4,0],[4,1],[4,2],[4,3]],
+          'HOND':   [[0,0],[0,1],[0,2],[0,3]],
+          'LIEF':   [[1,0],[1,1],[1,2],[1,3]],
+          'BEER':   [[2,0],[2,1],[2,2],[2,3]],
+          'KAT':    [[3,0],[3,1],[3,2]],
+          'KONIJN': [[4,0],[4,1],[4,2],[4,3],[4,4],[4,5]],
+          'MUIS':   [[0,4],[1,4],[2,4],[3,4]],
+          'WOLF':   [[0,6],[1,6],[2,6],[3,6]],
         },
-        geheim: 'KUSJES',
+        geheim: 'DOEDJE',
         hint: 'Lees de goudgele letters van links naar rechts, van boven naar beneden.',
       },
       {
         naam: 'Natuur',
-        kols: 5,
-        grid: ['S','T','E','R','N','M','A','A','N','A','V','U','U','R','T','B','O','O','M','U','R','O','O','S','U','G','O','L','F','R'],
-        woorden: ['STER','MAAN','VUUR','BOOM','ROOS','GOLF'],
+        kols: 6,
+        grid: [
+          'S','T','E','R','S','C',
+          'L','H','A','N','O','Z',
+          'A','R','O','O','S','G',
+          'N','V','U','U','R','O',
+          'G','M','A','A','N','L',
+          'B','O','O','M','T','F',
+        ],
+        woorden: ['STER','SLANG','ZON','ROOS','VUUR','MAAN','BOOM','GOLF'],
         woordCellen: {
-          'STER': [[0,0],[0,1],[0,2],[0,3]],
-          'MAAN': [[1,0],[1,1],[1,2],[1,3]],
-          'VUUR': [[2,0],[2,1],[2,2],[2,3]],
-          'BOOM': [[3,0],[3,1],[3,2],[3,3]],
-          'ROOS': [[4,0],[4,1],[4,2],[4,3]],
-          'GOLF': [[5,0],[5,1],[5,2],[5,3]],
+          'STER':  [[0,0],[0,1],[0,2],[0,3]],
+          'SLANG': [[0,0],[1,0],[2,0],[3,0],[4,0]],
+          'ZON':   [[1,3],[1,4],[1,5]],
+          'ROOS':  [[2,1],[2,2],[2,3],[2,4]],
+          'VUUR':  [[3,1],[3,2],[3,3],[3,4]],
+          'MAAN':  [[4,1],[4,2],[4,3],[4,4]],
+          'BOOM':  [[5,0],[5,1],[5,2],[5,3]],
+          'GOLF':  [[2,5],[3,5],[4,5],[5,5]],
         },
-        geheim: 'NATUUR',
+        geheim: 'SCHAT',
         hint: 'Lees de goudgele letters van links naar rechts, van boven naar beneden.',
       },
       {
         naam: 'Gevoel',
-        kols: 5,
-        grid: ['H','A','R','T','S','R','U','S','T','C','L','A','C','H','H','D','A','N','S','A','M','O','O','I','T','B','L','I','J','J','K','N','U','S','E'],
-        woorden: ['HART','RUST','LACH','DANS','MOOI','BLIJ','KNUS'],
+        kols: 7,
+        grid: [
+          'H','A','R','T','T','V','F',
+          'R','U','S','T','R','E','I',
+          'L','A','C','H','O','R','J',
+          'D','A','N','S','T','V','N',
+          'M','O','O','I','S','R','L',
+          'B','L','I','J','I','I','E',
+          'K','N','U','S','F','J','D',
+        ],
+        woorden: ['HART','RUST','LACH','DANS','MOOI','BLIJ','KNUS','TROTS','VRIJ','FIJN'],
         woordCellen: {
-          'HART': [[0,0],[0,1],[0,2],[0,3]],
-          'RUST': [[1,0],[1,1],[1,2],[1,3]],
-          'LACH': [[2,0],[2,1],[2,2],[2,3]],
-          'DANS': [[3,0],[3,1],[3,2],[3,3]],
-          'MOOI': [[4,0],[4,1],[4,2],[4,3]],
-          'BLIJ': [[5,0],[5,1],[5,2],[5,3]],
-          'KNUS': [[6,0],[6,1],[6,2],[6,3]],
+          'HART':  [[0,0],[0,1],[0,2],[0,3]],
+          'RUST':  [[1,0],[1,1],[1,2],[1,3]],
+          'LACH':  [[2,0],[2,1],[2,2],[2,3]],
+          'DANS':  [[3,0],[3,1],[3,2],[3,3]],
+          'MOOI':  [[4,0],[4,1],[4,2],[4,3]],
+          'BLIJ':  [[5,0],[5,1],[5,2],[5,3]],
+          'KNUS':  [[6,0],[6,1],[6,2],[6,3]],
+          'TROTS': [[0,4],[1,4],[2,4],[3,4],[4,4]],
+          'VRIJ':  [[3,5],[4,5],[5,5],[6,5]],
+          'FIJN':  [[0,6],[1,6],[2,6],[3,6]],
         },
-        geheim: 'SCHATJE',
+        geheim: 'VERLIEFD',
         hint: 'Lees de goudgele letters van links naar rechts, van boven naar beneden.',
       },
     ];
@@ -381,7 +412,7 @@
 
       document.getElementById('wz-niveau').textContent = lv.naam;
       document.getElementById('wz-voortgang').textContent =
-        `Level ${huidigLevel + 1} van ${LEVELS.length} · Swipen om woorden te vinden`;
+        `Level ${huidigLevel + 1} van ${LEVELS.length} · Woorden gaan alle kanten op!`;
 
       const spelEl = document.getElementById('wz-spel');
       spelEl.innerHTML = `
